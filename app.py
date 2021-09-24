@@ -32,7 +32,9 @@ fig = px.choropleth_mapbox(sales_2020, geojson=sales_2020.geometry,
                                        "SaleDate": True, "Zoning": True})
 fig.update_layout(mapbox_accesstoken=mapbox_token_public, 
                   mapbox_style=mapbox_style)
+
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
 
 app.layout = html.Div(
     [
