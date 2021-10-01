@@ -30,16 +30,16 @@ app.layout = html.Div(
         html.H1("Charlottesville Real Estate Sale"),
         html.Div([
             dcc.Dropdown(id='year', options=[{'label': i, 'value': i} for i in year], value=2019),
-        ]),
+        ], style={"width": "49%", "float": "right"}),
         html.Div([
             dcc.Graph(id="graph"),
-        ]),
+        ], style={"width": "49%", "float": "left"}),
         html.Div([
             dcc.Graph(id="table"),
-        ]),
+        ], style={"width": "49%", "float": "right"}),
         html.Div([
             dcc.Markdown(children=source),
-        ]),
+        ], style={"width": "100%", "float": "left"}),
     ]
 )
 @app.callback(Output(component_id="graph",component_property="figure"), 
@@ -71,6 +71,7 @@ def change_year(y):
             "Price per Sqft: $%{customdata[2]:.2f}",
             "Last sale on %{customdata[3]}",
             "Zoning: %{customdata[4]}"]))
+    fig.update_yaxes(scaleanchor="x", scaleratio=1)
     return fig
 
 @app.callback(Output(component_id="table", component_property="figure"),
