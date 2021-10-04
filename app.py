@@ -30,13 +30,13 @@ app.layout = html.Div(
         html.H1("Charlottesville Real Estate Sale"),
         html.Div([
             dcc.Dropdown(id='year', options=[{'label': i, 'value': i} for i in year], value=2019),
-        ], style={"width": "49%", "float": "right"}),
+        ], style={"width": "29%", "float": "right"}),
         html.Div([
             dcc.Graph(id="graph"),
-        ], style={"width": "49%", "float": "left"}),
+        ], style={"width": "69%", "float": "left"}),
         html.Div([
             dcc.Graph(id="table"),
-        ], style={"width": "49%", "float": "right"}),
+        ], style={"width": "29%", "float": "right"}),
         html.Div([
             dcc.Markdown(children=source),
         ], style={"width": "100%", "float": "left"}),
@@ -61,7 +61,8 @@ def change_year(y):
                                            "SaleDateStr": True, 
                                            "Zone": True},
                                center={"lat": 38.0293, "lon": -78.4767}, 
-                               zoom=11, 
+                               zoom=15, 
+                               height=800,
                                )
     fig.update_layout(mapbox_accesstoken=mapbox_token_public, 
                       mapbox_style=mapbox_style)
@@ -70,7 +71,7 @@ def change_year(y):
             "",
             "Total Sale Price: $%{customdata[0]:,}",
             "Acreage: %{customdata[1]:.3f}",
-            "Price per Sqft: $%{customdata[2]:.2f}",
+            # "Price per Sqft: $%{customdata[2]:.2f}",
             "Last sale on %{customdata[3]}",
             "Zoning: %{customdata[4]}"]))
     fig.update_yaxes(scaleanchor="x", scaleratio=1)
@@ -86,7 +87,7 @@ def change_table(click):
     fig = go.Figure(data=go.Table(header=dict(values=["Address", addr]),
                                   cells=dict(values=[["Total Sale Price",
                                                       "Acreage",
-                                                      "Pricer per Sqft",
+                                                      # "Pricer per Sqft",
                                                       "Last sale",
                                                       "Zoning"],
                                                       data])))
