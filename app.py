@@ -57,7 +57,6 @@ def change_year(y):
                                hover_name="Address", 
                                hover_data={"SaleAmountAdjusted": True, 
                                            "Acreage": True, 
-                                           "PricePerSqftAdjusted": ":.2f", 
                                            "SaleDateStr": True, 
                                            "Zone": True},
                                center={"lat": 38.0293, "lon": -78.4767}, 
@@ -71,9 +70,8 @@ def change_year(y):
             "",
             "Total Sale Price: $%{customdata[0]:,}",
             "Acreage: %{customdata[1]:.3f}",
-            # "Price per Sqft: $%{customdata[2]:.2f}",
-            "Last sale on %{customdata[3]}",
-            "Zoning: %{customdata[4]}"]))
+            "Last sale on %{customdata[2]}",
+            "Zoning: %{customdata[3]}"]))
     fig.update_yaxes(scaleanchor="x", scaleratio=1)
     return fig
 
@@ -87,7 +85,6 @@ def change_table(click):
     fig = go.Figure(data=go.Table(header=dict(values=["Address", addr]),
                                   cells=dict(values=[["Total Sale Price",
                                                       "Acreage",
-                                                      # "Pricer per Sqft",
                                                       "Last sale",
                                                       "Zoning"],
                                                       data])))
