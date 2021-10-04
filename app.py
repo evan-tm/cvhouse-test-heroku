@@ -46,7 +46,7 @@ app.layout = html.Div(
               [Input(component_id='year',component_property="value"),])
 def change_year(y):
     mask = (sales_clean_simple["Year"] == y)
-    sales_year = sales_clean_simple[mask]
+    sales_year = sales_clean_simple[mask].set_index("ParcelNumber")
     vmin, vmax = np.nanpercentile(sales_year["SaleAmountAdjusted"], (5, 95))
     fig = px.choropleth_mapbox(sales_year, 
                                geojson=sales_year.geometry, 
@@ -66,7 +66,9 @@ def change_year(y):
     fig.update_layout(mapbox_accesstoken=mapbox_token_public, 
                       mapbox_style=mapbox_style)
     fig.update_traces(hovertemplate="<br>".join([
-        "Total Sale Price: $%{customdata[0]:,}",
+            "%{hovertext}",
+            "",
+            "Total Sale Price: $%{customdata[0]:,}",
             "Acreage: %{customdata[1]:.3f}",
             "Price per Sqft: $%{customdata[2]:.2f}",
             "Last sale on %{customdata[3]}",
