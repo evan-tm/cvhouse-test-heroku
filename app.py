@@ -44,8 +44,9 @@ neighborhood_simple = gpd.read_file("neighborhood_simple.geojson")
 # Building dash
 year = np.arange(1945, 2021, 1, dtype=int)
 neighborhood = ["Neighborhood Average", "Individual"]
-source = '''Data from Charlotteville Open Data Portal. Last update Oct 18, 2021.
-Price has been adjusted for inflation.'''
+source = '''Data from Charlotteville Open Data Portal. Last update Oct 28, 2021.
+Price has been adjusted for inflation. Only sales with state code Residential 
+(urban/suburban) and Multifamily are included.'''
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
