@@ -13,7 +13,7 @@ from dash.dependencies import Input, Output
 
 mapbox_token_public = "pk.eyJ1IjoieGlubHVuY2hlbmciLCJhIjoiY2t0c3g2eHRrMWp3MTJ3cDMwdDAyYnA2OSJ9.tCcD-LyXD1OK-T6uDd8CYA"
 mapbox_style = "mapbox://styles/xinluncheng/cktsxjvd923p618mw4fut9gav"
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+external_stylesheets = ["https://dash.gallery/dash-spatial-clustering/assets/base.css"]
 # ----------------------------------------------------------------------------
 # Helper functions
 millnames = ['','k','M','B','T']
@@ -53,26 +53,22 @@ server = app.server
 app.layout = html.Div(
     [
         html.H1("Charlottesville Real Estate Sale"),
-        html.Div([
-            dcc.Dropdown(id='year', options=[{'label': i, 'value': i} for i in year], value=2019),
-        ], style={"width": "29%", "float": "right"}),
-        html.Div([
-            dcc.Dropdown(id='nb', 
-                         options=[{'label': "Neighborhood Average", 'value': "nba"},
-                                  {'label': "Individual Sales", 'value': 'ind'}], 
-                         value="ind"),
-        ], style={"width": "29%", "float": "right"}),
-        html.Div([
-            dcc.Graph(id="graph"),
-        ], style={"width": "69%", "float": "left"}),
-        html.Div([
-            dcc.Graph(id="table"),
-        ], style={"width": "29%", "float": "right"}),
-        html.Div([
-            dcc.Markdown(children=source),
-        ], style={"width": "100%", "float": "left"}),
-    ]
-)
+        html.Div(
+            [
+                html.Div([dcc.Graph(id="graph"),], className="eight columns name-card"),
+                html.Div(
+                    [
+                        dcc.Dropdown(id='year', options=[{'label': i, 'value': i} for i in year], value=2019),
+                        dcc.Dropdown(id='nb',
+                                     options=[{'label': "Neighborhood Average", 'value': "nba"},
+                                              {'label': "Individual Sales", 'value': 'ind'}], 
+                                     value="ind"),
+                        dcc.Graph(id="table"),
+                    ], className="four columns name-card"),
+            ], className="twelve columns"),
+        html.Div([dcc.Markdown(children=source)], className="twelve columns"),
+    ],className="container twelve columns")
+
 @app.callback(Output(component_id="graph", component_property="figure"), 
               [Input(component_id='year', component_property="value"),
                Input(component_id='nb', component_property="value")])
