@@ -12,12 +12,11 @@
 	position:relative;
 	margin:5px auto;
 }
-.grid_container_1x2 {
+.grid_container {
 	max-width:1600px;
 	position:relative;
 	margin:5px auto;
 	display:grid;
-	grid-template-columns: 1fr 1fr;
 	grid-gap:1px;
 	align-items:center;
 	align-content: space-evenly;
