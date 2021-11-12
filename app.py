@@ -6,14 +6,15 @@ import plotly.express as px
 import plotly.io as pio
 import plotly.graph_objects as go
 import dash
+import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output
+from dash import Input, Output, State
 
 
 mapbox_token_public = "pk.eyJ1IjoieGlubHVuY2hlbmciLCJhIjoiY2t0c3g2eHRrMWp3MTJ3cDMwdDAyYnA2OSJ9.tCcD-LyXD1OK-T6uDd8CYA"
 mapbox_style = "mapbox://styles/xinluncheng/cktsxjvd923p618mw4fut9gav"
-external_stylesheets = ["https://dash.gallery/dash-spatial-clustering/assets/base.css"] 
+external_stylesheets = [dbc.themes.BOOTSTRAP] 
 # ----------------------------------------------------------------------------
 # Helper functions
 millnames = ['','k','M','B','T']
@@ -43,6 +44,9 @@ sales_clean_simple = gpd.read_file("real_estate_sales_simple.geojson")
 neighborhood_simple = gpd.read_file("neighborhood_simple.geojson")
 # ----------------------------------------------------------------------------
 # All the texts
+sidebar_top = "Top"
+sidebar_affordability = "Affordability"
+sidebar_imap = "Exploring Housing History"
 title = "Charlottesville Housing Affordability:  "
 subtitle = "Building a Picture of Who Can Afford What"
 header_text = '''Our goal is to bring attention to housing affordability issues
@@ -73,6 +77,17 @@ server = app.server
 
 app.layout = html.Div(
     [
+        # Sidebar
+        dbc.Navbar([
+            dbc.Button("☰", id='sidebar_button', className="background2 left_text title", 
+                       style={"margin-left": "0"}),
+            dbc.Collapse(
+                [
+                    dbc.NavItem(dbc.NavLink(sidebar_top, href="#", external_link=True, className="background2 left_text subtitle")),
+                    dbc.NavItem(dbc.NavLink(sidebar_affordability, href="#affordability_title", external_link=True, className="background2 left_text subtitle")),
+                    dbc.NavItem(dbc.NavLink(sidebar_imap, href="#imap_title", external_link=True, className="background2 left_text subtitle")),
+                ], id="sidebar", is_open=False, style={"width": "400px", "margin-left": "0", "position": "fixed", "top": "80px"}, className="background"),
+        ], className="sidebar", color="#132C36", sticky="top"),
         # Header
         html.Div(
             [
@@ -83,7 +98,7 @@ app.layout = html.Div(
         # Affordability
         html.Div(
             [
-                html.Span(affordability_title, className="center_text title"),
+                html.Span(affordability_title, className="center_text title", id="affordability_title"),
                 html.Div(
                     [
                         # Salary
@@ -115,7 +130,7 @@ app.layout = html.Div(
         # Interactive map
         html.Div(
             [
-                html.Span(imap_title, className="center_text title"),
+                html.Span(imap_title, className="center_text title", id="imap_title"),
                 html.Div(
                 [
                     # Sales map
@@ -142,6 +157,14 @@ app.layout = html.Div(
         # Disclaimers
         html.Div([dcc.Markdown(children=source)], className="subcontainer left_text bodytext"),
     ], className="container background")
+
+# Collapsable sidebar
+@app.callback(Output("sidebar", "is_open"),
+              [Input("sidebar_button", "n_clicks"), State("sidebar", "is_open")])
+def sidebar_collapse(n, is_open):
+    if n:
+        return not is_open
+    return is_open
 
 # Individual sales year change
 @app.callback(Output(component_id="sales_graph", component_property="figure"), 
