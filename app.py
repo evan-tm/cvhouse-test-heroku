@@ -36,12 +36,21 @@ def nanformat(n, strcode):
         return "Not available"
     else:
         return strcode % n
+    
+def plothhInc():
+    # Function for creating line chart showing Google stock prices over time 
+    fig = px.bar(hhIncPcts, x='bracket', y='hhInc', color='hhInc', 
+                 labels={'bracket':'Income Bracket', 
+                         'hhInc':'Households (% of total, n = 89829)'}, height=400)
+    return fig
 
 # ----------------------------------------------------------------------------
 # Cleaned data file
 sales_clean_simple = gpd.read_file("real_estate_sales_simple.geojson")
 # Neighborhood data file
 neighborhood_simple = gpd.read_file("neighborhood_simple.geojson")
+# Census data file
+census_simple = gpd.read_file("censusBlockDataFull.geojson")
 # ----------------------------------------------------------------------------
 # All the texts
 sidebar_top = "Top"
@@ -67,6 +76,25 @@ imap_neigh_title = "Neighborhood Averages"
 source = '''Data from Charlotteville Open Data Portal. Last update Oct 28, 2021.
 Price has been adjusted for inflation. Only sales with state code Residential 
 (urban/suburban) and Multifamily are included.'''
+# ----------------------------------------------------------------------------
+# Data processing for bar plot
+colsHHInc = ['GEOID', 'hhInc10E', 'hhInc10to15E', 'hhInc15to20E', 
+             'hhInc20to25E', 'hhInc25to30E', 'hhInc30to35E', 
+             'hhInc35to40E', 'hhInc40to45E', 'hhInc45to50E', 
+             'hhInc50to60E', 'hhInc60to75E', 'hhInc75to100E', 
+             'hhInc100to125E', 'hhInc125to150E', 'hhInc150to200E',
+             'hhInc200E']
+hhIncDF = census_simple[colsHHInc]
+hhIncPivot = pd.wide_to_long(hhIncDF, stubnames="hhInc", i="GEOID", j="bracket", suffix='\\w+')
+hhIncPivot = hhIncPivot.reset_index().reindex(["GEOID", "bracket", "hhInc"], axis=1)
+hhIncPcts = hhIncPivot.groupby(hhIncPivot['bracket']).agg({'hhInc':'sum'}).reset_index()
+n = sum(hhIncPcts['hhInc'])
+hhIncPcts['hhInc'] = 100 * hhIncPcts['hhInc'] / sum(hhIncPcts['hhInc'])
+hhIncPcts = hhIncPcts.reindex([1,2,5,7,8,9,10,11,12,13,14,15,0,3,4,6])
+hhIncPcts['bracket'] = '$' + hhIncPcts['bracket'].str[:-1] + 'k'
+hhIncPcts.at[1,'bracket'] = "< " + hhIncPcts['bracket'][1]
+hhIncPcts.at[6,'bracket'] = hhIncPcts['bracket'][6] + "+"
+
 # ----------------------------------------------------------------------------
 # Building dash
 year = np.arange(1945, 2021, 1, dtype=int)
@@ -153,6 +181,14 @@ app.layout = html.Div(
                             dcc.Graph(id="neigh_graph"),
                         ], className="subcontainer background", style={"width": "100%"}),
                 ], className="grid_container", style={"grid-template-columns": "minmax(400px, 2fr) 1fr minmax(400px, 2fr)"}),
+            ], className="subcontainer"),
+        html.Div(
+            [
+                html.Div(
+                    [
+                        dcc.Graph(id = 'bar_plot', figure = plothhInc())
+                    ]
+                )
             ], className="subcontainer"),
         # Disclaimers
         html.Div([dcc.Markdown(children=source)], className="subcontainer left_text bodytext"),
