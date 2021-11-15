@@ -42,6 +42,11 @@ def plothhInc():
     fig = px.bar(hhIncPcts, x='bracket', y='hhInc', color='hhInc', 
                  labels={'bracket':'Income Bracket', 
                          'hhInc':'Households (% of total, n = 89829)'}, height=400)
+    fig.update_layout(margin=go.layout.Margin(l=0, r=0, b=0, t=0),
+                      plot_bgcolor="rgba(0,0,0,0)",
+                      paper_bgcolor="rgba(0,0,0,0)",
+                      autosize=True,
+                      font=dict(size=16, color="rgb(255,255,255)"))
     return fig
 
 # ----------------------------------------------------------------------------
@@ -56,6 +61,7 @@ census_simple = gpd.read_file("censusBlockDataFull.geojson")
 sidebar_top = "Top"
 sidebar_affordability = "Affordability"
 sidebar_imap = "Exploring Housing History"
+sidebar_census = "Census Information"
 title = "Charlottesville Housing Affordability:  "
 subtitle = "Building a Picture of Who Can Afford What"
 header_text = '''Our goal is to bring attention to housing affordability issues
@@ -73,6 +79,7 @@ affordability_prediction_algo = "Describe algorithm here. Some machine learning 
 imap_title = "Explore Charlottesville Housing Sales History"
 imap_sales_title = "Individual Sales"
 imap_neigh_title = "Neighborhood Averages"
+census_title = "Census Information"
 source = '''Data from Charlotteville Open Data Portal. Last update Oct 28, 2021.
 Price has been adjusted for inflation. Only sales with state code Residential 
 (urban/suburban) and Multifamily are included.'''
@@ -114,6 +121,7 @@ app.layout = html.Div(
                     dbc.NavItem(dbc.NavLink(sidebar_top, href="#", external_link=True, className="background2 left_text subtitle")),
                     dbc.NavItem(dbc.NavLink(sidebar_affordability, href="#affordability_title", external_link=True, className="background2 left_text subtitle")),
                     dbc.NavItem(dbc.NavLink(sidebar_imap, href="#imap_title", external_link=True, className="background2 left_text subtitle")),
+                    dbc.NavItem(dbc.NavLink(sidebar_census, href="#imap_title", external_link=True, className="background2 left_text subtitle")),
                 ], id="sidebar", is_open=False, style={"width": "400px", "margin-left": "0", "position": "fixed", "top": "80px"}, className="background"),
         ], className="sidebar", color="#132C36", sticky="top"),
         # Header
@@ -184,11 +192,8 @@ app.layout = html.Div(
             ], className="subcontainer"),
         html.Div(
             [
-                html.Div(
-                    [
-                        dcc.Graph(id = 'bar_plot', figure = plothhInc())
-                    ]
-                )
+                html.Span(census_title, id="census_title", className="center_text title"),
+                dcc.Graph(id='bar_plot', figure=plothhInc())
             ], className="subcontainer"),
         # Disclaimers
         html.Div([dcc.Markdown(children=source)], className="subcontainer left_text bodytext"),
@@ -233,8 +238,8 @@ def change_year_sales(y):
                       margin=go.layout.Margin(l=0, r=0,  b=0, t=0),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
-                      autosize=True,)
-    fig.update_coloraxes(colorbar_tickfont_color="rgb(255,255,255)", colorbar_tickfont_size=16)
+                      autosize=True,
+                      font=dict(size=16, color="rgb(255,255,255)"))
     fig.update_yaxes(scaleanchor="x", scaleratio=1)
     return fig
 
@@ -270,8 +275,8 @@ def change_year_neigh(y):
                       margin=go.layout.Margin(l=0, r=0,  b=0, t=0),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
-                      autosize=True,)
-    fig.update_coloraxes(colorbar_tickfont_color="rgb(255,255,255)", colorbar_tickfont_size=16)
+                      autosize=True,
+                      font=dict(size=16, color="rgb(255,255,255)"))
     fig.update_yaxes(scaleanchor="x", scaleratio=1)
     return fig
 
