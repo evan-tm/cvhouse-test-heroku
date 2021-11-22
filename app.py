@@ -49,6 +49,23 @@ def plothhInc():
                       font=dict(size=16, color="rgb(255,255,255)"))
     return fig
 
+def createDropdown(description, opts, default_value, dd_style={"width": "150px"}, dd_id=None, grid_width="1fr 1fr",
+                   **kwargs):
+    opts_dict = [{"label": each, "value": each} for each in opts]
+    return html.Div([
+        html.Span(description, className="center_text bodytext"),
+        dcc.Dropdown(id=dd_id, options=opts_dict, value=default_value, className="subcontainer", 
+                     style=dd_style, **kwargs)
+    ], className="grid_container", style={"grid-template-columns": grid_width})
+
+def createInput(description, opts, default_value, ip_style={"width": "150px"}, ip_id=None, grid_width="1fr 1fr",
+                **kwargs):
+    return html.Div([
+        html.Span(description, className="center_text bodytext"),
+        dcc.Input(id=ip_id, type=opts, placeholder=default_value, min=0, className="subcontainer", 
+                  style=ip_style, **kwargs)
+    ], className="grid_container", style={"grid-template-columns": grid_width})
+
 # ----------------------------------------------------------------------------
 # Cleaned data file
 sales_clean_simple = gpd.read_file("real_estate_sales_simple.geojson")
@@ -58,24 +75,46 @@ neighborhood_simple = gpd.read_file("neighborhood_simple.geojson")
 census_simple = gpd.read_file("censusBlockDataFull.geojson")
 # ----------------------------------------------------------------------------
 # All the texts
+## Sidebar
 sidebar_top = "Top"
-sidebar_affordability = "Affordability"
+sidebar_afford = "Affordability"
 sidebar_imap = "Exploring Housing History"
 sidebar_census = "Census Information"
+## Header
 title = "Charlottesville Housing Affordability:  "
 subtitle = "Building a Picture of Who Can Afford What"
 header_text = '''Our goal is to bring attention to housing affordability issues
 in the Charlottesville community. Below, you can explore what you can currently 
 afford with our price prediction tool. Additionally, you can see where housing 
 prices are headed and understand where they’ve been historically. '''
-affordability_title = "What Can You Afford?"
-salary_input_hint = "Salary: "
-bedroom_dropdown_hint = "Bedrooms: "
-bedroom_dropdown_options = [{"label": each, "value": each} for each in ["Studio", "1", "2", "3", "4+"]]
-bedroom_dropdown_value = "2"
-affordability_prediction_text = "Predicted price of potential home:"
-affordability_prediction_idle = "$300,000"
-affordability_prediction_algo = "Describe algorithm here. Some machine learning magic and stuff. Can include equations since it is a markdown cell."
+## Affordability
+afford_title = "What Can You Afford?"
+afford_dropdown_title = "Learn more about our neighborhoods:"
+afford_dropdown_industry_desc = "By Industry:"
+afford_dropdown_industry_opts = ["Industry 1", "Industry 2", "Industry 3"]
+afford_dropdown_industry_default = afford_dropdown_industry_opts[0]
+afford_dropdown_person_info_title = "By Personal Situation:"
+afford_input_salary_desc = "Household Income:"
+afford_input_salary_default = "26000"
+afford_dropdown_kids_desc = "Kids:"
+afford_dropdown_kids_opts = ["0", "1", "2", "3", "4+"]
+afford_dropdown_kids_default = afford_dropdown_kids_opts[0]
+afford_input_age_desc = "Your Age:"
+afford_input_age_default = "30"
+afford_advanced_title = "Advanced Options"
+afford_input_tech_desc = "Monthly Technology Budget:"
+afford_input_tech_default = "40"
+afford_input_tech_tip = "Cell phone plans, etc"
+afford_input_saving_desc = "Monthly Allocated Savings:"
+afford_input_saving_default = "500"
+afford_button = "Calculate"
+afford_dropdown_lod_desc = "Lever of Detail"
+afford_dropdown_lod_opts = ["Neighborhood", "Individual Properties"]
+afford_dropdown_lod_default = afford_dropdown_lod_opts[0]
+afford_prediction_text = "You can afford 0% of houses in cville."
+afford_prediction_algo = "Describe algorithm here. Some machine learning magic and stuff. Can include equations since it is a markdown cell."
+## Neighborhood
+## History
 imap_title = "Explore Charlottesville Housing Sales History"
 imap_sales_title = "Individual Sales"
 imap_neigh_title = "Neighborhood Averages"
@@ -118,50 +157,72 @@ app.layout = html.Div(
                        style={"margin-left": "0"}),
             dbc.Collapse(
                 [
-                    dbc.NavItem(dbc.NavLink(sidebar_top, href="#", external_link=True, className="background2 left_text subtitle")),
-                    dbc.NavItem(dbc.NavLink(sidebar_affordability, href="#affordability_title", external_link=True, className="background2 left_text subtitle")),
-                    dbc.NavItem(dbc.NavLink(sidebar_imap, href="#imap_title", external_link=True, className="background2 left_text subtitle")),
-                    dbc.NavItem(dbc.NavLink(sidebar_census, href="#imap_title", external_link=True, className="background2 left_text subtitle")),
-                ], id="sidebar", is_open=False, style={"width": "400px", "margin-left": "0", "position": "fixed", "top": "80px"}, className="background"),
+                    dbc.NavItem(dbc.NavLink(sidebar_top, href="#", external_link=True, 
+                                            className="background2 left_text subtitle")),
+                    dbc.NavItem(dbc.NavLink(sidebar_afford, href="#afford_title", 
+                                            external_link=True, className="background2 left_text subtitle")),
+                    dbc.NavItem(dbc.NavLink(sidebar_imap, href="#imap_title", external_link=True, 
+                                            className="background2 left_text subtitle")),
+                    dbc.NavItem(dbc.NavLink(sidebar_census, href="#imap_title", external_link=True, 
+                                            className="background2 left_text subtitle")),
+                ], id="sidebar", is_open=False, 
+                style={"width": "400px", "margin-left": "0", "position": "fixed", "top": "80px"}, className="background"),
         ], className="sidebar", color="#132C36", sticky="top"),
         # Header
-        html.Div(
+        html.Div([
+            html.Div(
             [
                 html.Span(title, className="left_text title"),
                 html.Span(subtitle, className="left_text subtitle"),
                 html.Span(header_text, className="left_text bodytext"),
             ], className="subcontainer"),
+            html.Img(src="https://via.placeholder.com/240", className="subcontainer")
+        ], className="grid_container background", style={"grid-template-columns": "4fr 1fr"}),
         # Affordability
         html.Div(
             [
-                html.Span(affordability_title, className="center_text title", id="affordability_title"),
-                html.Div(
-                    [
-                        # Salary
-                        html.Div(
-                            [
-                                html.Span(salary_input_hint, className="left_text inline_title"),
-                                dcc.Input(id="salary_input", type="number", placeholder="salary",
-                                          className="subcontainer", style={"width": "200px"})
-                            ], className="grid_container", style={"grid-template-columns": "1fr 1fr"}),
-                        # Bedrooms
-                        html.Div(
-                            [
-                                html.Span(bedroom_dropdown_hint, className="left_text inline_title"),
-                                dcc.Dropdown(id="bedroom_dropdown", 
-                                             options=bedroom_dropdown_options, value=bedroom_dropdown_value,
-                                             className="subcontainer", style={"width": "200px"})
-                            ], className="grid_container", style={"grid-template-columns": "1fr 1fr"}),
-                    ], className="grid_container background2", style={"grid-template-columns": "1fr 1fr"}),
-                # Predict
-                html.Div(
-                    [
-                        html.Span(affordability_prediction_text, className="center_text inline_title"),
-                        html.Span(affordability_prediction_idle, id="affordability_prediction",
-                                  className="center_text inline_title", style={"color": "#DA6146"})
-                    ], className="grid_container", style={"grid-template-columns": "1fr 1fr"}),
+                html.Span(afford_title, className="center_text title", id="afford_title"),
+                html.Div([
+                    dcc.Graph(id="afford_map", style={"width": "100%"}),
+                    html.Div([
+                        html.Span(afford_dropdown_title, className="left_text subtitle"),
+                        # Industry
+                        createDropdown(afford_dropdown_industry_desc, afford_dropdown_industry_opts,
+                                       afford_dropdown_industry_default, dd_id="afford_dropdown_industry",
+                                       dd_style={"width": "200px"}),
+                        # Personal information
+                        html.Hr(className="center_text title"),
+                        html.Span(afford_dropdown_person_info_title, className="left_text subtitle"),
+                        createInput(afford_input_salary_desc, "number", afford_input_salary_default, 
+                                    ip_id="afford_input_salary"),
+                        createDropdown(afford_dropdown_kids_desc, afford_dropdown_kids_opts,
+                                       afford_dropdown_kids_default, dd_id="afford_dropdown_kids"),
+                        createInput(afford_input_age_desc, "number", afford_input_age_default,
+                                    ip_id="afford_input_age"),
+                        # Advnaced options
+                        html.Span(afford_advanced_title, className="left_text bodytext"),
+                        createInput(afford_input_tech_desc, "number", afford_input_tech_default,
+                                    ip_id="afford_input_tech"),
+                        dbc.Tooltip(afford_input_tech_tip, target="afford_input_tech"),
+                        createInput(afford_input_saving_desc, "number", afford_input_saving_default,
+                                    ip_id="afford_input_saving"),
+                    ], className="subcontainer")
+                ], className="grid_container", style={"grid-template-columns": "minmax(600px, 2fr) 1fr"}),
+                html.Div([
+                    html.Div([
+                        dcc.Slider(min=1945, max=2021, step=1, value=2020, 
+                                   tooltip={"placement": "bottom", "always_visible": True},
+                                   id="afford_slider_year")
+                    ], style={"width": "100%"}),
+                    createDropdown(afford_dropdown_lod_desc, afford_dropdown_lod_opts,
+                                   afford_dropdown_lod_default, dd_id="afford_dropdown_lod", 
+                                   dd_style={"width": "200px"}),
+                    html.Button(afford_button, id="afford_button", className="right_text subtitle",
+                                style={"background-color": "#FFA858", "color": "#000000"}),
+                ], className="grid_container", style={"grid-template-columns": "minmax(600px, 4fr) 2fr 1fr"}),
+                html.Span(afford_prediction_text, id="afford_prediction", className="center_text subtitle"),
                 # Algorithm description
-                html.Div([dcc.Markdown(affordability_prediction_algo)], className="left_text bodytext")
+                html.Div([dcc.Markdown(afford_prediction_algo)], className="left_text bodytext")
             ], className="subcontainer"),
         # Interactive map
         html.Div(
