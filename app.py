@@ -268,6 +268,69 @@ def sidebar_collapse(n, is_open):
         return not is_open
     return is_open
 
+# Update affordability graph
+@app.callback(Output("afford_map", "figure"),
+              [Input("afford_button", "n_clicks"), State("afford_slider_year", "value"),
+               State("afford_dropdown_lod", "value")])
+def update_afford_map(n, y, lod):
+    mask = (sales_clean_simple["Year"] == y)
+    sales_year = sales_clean_simple[mask].set_index("ParcelNumber")
+    if lod == "Neighborhood":
+        # Neighborhood map
+        sales_year_nba = sales_year.groupby("Neighborhood").agg({"SaleAmountAdjusted": ["size", "mean"]}).reset_index()
+        sales_year_nba.columns = ["Neighborhood", "NumSales", "MeanSales"]
+        sales_year_nba = neighborhood_simple.merge(sales_year_nba, how="inner", 
+                                                   right_on="Neighborhood", left_on="NAME")
+        sales_year_nba["MeanSalesStr"] = sales_year_nba["MeanSales"].apply(millify)
+        vmin, vmax = np.nanpercentile(sales_year_nba["MeanSales"], (5, 95))
+        fig = px.choropleth_mapbox(sales_year_nba, 
+                                   geojson=sales_year_nba.geometry,
+                                   locations=sales_year_nba.index, 
+                                   color="MeanSales",
+                                   range_color=[vmin, vmax],
+                                   labels={"MeanSales": "Average Total Sale Price"},
+                                   hover_name="Neighborhood", 
+                                   hover_data={"MeanSalesStr": True, "NumSales": True},
+                                   center={"lat": 38.0293, "lon": -78.4767}, 
+                                   zoom=12, 
+                                   )
+        fig.update_traces(hovertemplate="<br>".join([
+            "%{hovertext}",
+            "",
+            "Average Sale Price in Neighborhood: $%{customdata[0]}",
+            "Number of Sales Recorded: %{customdata[1]}"]))
+    else:
+        # Individual property map
+        vmin, vmax = np.nanpercentile(sales_year["SaleAmountAdjusted"], (5, 95))
+        fig = px.choropleth_mapbox(sales_year, 
+                                   geojson=sales_year.geometry, 
+                                   locations=sales_year.index, 
+                                   color="SaleAmountAdjusted",
+                                   range_color=[vmin, vmax],
+                                   labels={"SaleAmountAdjusted": "Total Sale Price"},
+                                   hover_name="Address", 
+                                   hover_data={"SaleAmountStr": True, "AcreageStr": True, 
+                                               "SaleDateStr": True, "Zone": True},
+                                   center={"lat": 38.0293, "lon": -78.4767}, 
+                                   zoom=14,
+                                  )
+        fig.update_traces(hovertemplate="<br>".join([
+            "%{hovertext}",
+            "",
+            "Total Sale Price: $%{customdata[0]}",
+            "Acreage: %{customdata[1]}",
+            "Last sale on %{customdata[2]}",
+            "Zoning: %{customdata[3]}"]))
+    fig.update_layout(mapbox_accesstoken=mapbox_token_public, 
+                      mapbox_style=mapbox_style,
+                      margin=go.layout.Margin(l=0, r=0,  b=0, t=0),
+                      plot_bgcolor="rgba(0,0,0,0)",
+                      paper_bgcolor="rgba(0,0,0,0)",
+                      autosize=True,
+                      font=dict(size=16, color="rgb(255,255,255)"))
+    fig.update_yaxes(scaleanchor="x", scaleratio=1)
+    return fig
+
 # Individual sales year change
 @app.callback(Output(component_id="sales_graph", component_property="figure"), 
               [Input(component_id='year', component_property="value")])
