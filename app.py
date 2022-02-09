@@ -115,9 +115,10 @@ afford_prediction_text = "You can afford 0% of houses in cville."
 afford_prediction_algo = "Describe algorithm here. Some machine learning magic and stuff. Can include equations since it is a markdown cell."
 ## Neighborhood
 ## History
-imap_title = "Explore Charlottesville Housing Sales History"
-imap_sales_title = "Individual Sales"
-imap_neigh_title = "Neighborhood Averages"
+history_title = "History of Real Estate Sales"
+history_checklist_single = "Single family"
+history_checklist_two = "Two family"
+history_checklist_multi = "Multi family and others"
 ## Census
 census_title = "Census Information"
 source = '''Data from Charlotteville Open Data Portal. Last update Feb 7, 2022.
@@ -162,9 +163,7 @@ app.layout = html.Div(
                                             className="background2 left_text subtitle")),
                     dbc.NavItem(dbc.NavLink(sidebar_afford, href="#afford_title", 
                                             external_link=True, className="background2 left_text subtitle")),
-                    dbc.NavItem(dbc.NavLink(sidebar_imap, href="#imap_title", external_link=True, 
-                                            className="background2 left_text subtitle")),
-                    dbc.NavItem(dbc.NavLink(sidebar_census, href="#imap_title", external_link=True, 
+                    dbc.NavItem(dbc.NavLink(sidebar_census, href="#census_title", external_link=True, 
                                             className="background2 left_text subtitle")),
                 ], id="sidebar", is_open=False, 
                 style={"width": "400px", "margin-left": "0", "position": "fixed", "top": "80px"}, className="background"),
@@ -228,12 +227,23 @@ app.layout = html.Div(
         # Industry breakdown
         # Neighborhood characteristics
         # History of price
+        html.Div([
+            html.Span(history_title, id="history_title", className="center_text title"),
+            html.Div([
+                dcc.Graph(id='history_plot', style={"width": "100%"}),
+                dcc.Checklist(options=[
+                    {'label': history_checklist_single, 'value': 'single'},
+                    {'label': history_checklist_two, 'value': 'two'},
+                    {'label': history_checklist_multi, 'value': 'multi'}], id="history_checklist", 
+                              labelStyle=dict(display='block'),
+                              className="center_text bodytext background2")
+            ], className="grid_container", style={"grid-template-columns": "minmax(750px, 3fr) 1fr"})
+        ], className="subcontainer"),
         # Census
-        html.Div(
-            [
-                html.Span(census_title, id="census_title", className="center_text title"),
-                dcc.Graph(id='bar_plot', figure=plothhInc())
-            ], className="subcontainer"),
+        html.Div([
+            html.Span(census_title, id="census_title", className="center_text title"),
+            dcc.Graph(id='bar_plot', figure=plothhInc())
+        ], className="subcontainer"),
         # Disclaimers
         html.Div([dcc.Markdown(children=source)], className="subcontainer left_text bodytext"),
     ], className="container background")
