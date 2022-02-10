@@ -14,6 +14,18 @@ mapbox_token_public = "pk.eyJ1IjoieGlubHVuY2hlbmciLCJhIjoiY2t0c3g2eHRrMWp3MTJ3cD
 mapbox_style = "mapbox://styles/xinluncheng/cktsxjvd923p618mw4fut9gav"
 external_stylesheets = [dbc.themes.BOOTSTRAP] 
 # ----------------------------------------------------------------------------
+# Data Files:
+# Cleaned sales data file
+sales_clean_simple = gpd.read_file("real_estate_sales_simple.geojson")
+# Neighborhood data file
+neighborhood_simple = gpd.read_file("neighborhood_simple.geojson")
+# Census data file
+census_simple = gpd.read_file("censusBlockDataFull.geojson")
+# Industry by sector data file
+indBySector = pd.read_csv("indBySector.csv")
+indBySector = indBySector.iloc[1: , :]
+indBySector = indBySector.sort_values(by="Total", ascending = True)
+# ----------------------------------------------------------------------------
 # Helper functions
 millnames = ['','k','M','B','T']
 
@@ -49,16 +61,22 @@ def plothhInc():
 
 def plotIndustrySector():
     # Function for creating plot of industry employment populations by sector
-    fig = px.bar(indBySector, x="Industry", 
-    y=["Private For-Profit", "Self-Employed Incorporated", 
-    "Private Not-For-Profit", "Government", "Self-Employed Not Incorporated"], 
-    labels={'value':'Employed (count)'})
-    fig.update_layout(margin=go.layout.Margin(l=0, r=0, b=0, t=0),
+    fig = px.bar(indBySector, y="Industry", 
+                 x=["Private For-Profit", "Self-Employed Incorporated", 
+                    "Private Not-For-Profit", "Government", "Self-Employed Not Incorporated"], 
+                 labels={'value':'Employed (count)'}, orientation="h")
+    fig.update_layout(margin=go.layout.Margin(l=200, r=0, b=0, t=30, pad=15),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
                       autosize=True,
-                      font=dict(size=16, color="rgb(255,255,255)"),
-                      legend_title_text=sector_legend)
+                      font=dict(size=13, color="rgb(255,255,255)"),
+                      legend_title_text=sector_legend,
+                      legend=dict(yanchor="bottom", 
+                                  x=1, 
+                                  y=0, 
+                                  xanchor="right",
+                                  bgcolor="DimGray")
+    )
     return fig
 
 def createDropdown(description, opts, default_value, dd_style={"width": "150px"}, dd_id=None, grid_width="1fr 1fr",
@@ -78,15 +96,6 @@ def createInput(description, opts, default_value, ip_style={"width": "150px"}, i
                   style=ip_style, **kwargs)
     ], className="grid_container", style={"grid-template-columns": grid_width})
 
-# ----------------------------------------------------------------------------
-# Cleaned sales data file
-sales_clean_simple = gpd.read_file("real_estate_sales_simple.geojson")
-# Neighborhood data file
-neighborhood_simple = gpd.read_file("neighborhood_simple.geojson")
-# Census data file
-census_simple = gpd.read_file("censusBlockDataFull.geojson")
-# Industry by sector data file
-indBySector = pd.read_csv("indBySector.csv")
 # ----------------------------------------------------------------------------
 # All the texts
 ## Sidebar
@@ -251,7 +260,8 @@ app.layout = html.Div(
         html.Div(
             [
                 html.Span(sector_title, id="sector_title", className="center_text title"),
-                dcc.Graph(id='sector_plot', figure=plotIndustrySector())
+                dcc.Graph(id='sector_plot', figure=plotIndustrySector(), style={'display': 'inline-block'}),
+                dcc.Graph(id='sector_plot2', figure=plotIndustrySector(), style={'display': 'inline-block'})
             ], className="subcontainer"),
         # Neighborhood characteristics
         # History of price
