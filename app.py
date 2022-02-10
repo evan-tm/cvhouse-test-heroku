@@ -7,9 +7,7 @@ import plotly.io as pio
 import plotly.graph_objects as go
 import dash
 import dash_bootstrap_components as dbc
-import dash_core_components as dcc
-import dash_html_components as html
-from dash import Input, Output, State
+from dash import Input, Output, State, dcc, html
 
 
 mapbox_token_public = "pk.eyJ1IjoieGlubHVuY2hlbmciLCJhIjoiY2t0c3g2eHRrMWp3MTJ3cDMwdDAyYnA2OSJ9.tCcD-LyXD1OK-T6uDd8CYA"
@@ -38,7 +36,7 @@ def nanformat(n, strcode):
         return strcode % n
     
 def plothhInc():
-    # Function for creating line chart showing Google stock prices over time 
+    # Function for creating plot of population size by hh income bracket
     fig = px.bar(hhIncPcts, x='bracket', y='hhInc', color='hhInc', 
                  labels={'bracket':'Income Bracket', 
                          'hhInc':'Households (% of total, n = 89829)'}, height=400)
@@ -47,6 +45,20 @@ def plothhInc():
                       paper_bgcolor="rgba(0,0,0,0)",
                       autosize=True,
                       font=dict(size=16, color="rgb(255,255,255)"))
+    return fig
+
+def plotIndustrySector():
+    # Function for creating plot of industry employment populations by sector
+    fig = px.bar(indBySector, x="Industry", 
+    y=["Private For-Profit", "Self-Employed Incorporated", 
+    "Private Not-For-Profit", "Government", "Self-Employed Not Incorporated"], 
+    labels={'value':'Employed (count)'})
+    fig.update_layout(margin=go.layout.Margin(l=0, r=0, b=0, t=0),
+                      plot_bgcolor="rgba(0,0,0,0)",
+                      paper_bgcolor="rgba(0,0,0,0)",
+                      autosize=True,
+                      font=dict(size=16, color="rgb(255,255,255)"),
+                      legend_title_text=sector_legend)
     return fig
 
 def createDropdown(description, opts, default_value, dd_style={"width": "150px"}, dd_id=None, grid_width="1fr 1fr",
@@ -67,12 +79,14 @@ def createInput(description, opts, default_value, ip_style={"width": "150px"}, i
     ], className="grid_container", style={"grid-template-columns": grid_width})
 
 # ----------------------------------------------------------------------------
-# Cleaned data file
+# Cleaned sales data file
 sales_clean_simple = gpd.read_file("real_estate_sales_simple.geojson")
 # Neighborhood data file
 neighborhood_simple = gpd.read_file("neighborhood_simple.geojson")
 # Census data file
 census_simple = gpd.read_file("censusBlockDataFull.geojson")
+# Industry by sector data file
+indBySector = pd.read_csv("indBySector.csv")
 # ----------------------------------------------------------------------------
 # All the texts
 ## Sidebar
@@ -118,13 +132,19 @@ afford_prediction_algo = "Describe algorithm here. Some machine learning magic a
 imap_title = "Explore Charlottesville Housing Sales History"
 imap_sales_title = "Individual Sales"
 imap_neigh_title = "Neighborhood Averages"
+## Industry and Sector Counts of the civilian employed population aged 16 and 
+##   older in Charlottesville
+sector_title = "Charlottesville Industry and Sector Counts of the civilian \
+    employed population aged 16 and older."
+sector_legend = "Sector"
 ## Census
 census_title = "Census Information"
+## footnote
 source = '''Data from Charlotteville Open Data Portal. Last update Feb 7, 2022.
 Price has been adjusted for inflation. Only sales with state code Residential 
 (urban/suburban) and Multifamily are included.'''
 # ----------------------------------------------------------------------------
-# Data processing for bar plot
+# Data processing for census_plot
 colsHHInc = ['GEOID', 'hhInc10E', 'hhInc10to15E', 'hhInc15to20E', 
              'hhInc20to25E', 'hhInc25to30E', 'hhInc30to35E', 
              'hhInc35to40E', 'hhInc40to45E', 'hhInc45to50E', 
@@ -141,6 +161,8 @@ hhIncPcts = hhIncPcts.reindex([1,2,5,7,8,9,10,11,12,13,14,15,0,3,4,6])
 hhIncPcts['bracket'] = '$' + hhIncPcts['bracket'].str[:-1] + 'k'
 hhIncPcts.at[1,'bracket'] = "< " + hhIncPcts['bracket'][1]
 hhIncPcts.at[6,'bracket'] = hhIncPcts['bracket'][6] + "+"
+# Data processing for sector_plot
+indBySector = indBySector.iloc[1: , :]
 
 # ----------------------------------------------------------------------------
 # Building dash
@@ -225,14 +247,19 @@ app.layout = html.Div(
                 # Algorithm description
                 html.Div([dcc.Markdown(afford_prediction_algo)], className="left_text bodytext")
             ], className="subcontainer"),
-        # Industry breakdown
+        # Sector and Industry chart
+        html.Div(
+            [
+                html.Span(sector_title, id="sector_title", className="center_text title"),
+                dcc.Graph(id='sector_plot', figure=plotIndustrySector())
+            ], className="subcontainer"),
         # Neighborhood characteristics
         # History of price
         # Census
         html.Div(
             [
                 html.Span(census_title, id="census_title", className="center_text title"),
-                dcc.Graph(id='bar_plot', figure=plothhInc())
+                dcc.Graph(id='census_plot', figure=plothhInc())
             ], className="subcontainer"),
         # Disclaimers
         html.Div([dcc.Markdown(children=source)], className="subcontainer left_text bodytext"),
