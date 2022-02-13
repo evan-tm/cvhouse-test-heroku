@@ -208,8 +208,8 @@ app.layout = html.Div(
                 html.Span(subtitle, className="left_text subtitle"),
                 html.Span(header_text, className="left_text bodytext"),
             ], className="subcontainer"),
-            html.Img(src="https://via.placeholder.com/240", className="subcontainer")
-        ], className="grid_container background", style={"grid-template-columns": "4fr 1fr"}),
+            html.Img(src="assets/title.png", style={'height':'60%', 'weight':'60%'}, className="subcontainer")
+        ], className="grid_container background", style={'textAlign': 'center'}),
         # Affordability
         html.Div(
             [
