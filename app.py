@@ -96,6 +96,65 @@ def createInput(description, opts, default_value, ip_style={"width": "150px"}, i
                   style=ip_style, **kwargs)
     ], className="grid_container", style={"grid-template-columns": grid_width})
 
+# History by zoning graph
+def history_zoning_num():
+    fig = go.Figure(data=go.Scatter(x=sales_year["SaleDate"], y=sales_year["SaleAmountAdjusted"]["count"], 
+                                    name="All Sales"))
+    fig.add_trace(go.Scatter(x=sales_year_single["SaleDate"], y=sales_year_single["SaleAmountAdjusted"]["count"], 
+                             name="Single Family"))
+    fig.add_trace(go.Scatter(x=sales_year_two["SaleDate"], y=sales_year_two["SaleAmountAdjusted"]["count"], 
+                             name="Two Family"))
+    fig.add_trace(go.Scatter(x=sales_year_multi["SaleDate"], y=sales_year_multi["SaleAmountAdjusted"]["count"], 
+                             name="Multi-family and Others"))
+    fig.update_xaxes(range=["1945-01-01T00:00:00Z", "2022-12-31T23:59:59Z"])
+    fig.update_layout(xaxis_title="Year",
+                      yaxis_title="Yearly Number of Sales",
+                      margin=go.layout.Margin(l=0, r=0, b=0, t=0),
+                      plot_bgcolor="rgba(0,0,0,0)",
+                      paper_bgcolor="rgba(0,0,0,0)",
+                      autosize=True,
+                      font=dict(size=16, color="rgb(255,255,255)"))
+    fig['data'][0]['showlegend'] = True
+    return fig
+
+
+def history_zoning_price():
+    fig = go.Figure(data=go.Scatter(x=sales_year["SaleDate"], y=sales_year["SaleAmountAdjusted"]["median"], 
+                                    name="All Sales"))
+    fig.add_trace(go.Scatter(x=sales_year_single["SaleDate"], y=sales_year_single["SaleAmountAdjusted"]["median"], 
+                             name="Single Family"))
+    fig.add_trace(go.Scatter(x=sales_year_two["SaleDate"], y=sales_year_two["SaleAmountAdjusted"]["median"], 
+                             name="Two Family"))
+    fig.add_trace(go.Scatter(x=sales_year_multi["SaleDate"], y=sales_year_multi["SaleAmountAdjusted"]["median"], 
+                             name="Multi-family and Others"))
+    fig.update_xaxes(range=["1945-01-01T00:00:00Z", "2022-12-31T23:59:59Z"])
+    fig.update_layout(xaxis_title="Year",
+                      yaxis_title="Yearly Median Sale Price [USD, inflation adjusted]",
+                      margin=go.layout.Margin(l=0, r=0, b=0, t=0),
+                      plot_bgcolor="rgba(0,0,0,0)",
+                      paper_bgcolor="rgba(0,0,0,0)",
+                      autosize=True,
+                      font=dict(size=16, color="rgb(255,255,255)"))
+    fig['data'][0]['showlegend'] = True
+    return fig
+
+
+# ----------------------------------------------------------------------------
+# Cleaned data file
+sales_clean_simple = gpd.read_file("real_estate_sales_simple.geojson")
+sales_clean_simple["SaleDate"] = pd.to_datetime(sales_clean_simple["SaleDate"])
+sales_clean_simple = sales_clean_simple[sales_clean_simple["SaleDate"] >= pd.to_datetime("1945-01-01T00:00:00Z")].reset_index()
+sales_year = sales_clean_simple.sort_values("SaleDate").set_index("SaleDate").rolling("365.25D").agg({"SaleAmountAdjusted": ["count", "median"]}).reset_index()
+sales_clean_simple_single = sales_clean_simple[sales_clean_simple["ZoneCategory"] == "R-1"]
+sales_year_single = sales_clean_simple_single.sort_values("SaleDate").set_index("SaleDate").rolling("365.25D").agg({"SaleAmountAdjusted": ["count", "median"]}).reset_index()
+sales_clean_simple_two = sales_clean_simple[sales_clean_simple["ZoneCategory"] == "R-2"]
+sales_year_two = sales_clean_simple_two.sort_values("SaleDate").set_index("SaleDate").rolling("365.25D").agg({"SaleAmountAdjusted": ["count", "median"]}).reset_index()
+sales_clean_simple_multi = sales_clean_simple[(sales_clean_simple["ZoneCategory"] != "R-1") & (sales_clean_simple["ZoneCategory"] != "R-2")]
+sales_year_multi = sales_clean_simple_multi.sort_values("SaleDate").set_index("SaleDate").rolling("365.25D").agg({"SaleAmountAdjusted": ["count", "median"]}).reset_index()
+# Neighborhood data file
+neighborhood_simple = gpd.read_file("neighborhood_simple.geojson")
+# Census data file
+census_simple = gpd.read_file("censusBlockDataFull.geojson")
 # ----------------------------------------------------------------------------
 # All the texts
 ## Sidebar
@@ -136,11 +195,15 @@ afford_dropdown_lod_opts = ["Neighborhood", "Individual Properties"]
 afford_dropdown_lod_default = afford_dropdown_lod_opts[0]
 afford_prediction_text = "You can afford 0% of houses in cville."
 afford_prediction_algo = "Describe algorithm here. Some machine learning magic and stuff. Can include equations since it is a markdown cell."
-## Neighborhood
 ## History
-imap_title = "Explore Charlottesville Housing Sales History"
-imap_sales_title = "Individual Sales"
-imap_neigh_title = "Neighborhood Averages"
+history_title = "History of Real Estate Sales"
+history_description = '''Click on the legend of plot to hide and unhide one category.'''
+history_zoning_title = "By Zoning"
+history_zoning_checklist_single = "Single family"
+history_zoning_checklist_two = "Two family"
+history_zoning_checklist_multi = "Multi family and others"
+history_neighborhood_title = "By Neighborhood"
+## Neighborhood
 ## Industry and Sector Counts of the civilian employed population aged 16 and 
 ##   older in Charlottesville
 sector_title = "Charlottesville Industry and Sector Counts of the civilian \
@@ -193,9 +256,7 @@ app.layout = html.Div(
                                             className="background2 left_text subtitle")),
                     dbc.NavItem(dbc.NavLink(sidebar_afford, href="#afford_title", 
                                             external_link=True, className="background2 left_text subtitle")),
-                    dbc.NavItem(dbc.NavLink(sidebar_imap, href="#imap_title", external_link=True, 
-                                            className="background2 left_text subtitle")),
-                    dbc.NavItem(dbc.NavLink(sidebar_census, href="#imap_title", external_link=True, 
+                    dbc.NavItem(dbc.NavLink(sidebar_census, href="#census_title", external_link=True, 
                                             className="background2 left_text subtitle")),
                 ], id="sidebar", is_open=False, 
                 style={"width": "400px", "margin-left": "0", "position": "fixed", "top": "80px"}, className="background"),
@@ -265,12 +326,30 @@ app.layout = html.Div(
             ], className="subcontainer"),
         # Neighborhood characteristics
         # History of price
+        html.Div([
+            html.Span(history_title, id="history_title", className="center_text title"),
+            html.Span(history_description, className="left_text bodytext"),
+            # By zoning
+            html.Span(history_zoning_title, className="center_text subtitle"),
+            dcc.Graph(id='history_zoning_num_plot', style={"width": "100%"},     
+                      config={'displayModeBar': False}, figure=history_zoning_num()),
+            dcc.Graph(id='history_zoning_price_plot', style={"width": "100%"},
+                      config={'displayModeBar': False}, figure=history_zoning_price()),
+            # By neighborhood
+            html.Span(history_neighborhood_title, className="center_text subtitle"),
+            html.Div([
+                dcc.Graph(id='history_neighborhood_plot', style={"width": "100%"}),
+                dcc.Checklist(options=[{'label': each, 'value': each} for each in neighborhood_simple["NAME"]], 
+                              id="history_neighborhood_checklist", 
+                              labelStyle=dict(display='block'),
+                              className="center_text bodytext background2")
+            ], className="grid_container", style={"grid-template-columns": "minmax(750px, 3fr) 1fr"})
+        ], className="subcontainer"),
         # Census
-        html.Div(
-            [
-                html.Span(census_title, id="census_title", className="center_text title"),
-                dcc.Graph(id='census_plot', figure=plothhInc())
-            ], className="subcontainer"),
+        html.Div([
+            html.Span(census_title, id="census_title", className="center_text title"),
+            dcc.Graph(id='bar_plot', figure=plothhInc())
+        ], className="subcontainer"),
         # Disclaimers
         html.Div([dcc.Markdown(children=source)], className="subcontainer left_text bodytext"),
     ], className="container background")
