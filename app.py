@@ -116,9 +116,11 @@ afford_prediction_algo = "Describe algorithm here. Some machine learning magic a
 ## Neighborhood
 ## History
 history_title = "History of Real Estate Sales"
-history_checklist_single = "Single family"
-history_checklist_two = "Two family"
-history_checklist_multi = "Multi family and others"
+history_zoning_title = "By Zoning"
+history_zoning_checklist_single = "Single family"
+history_zoning_checklist_two = "Two family"
+history_zoning_checklist_multi = "Multi family and others"
+history_neighborhood_title = "By Neighborhood"
 ## Census
 census_title = "Census Information"
 source = '''Data from Charlotteville Open Data Portal. Last update Feb 7, 2022.
@@ -229,12 +231,21 @@ app.layout = html.Div(
         # History of price
         html.Div([
             html.Span(history_title, id="history_title", className="center_text title"),
+            html.Span(history_zoning_title, className="center_text subtitle"),
             html.Div([
-                dcc.Graph(id='history_plot', style={"width": "100%"}),
+                dcc.Graph(id='history_zoning_plot', style={"width": "100%"}),
                 dcc.Checklist(options=[
-                    {'label': history_checklist_single, 'value': 'single'},
-                    {'label': history_checklist_two, 'value': 'two'},
-                    {'label': history_checklist_multi, 'value': 'multi'}], id="history_checklist", 
+                    {'label': history_zoning_checklist_single, 'value': 'single'},
+                    {'label': history_zoning_checklist_two, 'value': 'two'},
+                    {'label': history_zoning_checklist_multi, 'value': 'multi'}], id="history_zoning_checklist", 
+                              labelStyle=dict(display='block'),
+                              className="center_text bodytext background2")
+            ], className="grid_container", style={"grid-template-columns": "minmax(750px, 3fr) 1fr"}),
+            html.Span(history_neighborhood_title, className="center_text subtitle"),
+            html.Div([
+                dcc.Graph(id='history_neighborhood_plot', style={"width": "100%"}),
+                dcc.Checklist(options=[{'label': each, 'value': each} for each in neighborhood_simple["NAME"]], 
+                              id="history_neighborhood_checklist", 
                               labelStyle=dict(display='block'),
                               className="center_text bodytext background2")
             ], className="grid_container", style={"grid-template-columns": "minmax(750px, 3fr) 1fr"})
