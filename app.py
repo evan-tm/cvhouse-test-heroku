@@ -19,6 +19,8 @@ external_stylesheets = [dbc.themes.BOOTSTRAP]
 sales_clean_simple = gpd.read_file("real_estate_sales_simple.geojson")
 # Neighborhood data file
 neighborhood_simple = gpd.read_file("neighborhood_simple.geojson")
+# Excluded from analysis due to small amount of data
+neighborhood_geo_exclusion = ["Barracks Road"]
 # Census data file
 census_simple = gpd.read_file("censusBlockDataFull.geojson")
 # Industry by sector data file
@@ -117,7 +119,6 @@ def history_zoning_num():
     fig['data'][0]['showlegend'] = True
     return fig
 
-
 def history_zoning_price():
     fig = go.Figure(data=go.Scatter(x=sales_year["SaleDate"], y=sales_year["SaleAmountAdjusted"]["median"], 
                                     name="All Sales"))
@@ -130,6 +131,45 @@ def history_zoning_price():
     fig.update_xaxes(range=["1945-01-01T00:00:00Z", "2022-12-31T23:59:59Z"])
     fig.update_layout(xaxis_title="Year",
                       yaxis_title="Yearly Median Sale Price [USD, inflation adjusted]",
+                      margin=go.layout.Margin(l=0, r=0, b=0, t=0),
+                      plot_bgcolor="rgba(0,0,0,0)",
+                      paper_bgcolor="rgba(0,0,0,0)",
+                      autosize=True,
+                      font=dict(size=16, color="rgb(255,255,255)"))
+    fig['data'][0]['showlegend'] = True
+    return fig
+
+def history_neighborhood_num():
+    fig = go.Figure()
+    for each in neighborhood_simple["NAME"]:
+        if each in neighborhood_geo_exclusion:
+            continue
+        sales_year_neighborhood = sales_clean_simple[sales_clean_simple["Neighborhood"] == each]
+        syn = sales_year_neighborhood.sort_values("SaleDate").set_index("SaleDate").rolling("730.5D").agg({"SaleAmountAdjusted": ["count", "median"]}).reset_index()
+        fig.add_trace(go.Scatter(x=syn["SaleDate"], y=syn["SaleAmountAdjusted"]["count"] * 0.5, name=each))
+    fig.update_layout(xaxis_title="Year",
+                      yaxis_title="Yearly Number of Sales",
+                      margin=go.layout.Margin(l=0, r=0, b=0, t=0),
+                      plot_bgcolor="rgba(0,0,0,0)",
+                      paper_bgcolor="rgba(0,0,0,0)",
+                      autosize=True,
+                      font=dict(size=16, color="rgb(255,255,255)"))
+    fig['data'][0]['showlegend'] = True
+    return fig
+
+def history_neighborhood_price():
+    fig = go.Figure(data=go.Scatter(x=sales_year["SaleDate"], y=sales_year["SaleAmountAdjusted"]["median"], 
+                                    name="All Sales"))
+    for each in neighborhood_simple["NAME"]:
+        if each in neighborhood_geo_exclusion:
+            continue
+        sales_year_neighborhood = sales_clean_simple[sales_clean_simple["Neighborhood"] == each]
+        syn = sales_year_neighborhood.sort_values("SaleDate").set_index("SaleDate").rolling("365.25D").agg({"SaleAmountAdjusted": ["count", "median"]}).reset_index()
+        syn = syn.copy(deep=True)
+        syn.loc[syn["SaleAmountAdjusted"]["median"] > 1e6, ("SaleAmountAdjusted", "median")] = np.nan
+        fig.add_trace(go.Scatter(x=syn["SaleDate"], y=syn["SaleAmountAdjusted"]["median"], name=each))
+    fig.update_layout(xaxis_title="Year",
+                      yaxis_title="Yearly Number of Sales",
                       margin=go.layout.Margin(l=0, r=0, b=0, t=0),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
@@ -337,13 +377,10 @@ app.layout = html.Div(
                       config={'displayModeBar': False}, figure=history_zoning_price()),
             # By neighborhood
             html.Span(history_neighborhood_title, className="center_text subtitle"),
-            html.Div([
-                dcc.Graph(id='history_neighborhood_plot', style={"width": "100%"}),
-                dcc.Checklist(options=[{'label': each, 'value': each} for each in neighborhood_simple["NAME"]], 
-                              id="history_neighborhood_checklist", 
-                              labelStyle=dict(display='block'),
-                              className="center_text bodytext background2")
-            ], className="grid_container", style={"grid-template-columns": "minmax(750px, 3fr) 1fr"})
+            dcc.Graph(id='history_neighborhood_num_plot', style={"width": "100%"},     
+                      config={'displayModeBar': False}, figure=history_neighborhood_num()),
+            dcc.Graph(id='history_neighborhood_price_plot', style={"width": "100%"},
+                      config={'displayModeBar': False}, figure=history_neighborhood_price()),
         ], className="subcontainer"),
         # Census
         html.Div([
