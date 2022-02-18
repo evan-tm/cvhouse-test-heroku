@@ -249,7 +249,7 @@ def history_neighborhood_price():
 # Cleaned data file
 sales_clean_simple = gpd.read_file("real_estate_sales_simple.geojson")
 sales_clean_simple["SaleDate"] = pd.to_datetime(sales_clean_simple["SaleDate"])
-sales_clean_simple = sales_clean_simple[sales_clean_simple["SaleDate"] >= np.datetime64("1945-01-01T00:00:00Z")].reset_index()
+sales_clean_simple = sales_clean_simple[sales_clean_simple["SaleDate"] >= pd.to_datetime("1945-01-01T00:00:00Z")].reset_index()
 sales_year = sales_clean_simple.sort_values("SaleDate").set_index("SaleDate").rolling("365.25D").agg({"SaleAmountAdjusted": ["count", "median"]}).reset_index()
 sales_clean_simple_single = sales_clean_simple[sales_clean_simple["ZoneCategory"] == "R-1"]
 sales_year_single = sales_clean_simple_single.sort_values("SaleDate").set_index("SaleDate").rolling("365.25D").agg({"SaleAmountAdjusted": ["count", "median"]}).reset_index()
