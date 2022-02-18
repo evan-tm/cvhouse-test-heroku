@@ -24,9 +24,7 @@ neighborhood_geo_exclusion = ["Barracks Road"]
 # Census data file
 census_simple = gpd.read_file("censusBlockDataFull.geojson")
 # Industry by sector data file
-indBySector = pd.read_csv("indBySector.csv")
-indBySector = indBySector.iloc[1: , :]
-indBySector = indBySector.sort_values(by="Total", ascending = True)
+indBySector = pd.read_csv("indBySectorHistFull.csv")
 # ----------------------------------------------------------------------------
 # Helper functions
 millnames = ['','k','M','B','T']
@@ -48,6 +46,47 @@ def nanformat(n, strcode):
         return "Not available"
     else:
         return strcode % n
+
+## Adds annotations to plotIndustrySector figure
+## in: figure, dataset, list of indices
+## out: figure with annotations added
+def addFigAnnotations(fig, data, num):
+    
+    for idx in num:
+        fig.add_annotation(dict(font=dict(color = 'white', size = 10),
+                               x = 1.004,
+                               y = data['Industry'][idx],
+                               showarrow=False,
+                               text=data['ag'][idx],
+                               textangle=0,
+                               xanchor='right',
+                               xref='paper',
+                               yref='y'))
+    return fig
+
+## Adds annotations to plotIndustrySector figure frame layout
+## in: frame, dataset, list of indices, index of frame in frame list
+## out: frame with annotations added to layout
+def addFrameAnnotations(frame, data, num, frameIndex):
+    ## build list of annotations
+    annotations = [
+        go.layout.Annotation(
+            dict(font=dict(color = 'white', size = 10), 
+                 x = 1.004, 
+                 y = data['Industry'][idx + frameIndex * len(num)], 
+                 showarrow=False, 
+                 text=data['ag'][idx + frameIndex * len(num)], 
+                 textangle=0, 
+                 xanchor='right',
+                 xref='paper',
+                 yref='y')
+        ) for idx in num]
+    ## Add annotations list to frame layout
+    frame.layout = go.Layout(annotations = annotations)
+    return frame
+
+ag = [f'({indBySector.iloc[i, 7]:,} : {indBySector.iloc[i, 1]:.2f}%)' for i in range(indBySector.shape[0])]
+indBySector['ag'] = ag
     
 def plothhInc():
     # Function for creating plot of population size by hh income bracket
@@ -61,24 +100,51 @@ def plothhInc():
                       font=dict(size=16, color="rgb(255,255,255)"))
     return fig
 
+## Function for creating plot of industry employment populations by sector
 def plotIndustrySector():
-    # Function for creating plot of industry employment populations by sector
-    fig = px.bar(indBySector, y="Industry", 
-                 x=["Private For-Profit", "Self-Employed Incorporated", 
-                    "Private Not-For-Profit", "Government", "Self-Employed Not Incorporated"], 
-                 labels={'value':'Employed (count)'}, orientation="h")
-    fig.update_layout(margin=go.layout.Margin(l=200, r=0, b=0, t=30, pad=15),
-                      plot_bgcolor="rgba(0,0,0,0)",
-                      paper_bgcolor="rgba(0,0,0,0)",
-                      autosize=True,
-                      font=dict(size=13, color="rgb(255,255,255)"),
-                      legend_title_text=sector_legend,
-                      legend=dict(yanchor="bottom", 
-                                  x=1, 
-                                  y=0, 
-                                  xanchor="right",
-                                  bgcolor="DimGray")
-    )
+    ag = [f'({indBySector.iloc[i, 7]:,} : {indBySector.iloc[i, 1]:.2f}%)' for i in range(indBySector.shape[0])]
+    indBySector['ag'] = ag
+    fig = px.bar(indBySector, 
+                y="Industry", 
+                x=["Private For-Profit", "Self-Employed Incorporated", 
+                    "Private Not-For-Profit", "Government", 
+                    "Self-Employed Not Incorporated"], 
+                animation_frame="Year",
+                labels={'value':'Employed Population (%)', 
+                        'Industry':'Industries'}, 
+                orientation="h", custom_data=["Desc"],
+                title = IND_SECTOR_TITLE)
+    ## Change text displayed when mouse hovering over bar
+    fig.update_traces(hovertemplate = HOVER_TEMPLATE_PCT)
+    fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
+                    plot_bgcolor="rgba(0,0,0,0)",
+                    paper_bgcolor="rgba(0,0,0,0)",
+                    autosize=True,
+                    font=dict(size=13, color="rgb(255,255,255)"),
+                    legend_title_text=sector_legend,
+                    legend=dict(yanchor="bottom", 
+                                x=0.83, 
+                                y=0, 
+                                xanchor="right",
+                                bgcolor="DimGray"),
+                    hoverlabel_align = 'left',
+                    titlefont={'size': 14},
+                    title_x = 0.52)
+    ## Adds (count : pct) ticker at far right of chart
+    fig = addFigAnnotations(fig, indBySector, [i for i in range(13)])
+    ## Fixed x axis size for each frame
+    fig.update_xaxes(ticktext = ["0", "5", "10", "15", "20", "25", "30", "35", "40"], 
+                    tickvals = [i*5 for i in range(9)], 
+                    range = [0, 49.5])
+    #fig['layout']['updatemenus'][0]['pad']=dict(r= 0, t= 70)
+    fig['layout']['updatemenus'][0]['x']=-0.04
+    fig['layout']['sliders'][0]['x']=-0.04
+    ## Loop through frames to edit hover and by-frame ticker annotations
+    for idx, f in enumerate(fig.frames):
+        for dat in f.data:
+            dat.hovertemplate = HOVER_TEMPLATE_PCT
+        f = addFrameAnnotations(f, indBySector, [i for i in range(13)], idx)
+  
     return fig
 
 def createDropdown(description, opts, default_value, dd_style={"width": "150px"}, dd_id=None, grid_width="1fr 1fr",
@@ -183,7 +249,7 @@ def history_neighborhood_price():
 # Cleaned data file
 sales_clean_simple = gpd.read_file("real_estate_sales_simple.geojson")
 sales_clean_simple["SaleDate"] = pd.to_datetime(sales_clean_simple["SaleDate"])
-sales_clean_simple = sales_clean_simple[sales_clean_simple["SaleDate"] >= pd.to_datetime("1945-01-01T00:00:00Z")].reset_index()
+sales_clean_simple = sales_clean_simple[sales_clean_simple["SaleDate"] >= np.datetime64("1945-01-01T00:00:00Z")].reset_index()
 sales_year = sales_clean_simple.sort_values("SaleDate").set_index("SaleDate").rolling("365.25D").agg({"SaleAmountAdjusted": ["count", "median"]}).reset_index()
 sales_clean_simple_single = sales_clean_simple[sales_clean_simple["ZoneCategory"] == "R-1"]
 sales_year_single = sales_clean_simple_single.sort_values("SaleDate").set_index("SaleDate").rolling("365.25D").agg({"SaleAmountAdjusted": ["count", "median"]}).reset_index()
@@ -246,8 +312,11 @@ history_neighborhood_title = "By Neighborhood"
 ## Neighborhood
 ## Industry and Sector Counts of the civilian employed population aged 16 and 
 ##   older in Charlottesville
-sector_title = "Charlottesville Industry and Sector Counts of the civilian \
-    employed population aged 16 and older."
+HOVER_TEMPLATE_PCT = '<i>Sector</i>: %{data.name}' + \
+                 '<br>%{value:.2f}% of Total Employed<br>' + \
+                 'Industries: <b>%{customdata}</b>' + \
+                 '<extra></extra>'
+IND_SECTOR_TITLE = 'Industries and Sectors of Charlottesville Residents (% of Total Employed Age 16+ Civilians)'
 sector_legend = "Sector"
 ## Census
 census_title = "Census Information"
@@ -273,8 +342,6 @@ hhIncPcts = hhIncPcts.reindex([1,2,5,7,8,9,10,11,12,13,14,15,0,3,4,6])
 hhIncPcts['bracket'] = '$' + hhIncPcts['bracket'].str[:-1] + 'k'
 hhIncPcts.at[1,'bracket'] = "< " + hhIncPcts['bracket'][1]
 hhIncPcts.at[6,'bracket'] = hhIncPcts['bracket'][6] + "+"
-# Data processing for sector_plot
-indBySector = indBySector.iloc[1: , :]
 
 # ----------------------------------------------------------------------------
 # Building dash
@@ -360,7 +427,7 @@ app.layout = html.Div(
         # Sector and Industry chart
         html.Div(
             [
-                html.Span(sector_title, id="sector_title", className="center_text title"),
+                #html.Span(sector_title, id="sector_title", className="center_text title"),
                 dcc.Graph(id='sector_plot', figure=plotIndustrySector(), style={'display': 'inline-block'}),
                 dcc.Graph(id='sector_plot2', figure=plotIndustrySector(), style={'display': 'inline-block'})
             ], className="subcontainer"),
