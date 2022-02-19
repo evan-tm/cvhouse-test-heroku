@@ -24,6 +24,23 @@ neighborhood_geo_exclusion = ["Barracks Road"]
 # Census data file
 census_simple = gpd.read_file("censusBlockDataFull.geojson")
 # Industry by sector data file
+# TODO: clarify this
+# indBySector = pd.read_csv("indBySector.csv")
+# indBySector = indBySector.iloc[1: , :]
+# indBySector = indBySector.sort_values(by="Total", ascending = True)
+
+# Industry by neighborhood  data
+indByNeighborhood = pd.read_csv("indByNeighborhoodCleanedTest.csv")
+indByNeighborhood = indByNeighborhood.iloc[1: , :]
+dropdown_neighborhood = ""
+dropdown_neighborhood_lod_opts = ["Barracks Road", "Rose Hill", "Lewis Mountain", "Starr Hill / Mall",
+                                  "Woolen Mills", "10th & Page", "The Meadows", "Martha Jefferson",
+                                  "Johnson Village", "Greenbrier", "Barracks / Rugby", "North Downtown",
+                                  "Locust Grove", "Jefferson Park Ave", "Fifeville", "Fry's Spring",
+                                  "Ridge Street", "Venable", "Belmont"]
+dropdown_neighborhood_default = dropdown_neighborhood_lod_opts[0]
+#indByNeighborhood = indByNeighborhood.sort_values(by="Total", ascending = True)
+
 indBySector = pd.read_csv("indBySectorHistFull.csv")
 # ----------------------------------------------------------------------------
 # Helper functions
@@ -146,7 +163,6 @@ def plotIndustrySector():
         f = addFrameAnnotations(f, indBySector, [i for i in range(13)], idx)
   
     return fig
-
 def createDropdown(description, opts, default_value, dd_style={"width": "150px"}, dd_id=None, grid_width="1fr 1fr",
                    **kwargs):
     opts_dict = [{"label": each, "value": each} for each in opts]
@@ -318,6 +334,11 @@ HOVER_TEMPLATE_PCT = '<i>Sector</i>: %{data.name}' + \
                  '<extra></extra>'
 IND_SECTOR_TITLE = 'Industries and Sectors of Charlottesville Residents (% of Total Employed Age 16+ Civilians)'
 sector_legend = "Sector"
+
+# Industry by Neighborhood
+neighborhood_title = "Industries by Neighborhood"
+neighborhood_legend = "Neighborhood"
+
 ## Census
 census_title = "Census Information"
 ## footnote
@@ -429,7 +450,15 @@ app.layout = html.Div(
             [
                 #html.Span(sector_title, id="sector_title", className="center_text title"),
                 dcc.Graph(id='sector_plot', figure=plotIndustrySector(), style={'display': 'inline-block'}),
-                dcc.Graph(id='sector_plot2', figure=plotIndustrySector(), style={'display': 'inline-block'})
+            ], className="subcontainer"),
+        # Industry and Neighborhood chart
+        html.Div(
+            [
+                html.Span(neighborhood_title, id="neighborhood_title", className="center_text title"),
+                createDropdown(dropdown_neighborhood, dropdown_neighborhood_lod_opts,
+                               dropdown_neighborhood_default, dd_id="dropdown_neighborhood",
+                               dd_style={"width": "200px"}, grid_width="1fr"),
+                dcc.Graph(id='neighborhood_plot'),
             ], className="subcontainer"),
         # Neighborhood characteristics
         # History of price
@@ -465,6 +494,28 @@ def sidebar_collapse(n, is_open):
     if n:
         return not is_open
     return is_open
+
+@app.callback(
+    Output('neighborhood_plot', 'figure'),
+    Input('dropdown_neighborhood', 'value'))
+def plotIndustryByNeighborhood(n):
+    # Function for creating plot of industry employment populations by neighborhood
+    fig = px.bar(indByNeighborhood, y="Industry",
+                 x=[n], labels={'value':'Employed (count)'}, orientation="h").update_yaxes(categoryorder="total ascending")
+    fig.update_layout(margin=go.layout.Margin(l=200, r=0, b=0, t=30, pad=15),
+                      plot_bgcolor="rgba(0,0,0,0)",
+                      paper_bgcolor="rgba(0,0,0,0)",
+                      autosize=True,
+                      font=dict(size=13, color="rgb(255,255,255)"),
+                      legend_title_text=neighborhood_legend,
+                      legend=dict(yanchor="bottom",
+                                  x=1,
+                                  y=0,
+                                  xanchor="right",
+                                  bgcolor="DimGray")
+    )
+    return fig
+
 
 # Update affordability graph
 @app.callback(Output("afford_map", "figure"),
