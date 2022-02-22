@@ -24,14 +24,9 @@ neighborhood_geo_exclusion = ["Barracks Road"]
 # Census data file
 census_simple = gpd.read_file("censusBlockDataFull.geojson")
 # Industry by sector data file
-# TODO: clarify this
-# indBySector = pd.read_csv("indBySector.csv")
-# indBySector = indBySector.iloc[1: , :]
-# indBySector = indBySector.sort_values(by="Total", ascending = True)
-
+indBySector = pd.read_csv("indBySectorHistFull.csv")
 # Industry by neighborhood  data
-indByNeighborhood = pd.read_csv("indByNeighborhoodCleanedTest.csv")
-indByNeighborhood = indByNeighborhood.iloc[1: , :]
+indByNeighborhood = pd.read_csv("indByNeighborhoodHistFull.csv")
 dropdown_neighborhood = ""
 dropdown_neighborhood_lod_opts = ["Barracks Road", "Rose Hill", "Lewis Mountain", "Starr Hill / Mall",
                                   "Woolen Mills", "10th & Page", "The Meadows", "Martha Jefferson",
@@ -39,9 +34,6 @@ dropdown_neighborhood_lod_opts = ["Barracks Road", "Rose Hill", "Lewis Mountain"
                                   "Locust Grove", "Jefferson Park Ave", "Fifeville", "Fry's Spring",
                                   "Ridge Street", "Venable", "Belmont"]
 dropdown_neighborhood_default = dropdown_neighborhood_lod_opts[0]
-#indByNeighborhood = indByNeighborhood.sort_values(by="Total", ascending = True)
-
-indBySector = pd.read_csv("indBySectorHistFull.csv")
 # ----------------------------------------------------------------------------
 # Helper functions
 millnames = ['','k','M','B','T']
@@ -101,9 +93,6 @@ def addFrameAnnotations(frame, data, num, frameIndex):
     ## Add annotations list to frame layout
     frame.layout = go.Layout(annotations = annotations)
     return frame
-
-ag = [f'({indBySector.iloc[i, 7]:,} : {indBySector.iloc[i, 1]:.2f}%)' for i in range(indBySector.shape[0])]
-indBySector['ag'] = ag
     
 def plothhInc():
     # Function for creating plot of population size by hh income bracket
@@ -119,8 +108,6 @@ def plothhInc():
 
 ## Function for creating plot of industry employment populations by sector
 def plotIndustrySector():
-    ag = [f'({indBySector.iloc[i, 7]:,} : {indBySector.iloc[i, 1]:.2f}%)' for i in range(indBySector.shape[0])]
-    indBySector['ag'] = ag
     fig = px.bar(indBySector, 
                 y="Industry", 
                 x=["Private For-Profit", "Self-Employed Incorporated", 
@@ -163,6 +150,8 @@ def plotIndustrySector():
         f = addFrameAnnotations(f, indBySector, [i for i in range(13)], idx)
   
     return fig
+
+## Creates a Dash dropdown menu
 def createDropdown(description, opts, default_value, dd_style={"width": "150px"}, dd_id=None, grid_width="1fr 1fr",
                    **kwargs):
     opts_dict = [{"label": each, "value": each} for each in opts]
@@ -312,11 +301,11 @@ afford_input_tech_tip = "Cell phone plans, etc"
 afford_input_saving_desc = "Monthly Allocated Savings:"
 afford_input_saving_default = "500"
 afford_button = "Calculate"
-afford_dropdown_lod_desc = "Lever of Detail"
+afford_dropdown_lod_desc = "Level of Detail"
 afford_dropdown_lod_opts = ["Neighborhood", "Individual Properties"]
 afford_dropdown_lod_default = afford_dropdown_lod_opts[0]
 afford_prediction_text = "You can afford 0% of houses in cville."
-afford_prediction_algo = "Describe algorithm here. Some machine learning magic and stuff. Can include equations since it is a markdown cell."
+afford_prediction_algo = "ALICE affordability info"
 ## History
 history_title = "History of Real Estate Sales"
 history_description = '''Click on the legend of plot to hide and unhide one category.'''
@@ -338,11 +327,15 @@ sector_legend = "Sector"
 # Industry by Neighborhood
 neighborhood_title = "Industries by Neighborhood"
 neighborhood_legend = "Neighborhood"
+HOVER_TEMPLATE_PCT_HOOD = '%{value:.2f}% of Total Employed<br>' + \
+                 'Industries: <b>%{customdata}</b>' + \
+                 '<extra></extra>'
+IND_NEIGHBORHOOD_TITLE = 'Industries of {hood} Residents (% of Total Employed Age 16+ Civilians)'
 
 ## Census
 census_title = "Census Information"
 ## footnote
-source = '''Data from Charlotteville Open Data Portal. Last update Feb 7, 2022.
+source = '''Data from Charlotteville Open Data Portal. Last update Feb 21, 2022.
 Price has been adjusted for inflation. Only sales with state code Residential 
 (urban/suburban) and Multifamily are included.'''
 # ----------------------------------------------------------------------------
@@ -445,20 +438,19 @@ app.layout = html.Div(
                 # Algorithm description
                 html.Div([dcc.Markdown(afford_prediction_algo)], className="left_text bodytext")
             ], className="subcontainer"),
-        # Sector and Industry chart
+        # Neighborhood dropdown for industry chart
         html.Div(
             [
-                #html.Span(sector_title, id="sector_title", className="center_text title"),
-                dcc.Graph(id='sector_plot', figure=plotIndustrySector(), style={'display': 'inline-block'}),
-            ], className="subcontainer"),
-        # Industry and Neighborhood chart
-        html.Div(
-            [
-                html.Span(neighborhood_title, id="neighborhood_title", className="center_text title"),
                 createDropdown(dropdown_neighborhood, dropdown_neighborhood_lod_opts,
                                dropdown_neighborhood_default, dd_id="dropdown_neighborhood",
                                dd_style={"width": "200px"}, grid_width="1fr"),
-                dcc.Graph(id='neighborhood_plot'),
+            ], className="neighborhood_drop"),
+        # Sector/Industry and Neighborhood/Industry charts
+        html.Div(
+            [
+                #html.Span(sector_title, id="sector_title", className="center_text title"),
+                dcc.Graph(id='neighborhood_plot', style={'display': 'inline-block'}),
+                dcc.Graph(id='sector_plot', figure=plotIndustrySector(), style={'display': 'inline-block'}),
             ], className="subcontainer"),
         # Neighborhood characteristics
         # History of price
@@ -495,25 +487,57 @@ def sidebar_collapse(n, is_open):
         return not is_open
     return is_open
 
+# Function for creating plot of industry employment populations by neighborhood
 @app.callback(
     Output('neighborhood_plot', 'figure'),
     Input('dropdown_neighborhood', 'value'))
 def plotIndustryByNeighborhood(n):
-    # Function for creating plot of industry employment populations by neighborhood
-    fig = px.bar(indByNeighborhood, y="Industry",
-                 x=[n], labels={'value':'Employed (count)'}, orientation="h").update_yaxes(categoryorder="total ascending")
-    fig.update_layout(margin=go.layout.Margin(l=200, r=0, b=0, t=30, pad=15),
-                      plot_bgcolor="rgba(0,0,0,0)",
-                      paper_bgcolor="rgba(0,0,0,0)",
-                      autosize=True,
-                      font=dict(size=13, color="rgb(255,255,255)"),
+    fig = px.bar(indByNeighborhood, 
+                 x=[n],
+                 y='Industry', 
+                 labels={'value':'Employed Population (%)',
+                         'Industry':'Industries'}, 
+                 animation_frame = "Year",
+                 orientation="h", custom_data = ["Desc"], 
+                 title = IND_NEIGHBORHOOD_TITLE.format(hood=n))
+    ## Fix bar order
+    fig.update_yaxes(categoryorder="total ascending")
+    ## Change text displayed when mouse hovering over bar
+    fig.update_traces(hovertemplate = HOVER_TEMPLATE_PCT_HOOD)
+    fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15), 
+                      plot_bgcolor="rgba(0,0,0,0)", 
+                      paper_bgcolor="rgba(0,0,0,0)", 
+                      autosize=True, 
+                      font=dict(size=13, color="rgb(255,255,255)"), 
                       legend_title_text=neighborhood_legend,
-                      legend=dict(yanchor="bottom",
-                                  x=1,
-                                  y=0,
-                                  xanchor="right",
-                                  bgcolor="DimGray")
-    )
+                      legend=dict(yanchor="bottom", 
+                                  x=0.85, 
+                                  y=0, 
+                                  xanchor="right", 
+                                  bgcolor="DimGray"), 
+                      hoverlabel_align = 'left', 
+                      titlefont={'size': 14}, 
+                      title_x = 0.55)
+    ## get index of neighborhood selection
+    hood_index = indByNeighborhood.columns.get_loc(n)
+    ## update dataset with correct ticker for neighborhood selection
+    indByNeighborhood['ag'] = [f'({indByNeighborhood.iloc[i, hood_index+19]:,} : {indByNeighborhood.iloc[i, hood_index]:.2f}%)' 
+                               for i in range(indByNeighborhood.shape[0])]
+    ## Adds (count : pct) ticker at far right of chart
+    fig = addFigAnnotations(fig, indByNeighborhood, [i for i in range(13)])
+    ## Fixed x axis size for each frame
+    fig.update_xaxes(ticktext = ["0", "5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", "60"], 
+                    tickvals = [i*5 for i in range(13)], 
+                    range = [0, 72])
+    ## move slider's and buttons' positions slightly left
+    fig['layout']['updatemenus'][0]['x']=-0.04
+    fig['layout']['sliders'][0]['x']=-0.04
+    ## Loop through frames to edit hover and by-frame ticker annotations
+    for idx, f in enumerate(fig.frames):
+        for dat in f.data:
+            dat.hovertemplate = HOVER_TEMPLATE_PCT_HOOD
+        f = addFrameAnnotations(f, indByNeighborhood, [i for i in range(13)], idx)
+
     return fig
 
 
