@@ -9,7 +9,7 @@ import dash
 import dash_bootstrap_components as dbc
 import dash_daq as daq
 from dash import Input, Output, State, dcc, html
-from hampel import hampel
+import base64
 
 
 mapbox_token_public = "pk.eyJ1IjoieGlubHVuY2hlbmciLCJhIjoiY2t0c3g2eHRrMWp3MTJ3cDMwdDAyYnA2OSJ9.tCcD-LyXD1OK-T6uDd8CYA"
@@ -31,7 +31,7 @@ dropdown_neighborhood = ""
 dropdown_neighborhood_lod_opts = ["Barracks Road", "Rose Hill", "Lewis Mountain", "Starr Hill",
                                   "Woolen Mills", "10th & Page", "The Meadows", "Martha Jefferson",
                                   "Johnson Village", "Greenbrier", "Barracks / Rugby", "North Downtown",
-                                  "Locust Grove", "Jefferson Park Ave", "Fifeville", "Fry's Spring",
+                                  "Locust Grove", "Jefferson Park Avenue", "Fifeville", "Fry's Spring",
                                   "Ridge Street", "Venable", "Belmont"]
 dropdown_neighborhood_default = dropdown_neighborhood_lod_opts[0]
 # Rental affordability data
@@ -1004,8 +1004,7 @@ def update_afford_map(n, y, lod):
               [Input("dropdown_neighborhood", "value"),])
 def history_neighborhood_num(neigh):
     fig = go.Figure()
-    sales_year_neighborhood = sales_clean_simple[sales_clean_simple["Neighborhood"] == neigh]
-    syn = sales_year_neighborhood.sort_values("SaleDate").set_index("SaleDate").rolling("730.5D").agg({"SaleAmountAdjusted": ["count", "median"]}).reset_index()
+    syn = pd.read_pickle("rolling/sales_year_nb_" + base64.b64encode(neigh.encode('ascii')).decode('ascii') + ".pkl")
     fig.add_trace(go.Scatter(x=syn["SaleDate"], y=syn["SaleAmountAdjusted"]["count"] * 0.5, name=neigh))
     fig.update_layout(xaxis_title="Year",
                       yaxis_title="Yearly Number of Sales",
@@ -1023,9 +1022,7 @@ def history_neighborhood_num(neigh):
 def history_neighborhood_price(neigh):
     fig = go.Figure(data=go.Scatter(x=sales_year["SaleDate"], y=sales_year["SaleAmountAdjusted"]["median"], 
                                     name="All Sales"))
-    sales_year_neighborhood = sales_clean_simple[sales_clean_simple["Neighborhood"] == neigh].sort_values("SaleDate").set_index("SaleDate")
-    sales_year_neighborhood["SaleAmountAdjusted"] = hampel(sales_year_neighborhood["SaleAmountAdjusted"], 7, imputation=True)
-    syn = sales_year_neighborhood.rolling("730.5D").agg({"SaleAmountAdjusted": ["count", "median"]}).reset_index()
+    syn = pd.read_pickle("rolling/sales_year_nb_" + base64.b64encode(neigh.encode('ascii')).decode('ascii') + ".pkl")
     fig.add_trace(go.Scatter(x=syn["SaleDate"], y=syn["SaleAmountAdjusted"]["median"], name=neigh))
     fig.update_layout(xaxis_title="Year",
                       yaxis_title="Yearly Median Sale Price [$, inflation adjusted]",
