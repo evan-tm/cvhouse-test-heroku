@@ -9,6 +9,7 @@ import dash
 import dash_bootstrap_components as dbc
 import dash_daq as daq
 from dash import Input, Output, State, dcc, html
+from hampel import hampel
 
 
 mapbox_token_public = "pk.eyJ1IjoieGlubHVuY2hlbmciLCJhIjoiY2t0c3g2eHRrMWp3MTJ3cDMwdDAyYnA2OSJ9.tCcD-LyXD1OK-T6uDd8CYA"
@@ -20,8 +21,6 @@ external_stylesheets = [dbc.themes.BOOTSTRAP]
 sales_clean_simple = gpd.read_file("real_estate_sales_simple.geojson")
 # Neighborhood data file
 neighborhood_simple = gpd.read_file("neighborhood_simple.geojson")
-# Excluded from analysis due to small amount of data
-neighborhood_geo_exclusion = ["Barracks Road"]
 # Census data file
 census_simple = gpd.read_file("censusBlockDataFull.geojson")
 # Industry by sector data file
@@ -398,58 +397,15 @@ def history_zoning_price():
     fig['data'][0]['showlegend'] = True
     return fig
 
-def history_neighborhood_num():
-    fig = go.Figure()
-    for each in neighborhood_simple["NAME"]:
-        if each in neighborhood_geo_exclusion:
-            continue
-        sales_year_neighborhood = sales_clean_simple[sales_clean_simple["Neighborhood"] == each]
-        syn = sales_year_neighborhood.sort_values("SaleDate").set_index("SaleDate").rolling("730.5D").agg({"SaleAmountAdjusted": ["count", "median"]}).reset_index()
-        fig.add_trace(go.Scatter(x=syn["SaleDate"], y=syn["SaleAmountAdjusted"]["count"] * 0.5, name=each))
-    fig.update_layout(xaxis_title="Year",
-                      yaxis_title="Yearly Number of Sales",
-                      margin=go.layout.Margin(l=0, r=0, b=0, t=0),
-                      plot_bgcolor="rgba(0,0,0,0)",
-                      paper_bgcolor="rgba(0,0,0,0)",
-                      autosize=True,
-                      font=dict(size=16, color="rgb(255,255,255)"))
-    fig['data'][0]['showlegend'] = True
-    return fig
-
-def history_neighborhood_price():
-    fig = go.Figure(data=go.Scatter(x=sales_year["SaleDate"], y=sales_year["SaleAmountAdjusted"]["median"], 
-                                    name="All Sales"))
-    for each in neighborhood_simple["NAME"]:
-        if each in neighborhood_geo_exclusion:
-            continue
-        sales_year_neighborhood = sales_clean_simple[sales_clean_simple["Neighborhood"] == each]
-        syn = sales_year_neighborhood.sort_values("SaleDate").set_index("SaleDate").rolling("365.25D").agg({"SaleAmountAdjusted": ["count", "median"]}).reset_index()
-        syn = syn.copy(deep=True)
-        syn.loc[syn["SaleAmountAdjusted"]["median"] > 1e6, ("SaleAmountAdjusted", "median")] = np.nan
-        fig.add_trace(go.Scatter(x=syn["SaleDate"], y=syn["SaleAmountAdjusted"]["median"], name=each))
-    fig.update_layout(xaxis_title="Year",
-                      yaxis_title="Yearly Median Sale Price [$, inflation adjusted]",
-                      margin=go.layout.Margin(l=0, r=0, b=0, t=0),
-                      plot_bgcolor="rgba(0,0,0,0)",
-                      paper_bgcolor="rgba(0,0,0,0)",
-                      autosize=True,
-                      font=dict(size=16, color="rgb(255,255,255)"))
-    fig['data'][0]['showlegend'] = True
-    return fig
-
 
 # ----------------------------------------------------------------------------
 # Cleaned data file
 sales_clean_simple = gpd.read_file("real_estate_sales_simple.geojson")
 sales_clean_simple["SaleDate"] = pd.to_datetime(sales_clean_simple["SaleDate"])
-sales_clean_simple = sales_clean_simple[sales_clean_simple["SaleDate"] >= pd.to_datetime("1945-01-01T00:00:00Z")].reset_index()
-sales_year = sales_clean_simple.sort_values("SaleDate").set_index("SaleDate").rolling("365.25D").agg({"SaleAmountAdjusted": ["count", "median"]}).reset_index()
-sales_clean_simple_single = sales_clean_simple[sales_clean_simple["ZoneCategory"] == "R-1"]
-sales_year_single = sales_clean_simple_single.sort_values("SaleDate").set_index("SaleDate").rolling("365.25D").agg({"SaleAmountAdjusted": ["count", "median"]}).reset_index()
-sales_clean_simple_two = sales_clean_simple[sales_clean_simple["ZoneCategory"] == "R-2"]
-sales_year_two = sales_clean_simple_two.sort_values("SaleDate").set_index("SaleDate").rolling("365.25D").agg({"SaleAmountAdjusted": ["count", "median"]}).reset_index()
-sales_clean_simple_multi = sales_clean_simple[(sales_clean_simple["ZoneCategory"] != "R-1") & (sales_clean_simple["ZoneCategory"] != "R-2")]
-sales_year_multi = sales_clean_simple_multi.sort_values("SaleDate").set_index("SaleDate").rolling("365.25D").agg({"SaleAmountAdjusted": ["count", "median"]}).reset_index()
+sales_year = pd.read_pickle("rolling/sales_year.pkl")
+sales_year_single = pd.read_pickle("rolling/sales_year_single.pkl")
+sales_year_two = pd.read_pickle("rolling/sales_year_two.pkl")
+sales_year_multi = pd.read_pickle("rolling/sales_year_multi.pkl")
 # Neighborhood data file
 neighborhood_simple = gpd.read_file("neighborhood_simple.geojson")
 # Census data file
@@ -703,9 +659,9 @@ app.layout = html.Div(
             # By neighborhood
             html.Span(history_neighborhood_title, className="center_text subtitle"),
             dcc.Graph(id='history_neighborhood_num_plot', style={"width": "100%"},     
-                      config={'displayModeBar': False}, figure=history_neighborhood_num()),
+                      config={'displayModeBar': False}),
             dcc.Graph(id='history_neighborhood_price_plot', style={"width": "100%"},
-                      config={'displayModeBar': False}, figure=history_neighborhood_price()),
+                      config={'displayModeBar': False}),
         ], className="subcontainer"),
         # Census
         html.Div([
@@ -1041,6 +997,44 @@ def update_afford_map(n, y, lod):
                       autosize=True,
                       font=dict(size=16, color="rgb(255,255,255)"))
     fig.update_yaxes(scaleanchor="x", scaleratio=1)
+    return fig
+
+
+@app.callback(Output("history_neighborhood_num_plot", "figure"),
+              [Input("dropdown_neighborhood", "value"),])
+def history_neighborhood_num(neigh):
+    fig = go.Figure()
+    sales_year_neighborhood = sales_clean_simple[sales_clean_simple["Neighborhood"] == neigh]
+    syn = sales_year_neighborhood.sort_values("SaleDate").set_index("SaleDate").rolling("730.5D").agg({"SaleAmountAdjusted": ["count", "median"]}).reset_index()
+    fig.add_trace(go.Scatter(x=syn["SaleDate"], y=syn["SaleAmountAdjusted"]["count"] * 0.5, name=neigh))
+    fig.update_layout(xaxis_title="Year",
+                      yaxis_title="Yearly Number of Sales",
+                      margin=go.layout.Margin(l=0, r=0, b=0, t=0),
+                      plot_bgcolor="rgba(0,0,0,0)",
+                      paper_bgcolor="rgba(0,0,0,0)",
+                      autosize=True,
+                      font=dict(size=16, color="rgb(255,255,255)"))
+    fig['data'][0]['showlegend'] = True
+    return fig
+
+
+@app.callback(Output("history_neighborhood_price_plot", "figure"),
+              [Input("dropdown_neighborhood", "value"),])
+def history_neighborhood_price(neigh):
+    fig = go.Figure(data=go.Scatter(x=sales_year["SaleDate"], y=sales_year["SaleAmountAdjusted"]["median"], 
+                                    name="All Sales"))
+    sales_year_neighborhood = sales_clean_simple[sales_clean_simple["Neighborhood"] == neigh].sort_values("SaleDate").set_index("SaleDate")
+    sales_year_neighborhood["SaleAmountAdjusted"] = hampel(sales_year_neighborhood["SaleAmountAdjusted"], 7, imputation=True)
+    syn = sales_year_neighborhood.rolling("730.5D").agg({"SaleAmountAdjusted": ["count", "median"]}).reset_index()
+    fig.add_trace(go.Scatter(x=syn["SaleDate"], y=syn["SaleAmountAdjusted"]["median"], name=neigh))
+    fig.update_layout(xaxis_title="Year",
+                      yaxis_title="Yearly Median Sale Price [$, inflation adjusted]",
+                      margin=go.layout.Margin(l=0, r=0, b=0, t=0),
+                      plot_bgcolor="rgba(0,0,0,0)",
+                      paper_bgcolor="rgba(0,0,0,0)",
+                      autosize=True,
+                      font=dict(size=16, color="rgb(255,255,255)"))
+    fig['data'][0]['showlegend'] = True
     return fig
 
 
