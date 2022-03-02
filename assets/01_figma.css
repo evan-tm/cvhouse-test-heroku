@@ -76,5 +76,10 @@
 }
 
 .neighborhood_drop {
-	display: inline-block;
+	position:relative;
+	display: block;
+	align-items:center;
+	align-content: space-evenly;
+	justify-items:center;
+	justify-content: space-evenly;
 }
