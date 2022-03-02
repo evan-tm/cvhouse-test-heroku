@@ -1,0 +1,16 @@
+Gender,Age.Group,Weekly.Cost,Monthly.Cost
+,1 year,22.6,98.0
+,2-3 years,34.4,148.9
+,4-5 years,37.2,161.2
+,6-8 years,41.5,179.8
+,9-11 years,47.9,207.4
+Male,12-13 years,51.1,221.5
+Male,14-19 years,64.2,278.2
+Male,20-50 years,62.5,270.8
+Male,51-70 years,55.0,238.4
+Male,71+ years,52.7,228.4
+Female,12-13 years,44.5,192.7
+Female,14-19 years,51.0,221.2
+Female,20-50 years,50.1,217.0
+Female,51-70 years,46.6,201.9
+Female,71+ years,51.4,222.5

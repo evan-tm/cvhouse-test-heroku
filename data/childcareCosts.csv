@@ -1,0 +1,6 @@
+Age.Group,Center.Min,Center.Avg,Center.Max,FCC.Min,FCC.Avg,FCC.Max,PSchool.Min,PSchool.Avg,PSchool.Max,Age.Desc
+Infant,1100.0,1304.0,1590.0,560.0,584.0,600.0,X,X,X,Birth to 16 Months
+Toddler,1040.0,1268.0,1590.0,560.0,584.0,600.0,X,X,X,17-23 Months
+Preschool1,900.0,1168.0,1590.0,520.0,572.0,600.0,1020.0,1020.0,1020.0,2-3 Years
+Preschool2,900.0,900.0,900.0,500.0,540.0,600.0,928.0,928.0,928.0,4-5 Years
+School Age,0.0,0.0,0.0,500.0,532.0,600.0,X,X,X,5-12 Years
