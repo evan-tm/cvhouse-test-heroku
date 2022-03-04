@@ -267,13 +267,6 @@ sales_year_multi = pd.read_pickle("rolling/sales_year_multi.pkl")
 neighborhood_simple = gpd.read_file("neighborhood_simple.geojson")
 # Census data file
 census_simple = gpd.read_file("censusBlockDataFull.geojson")
-# Rental affordability data calculations
-twoBR = rentData
-twoBR['Median_Gross_Rent'] = af.hudCalc(twoBR['Median_Gross_Rent'])
-oneBR = twoBR.copy()
-oneBR['Median_Gross_Rent'] = twoBR['Median_Gross_Rent'] * 0.841
-studio = twoBR.copy()
-studio['Median_Gross_Rent'] = twoBR['Median_Gross_Rent'] * 0.81
 # ----------------------------------------------------------------------------
 # All the texts
 ## Sidebar
@@ -704,8 +697,8 @@ def update_expenses(n, income, paymentType, homeSize, adultCount, kidCount, ccCo
     else:
         myHealthcare = int(hcareStr)
     # initialize monthly expenses variable with the housing payment
-    monthlyExpenses = af.get_housing_payment(paymentType, homeSize, studio, 
-                                             oneBR, twoBR, mortgageData, 
+    monthlyExpenses = af.get_housing_payment(paymentType, homeSize, 
+                                             rentData, mortgageData, 
                                              hood, optsPayment, optsSize)
     myHousing = monthlyExpenses
     # Add childcare cost (currently using Toddler Family Child Care for all kids in cc)

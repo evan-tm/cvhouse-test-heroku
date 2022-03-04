@@ -4,13 +4,6 @@
 import pandas as pd
 
 
-
-## Calculates affordable rent cost for a two-bedroom apt based on median gross rent
-## in: median gross rent (Charlottesville overall or neighborhood-specific)
-## out: affordable rent cost for the geographic area described by the input
-def hudCalc(acsRent):
-    return acsRent * 1.05437 * 1.02916 * 1.04530
-
 ## logic for getting correct index to pull from oopData
 ## in: age to find group for
 ## out: index for age_group row
@@ -173,21 +166,22 @@ def get_hcare_placeholder(income, totalOccupants, age, premData, oopData):
 
 ## Gets the housing payment based on the current neighborhood
 ## in: paymentType (renting/buying), homeSize (for rental size),
-##     studio, oneBR, twoBR, and mortgage data, current neighborhood,
+##     rentData, mortgageData, current neighborhood,
 ##     payment options, and size options
 ## out: monthly housing payment
-def get_housing_payment(paymentType, homeSize, studio, oneBR,
-                        twoBR, mortgageData, hood, optsPayment, optsSize):
+def get_housing_payment(paymentType, homeSize, 
+                        dfRent, mortgageData, 
+                        hood, optsPayment, optsSize):
 
     # switch for payment type dropdown
     if paymentType == optsPayment[0]:
         # switch for rental size dropdown
         if homeSize == optsSize[0]:
-            return studio.loc[(studio['Neighborhood'] == hood)]['Median_Gross_Rent'].values[0]
+            return dfRent.loc[(dfRent['Neighborhood'] == hood)]['studio'].values[0]
         elif homeSize == optsSize[1]:
-            return oneBR.loc[(oneBR['Neighborhood'] == hood)]['Median_Gross_Rent'].values[0]
+            return dfRent.loc[(dfRent['Neighborhood'] == hood)]['oneBR'].values[0]
         elif homeSize == optsSize[2]:
-            return twoBR.loc[(twoBR['Neighborhood'] == hood)]['Median_Gross_Rent'].values[0]
+            return dfRent.loc[(dfRent['Neighborhood'] == hood)]['twoBR'].values[0]
     else:
         return mortgageData[0]
 
