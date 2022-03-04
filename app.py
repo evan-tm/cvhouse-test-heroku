@@ -44,8 +44,10 @@ foodData = pd.read_csv('data/foodCosts.csv')
 transportData = pd.read_csv('data/transportCosts.csv')
 # Health care out-of-pocket affordability data
 oopHealthcareData = pd.read_csv('data/oopHealthcareAnnual.csv')
-# Heatlh care premium affordability data
+# Health care premium affordability data
 premiumHealthcareData = pd.read_csv('data/premiumHealthcare.csv')
+# Mortgage affordability data
+mortgageData = [1612.0, (0.0095 * 399628.7) / 12.0]
 # ----------------------------------------------------------------------------
 # Helper functions
 millnames = ['','k','M','B','T']
@@ -440,6 +442,9 @@ prices are headed and understand where they’ve been historically. '''
 afford_dropdown_person_info_title = "Affordability Calculator:"
 afford_input_salary_desc = "Household Income:"
 afford_input_salary_default = 26000
+afford_dropdown_pay_desc = "Payment Type:"
+afford_dropdown_pay_opts = ['Renting', 'Buying']
+afford_dropdown_pay_default = afford_dropdown_pay_opts[0]
 afford_dropdown_homeSize_desc = "Rental Size:"
 afford_dropdown_homeSize_opts = ['Studio', '1 Bedroom', '2 Bedrooms']
 afford_dropdown_homeSize_default = afford_dropdown_homeSize_opts[1]
@@ -591,9 +596,12 @@ app.layout = html.Div(
                         html.Span(afford_dropdown_person_info_title, className="left_text subtitle"),
                         createInput(afford_input_salary_desc, "number", afford_input_salary_default, 
                                     ip_id="afford_input_salary"),
+                        createDropdown(afford_dropdown_pay_desc, afford_dropdown_pay_opts,
+                                       afford_dropdown_pay_default, dd_id="afford_dropdown_pay",
+                                       clearable=False),
                         createDropdown(afford_dropdown_homeSize_desc, afford_dropdown_homeSize_opts,
                                        afford_dropdown_homeSize_default, dd_id="afford_dropdown_homeSize",
-                                       clearable=False),
+                                       desc_id="afford_dropdown_homeSize_desc_id", clearable=False),
                         createNumericInput(afford_input_adults_desc, afford_input_adults_default,
                                            minimum=1, maximum=10, ip_id="afford_input_adults"),
                         createNumericInput(afford_input_kids_desc, afford_input_kids_default, 
@@ -715,6 +723,20 @@ def show_hide_vehicle(currentTransport):
                 {'display': 'block', "width": "150px"})
 
 @app.callback(
+   Output(component_id='afford_dropdown_homeSize', component_property='style'),
+   Output(component_id='afford_dropdown_homeSize_desc_id', component_property='style'),
+   [Input(component_id='afford_dropdown_pay', component_property='value')])
+def show_hide_homeSize(currentPay):
+
+    optsPayment = afford_dropdown_pay_opts
+    if currentPay == optsPayment[1]:
+        return ({'display': 'none'}, 
+                {'display': 'none'})
+    else:
+        return ({'display': 'block', "width": "150px"}, 
+                {'display': 'block', "width": "150px"})
+
+@app.callback(
     Output('dropdown_neighborhood', 'value'),
     Input('afford_map', 'clickData'))
 def printNeighborhood(clickData):
@@ -818,6 +840,7 @@ def plotIndustryByNeighborhood(n):
 @app.callback(Output('afford_result', 'children'),
               [Input("afford_button", "n_clicks"), 
                State('afford_input_salary', 'value'),
+               State('afford_dropdown_pay', 'value'),
                State('afford_dropdown_homeSize', 'value'),
                State('afford_input_adults', 'value'),
                State('afford_input_kids', 'value'),
@@ -830,7 +853,7 @@ def plotIndustryByNeighborhood(n):
                State('afford_input_tech', 'value'),
                State('afford_dropdown_tax' ,'value'),
                State('dropdown_neighborhood', 'value')])
-def update_expenses(n, income, homeSize, adultCount, kidCount, ccCount, ageStr,
+def update_expenses(n, income, paymentType, homeSize, adultCount, kidCount, ccCount, ageStr,
                     transportType, vehicleType, hcareStr, hcarePlace, techStr, 
                     taxStatus, hood):
 
@@ -842,6 +865,7 @@ def update_expenses(n, income, homeSize, adultCount, kidCount, ccCount, ageStr,
     optsSize = afford_dropdown_homeSize_opts
     optsTransport = afford_dropdown_transport_opts
     optsVehicle = afford_dropdown_vehicle_opts
+    optsPayment = afford_dropdown_pay_opts
     # convert age to int
     age = int(ageStr)
     # determine seniority
@@ -854,13 +878,17 @@ def update_expenses(n, income, homeSize, adultCount, kidCount, ccCount, ageStr,
     # convert tech to int
     myTech = int(techStr)
     monthlyExpenses = 0.0
-    # switch for rental size dropdown
-    if homeSize == optsSize[0]:
-        myHousing = studio.loc[(studio['Neighborhood'] == hood)]['Median_Gross_Rent'].values[0]
-    elif homeSize == optsSize[1]:
-        myHousing = oneBR.loc[(oneBR['Neighborhood'] == hood)]['Median_Gross_Rent'].values[0]
-    elif homeSize == optsSize[2]:
-        myHousing = twoBR.loc[(twoBR['Neighborhood'] == hood)]['Median_Gross_Rent'].values[0]
+    # switch for payment type dropdown
+    if paymentType == optsPayment[0]:
+        # switch for rental size dropdown
+        if homeSize == optsSize[0]:
+            myHousing = studio.loc[(studio['Neighborhood'] == hood)]['Median_Gross_Rent'].values[0]
+        elif homeSize == optsSize[1]:
+            myHousing = oneBR.loc[(oneBR['Neighborhood'] == hood)]['Median_Gross_Rent'].values[0]
+        elif homeSize == optsSize[2]:
+            myHousing = twoBR.loc[(twoBR['Neighborhood'] == hood)]['Median_Gross_Rent'].values[0]
+    else:
+        myHousing = mortgageData[0]
     # switch for food age group
     if age < 2:
         myFood = foodData.iloc[0, 3]
@@ -918,6 +946,8 @@ def update_expenses(n, income, homeSize, adultCount, kidCount, ccCount, ageStr,
     monthlyExpenses = monthlyExpenses + myTech
     # Add tax cost
     monthlyExpenses = monthlyExpenses + getTax(taxStatus, int(income), int(adultCount), int(kidCount))
+    if paymentType == optsPayment[1]:
+        monthlyExpenses = monthlyExpenses + mortgageData[1]
     # Add misc cost
     monthlyExpenses = monthlyExpenses * 1.1
     # Calculate pct of hhIncome spent on housing
