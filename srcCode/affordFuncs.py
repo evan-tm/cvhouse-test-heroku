@@ -154,19 +154,19 @@ def get_hcare_placeholder(income, totalOccupants, age, premData, oopData):
         premium = premData.iloc[2, 1]
     # switch for out-of-pocket
     if income < 15000:
-        oopCost = oopData.iloc[af.getAgeIdx(age), 3]
+        oopCost = oopData.iloc[getAgeIdx(age), 3]
     elif income >= 15000 and income < 30000:
-        oopCost = oopData.iloc[af.getAgeIdx(age), 4]
+        oopCost = oopData.iloc[getAgeIdx(age), 4]
     elif income >= 30000 and income < 40000:
-        oopCost = oopData.iloc[af.getAgeIdx(age), 5]
+        oopCost = oopData.iloc[getAgeIdx(age), 5]
     elif income >= 40000 and income < 50000:
-        oopCost = oopData.iloc[af.getAgeIdx(age), 6]
+        oopCost = oopData.iloc[getAgeIdx(age), 6]
     elif income >= 50000 and income < 70000:
-        oopCost = oopData.iloc[af.getAgeIdx(age), 7]
+        oopCost = oopData.iloc[getAgeIdx(age), 7]
     elif income >= 70000 and (income < 100000 or age < 25):
-        oopCost = oopData.iloc[af.getAgeIdx(age), 8]
+        oopCost = oopData.iloc[getAgeIdx(age), 8]
     else:
-        oopCost = oopData.iloc[af.getAgeIdx(age), 9]
+        oopCost = oopData.iloc[getAgeIdx(age), 9]
 
     total = int(premium + oopCost)
     return '{} is average'.format(total)

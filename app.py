@@ -10,7 +10,7 @@ import dash_bootstrap_components as dbc
 import dash_daq as daq
 from dash import Input, Output, State, dcc, html
 import base64
-import library.afford_funcs as af
+import srcCode.affordFuncs as af
 
 
 mapbox_token_public = "pk.eyJ1IjoieGlubHVuY2hlbmciLCJhIjoiY2t0c3g2eHRrMWp3MTJ3cDMwdDAyYnA2OSJ9.tCcD-LyXD1OK-T6uDd8CYA"
@@ -270,9 +270,9 @@ census_simple = gpd.read_file("censusBlockDataFull.geojson")
 # Rental affordability data calculations
 twoBR = rentData
 twoBR['Median_Gross_Rent'] = af.hudCalc(twoBR['Median_Gross_Rent'])
-oneBR = twoBR
+oneBR = twoBR.copy()
 oneBR['Median_Gross_Rent'] = twoBR['Median_Gross_Rent'] * 0.841
-studio = twoBR
+studio = twoBR.copy()
 studio['Median_Gross_Rent'] = twoBR['Median_Gross_Rent'] * 0.81
 # ----------------------------------------------------------------------------
 # All the texts
@@ -707,6 +707,7 @@ def update_expenses(n, income, paymentType, homeSize, adultCount, kidCount, ccCo
     monthlyExpenses = af.get_housing_payment(paymentType, homeSize, studio, 
                                              oneBR, twoBR, mortgageData, 
                                              hood, optsPayment, optsSize)
+    myHousing = monthlyExpenses
     # Add childcare cost (currently using Toddler Family Child Care for all kids in cc)
     monthlyExpenses += int(ccCount) * 584.0
     # Add food cost (currently replicating adults age and using age 9-11 for all kids)
