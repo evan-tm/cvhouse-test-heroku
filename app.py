@@ -10,6 +10,7 @@ import dash_bootstrap_components as dbc
 import dash_daq as daq
 from dash import Input, Output, State, dcc, html
 import base64
+import library.afford_funcs as af
 
 
 mapbox_token_public = "pk.eyJ1IjoieGlubHVuY2hlbmciLCJhIjoiY2t0c3g2eHRrMWp3MTJ3cDMwdDAyYnA2OSJ9.tCcD-LyXD1OK-T6uDd8CYA"
@@ -27,13 +28,6 @@ census_simple = gpd.read_file("censusBlockDataFull.geojson")
 indBySector = pd.read_csv("data/indBySectorHistFull.csv")
 # Industry by neighborhood  data
 indByNeighborhood = pd.read_csv("data/indByNeighborhoodHistFull.csv")
-dropdown_neighborhood = ""
-dropdown_neighborhood_lod_opts = ["Barracks Road", "Rose Hill", "Lewis Mountain", "Starr Hill",
-                                  "Woolen Mills", "10th & Page", "The Meadows", "Martha Jefferson",
-                                  "Johnson Village", "Greenbrier", "Barracks / Rugby", "North Downtown",
-                                  "Locust Grove", "Jefferson Park Avenue", "Fifeville", "Fry's Spring",
-                                  "Ridge Street", "Venable", "Belmont"]
-dropdown_neighborhood_default = dropdown_neighborhood_lod_opts[0]
 # Rental affordability data
 rentData = pd.read_csv('data/acsRent2019.csv')
 # Childcare affordability data
@@ -69,12 +63,6 @@ def nanformat(n, strcode):
         return "Not available"
     else:
         return strcode % n
-
-## Calculates affordable rent cost for a two-bedroom apt based on median gross rent
-## in: median gross rent (Charlottesville overall or neighborhood-specific)
-## out: affordable rent cost for the geographic area described by the input
-def hudCalc(acsRent):
-    return acsRent * 1.05437 * 1.02916 * 1.04530
 
 ## Adds annotations to plotIndustrySector figure
 ## in: figure, dataset, list of indices
@@ -225,139 +213,6 @@ def createNumericInput(description, default_value, maximum, minimum=0,
                              size=size, **kwargs)
             ], className="grid_container", style={"grid-template-columns": grid_width})
 
-## logic for getting correct index to pull from oopHealthcareData
-## in: age to find group for
-## out: index for age_group row
-def getAgeIdx(age):
-    if age < 25:
-        return 3
-    elif age >= 25 and age < 35:
-        return 7
-    elif age >= 35 and age < 45:
-        return 11
-    elif age >= 45 and age < 55:
-        return 15
-    elif age >= 55 and age < 65:
-        return 19
-    else:
-        return 23
-
-## Approximates monthly tax payment for a given income
-## in: status, income, adultCount, kidCount
-## out: monthly tax
-def getTax(status, income, adultCount, kidCount):
-    
-    optsTax = afford_dropdown_tax_opts
-    eitc = 0
-    povc = 0
-
-    numPeople = adultCount + kidCount
-    povertyLine = 8870 + 4720 * numPeople
-    # check for VA low income tax credit qualification
-    if (income < povertyLine):
-        povc = 300 * numPeople
-    # switch for tax filing status
-    if status == optsTax[0]:
-        income = income - 12950 # single filing status deduction for 2022
-        # fed tax switch
-        if income < 10276:
-            fedTax = income * 0.1
-        elif income >= 10276 and income < 41776:
-            fedTax = 1027.50 + (income - 10275) * 0.12
-        elif income >= 41776 and income < 89076:
-            fedTax = 4807.50 + (income - 41775) * 0.22
-        elif income >= 89076 and income < 170051:
-            fedTax = 15213.5 + (income - 89075) * 0.24
-        elif income >= 170051 and income < 215951:
-            fedTax = 34647.5 + (income - 170050) * 0.32
-        elif income >= 215951 and income < 539901:
-            fedTax = 49335.5 + (income - 215950) * 0.35
-        else:
-            fedTax = 162718.0 + (income - 539900) * 0.37
-        
-        # earned income tax credit switch
-        if income < 21431 and kidCount == 0:
-            eitc = 1502.0
-        elif income < 42159 and kidCount == 1:
-            eitc = 3618.0
-        elif income < 47916 and kidCount == 2:
-            eitc = 5980.0
-        elif income < 51465 and kidCount >= 3:
-            eitc = 6728.0
-    elif status == optsTax[1]:
-        income = income - 25900 # married filing status deduction for 2022
-        if income < 20551:
-            fedTax = income * 0.1
-        elif income >= 20551 and income < 83551:
-            fedTax = 2055.0 + (income - 20550) * 0.12
-        elif income >= 83551 and income < 178151:
-            fedTax = 9615.0 + (income - 83550) * 0.22
-        elif income >= 178151 and income < 340101:
-            fedTax = 30427.0 + (income - 178150) * 0.24
-        elif income >= 340101 and income < 431901:
-            fedTax = 69295.0 + (income - 340100) * 0.32
-        elif income >= 431901 and income < 647851:
-            fedTax = 98671.0 + (income - 431900) * 0.35
-        else:
-            fedTax = 174253.5 + (income - 647850) * 0.37
-
-        # earned income tax credit switch
-        if income < 27381 and kidCount == 0:
-            eitc = 1502.0
-        elif income < 48109 and kidCount == 1:
-            eitc = 3618.0
-        elif income < 53866 and kidCount == 2:
-            eitc = 5980.0
-        elif income < 57415 and kidCount >= 3:
-            eitc = 6728.0
-    else:
-        income = income - 19400 # head of household filing status deduction for 2022
-        if income < 14651:
-            fedTax = income * 0.1
-        elif income >= 14651 and income < 55901:
-            fedTax = 1465.0 + (income - 14650) * 0.12
-        elif income >= 55901 and income < 89051:
-            fedTax = 6415.0 + (income - 55900) * 0.22
-        elif income >= 89051 and income < 170051:
-            fedTax = 13708.0 + (income - 89050) * 0.24
-        elif income >= 170051 and income < 215951:
-            fedTax = 33148.0 + (income - 170050) * 0.32
-        elif income >= 215951 and income < 539901:
-            fedTax = 47836.0 + (income - 215950) * 0.35
-        else:
-            fedTax = 161218.5 + (income - 539900) * 0.37
-
-        # earned income tax credit switch
-        if income < 21431 and kidCount == 0:
-            eitc = 1502.0
-        elif income < 42159 and kidCount == 1:
-            eitc = 3618.0
-        elif income < 47916 and kidCount == 2:
-            eitc = 5980.0
-        elif income < 51465 and kidCount >= 3:
-            eitc = 6728.0
-    
-    # if income less than standard deduction
-    if income < 0:
-        return 0.0
-    
-    ficaTax = income * 0.0765
-
-    # state tax switch
-    if income < 3001:
-        stateTax = income * 0.02
-    elif income >= 3001 and income < 5001:
-        stateTax = 60.0 + (income - 3000) * 0.03
-    elif income >= 5001 and income < 17001:
-        stateTax = 120.0 + (income - 5000) * 0.05
-    else:
-        stateTax = 720.0 + (income - 17000) * 0.0575
-    
-    return (fedTax + stateTax + ficaTax - eitc - povc) / 12.0
-
-
-
-
 # History by zoning graph
 def history_zoning_num():
     fig = go.Figure(data=go.Scatter(x=sales_year["SaleDate"], y=sales_year["SaleAmountAdjusted"]["count"], 
@@ -414,7 +269,7 @@ neighborhood_simple = gpd.read_file("neighborhood_simple.geojson")
 census_simple = gpd.read_file("censusBlockDataFull.geojson")
 # Rental affordability data calculations
 twoBR = rentData
-twoBR['Median_Gross_Rent'] = hudCalc(twoBR['Median_Gross_Rent'])
+twoBR['Median_Gross_Rent'] = af.hudCalc(twoBR['Median_Gross_Rent'])
 oneBR = twoBR
 oneBR['Median_Gross_Rent'] = twoBR['Median_Gross_Rent'] * 0.841
 studio = twoBR
@@ -433,12 +288,15 @@ header_text = '''Our goal is to bring attention to housing affordability issues
 in the Charlottesville community. Below, you can explore what you can currently 
 afford with our price prediction tool. Additionally, you can see where housing 
 prices are headed and understand where they’ve been historically. '''
+# Neighborhood dropdown
+dropdown_neighborhood = ""
+dropdown_neighborhood_lod_opts = ["Barracks Road", "Rose Hill", "Lewis Mountain", "Starr Hill",
+                                  "Woolen Mills", "10th & Page", "The Meadows", "Martha Jefferson",
+                                  "Johnson Village", "Greenbrier", "Barracks / Rugby", "North Downtown",
+                                  "Locust Grove", "Jefferson Park Avenue", "Fifeville", "Fry's Spring",
+                                  "Ridge Street", "Venable", "Belmont"]
+dropdown_neighborhood_default = dropdown_neighborhood_lod_opts[0]
 ## Affordability
-#afford_title = "What Can You Afford?"
-#afford_dropdown_title = "Learn more about our neighborhoods:"
-#afford_dropdown_industry_desc = "By Industry:"
-#afford_dropdown_industry_opts = ["Industry 1", "Industry 2", "Industry 3"]
-#afford_dropdown_industry_default = afford_dropdown_industry_opts[0]
 afford_dropdown_person_info_title = "Affordability Calculator:"
 afford_input_salary_desc = "Household Income:"
 afford_input_salary_default = 26000
@@ -586,11 +444,6 @@ app.layout = html.Div(
                 html.Div([
                     dcc.Graph(id="afford_map", style={"width": "100%"}),
                     html.Div([
-                        #html.Span(afford_dropdown_title, className="left_text subtitle"),
-                        # Industry
-                        #createDropdown(afford_dropdown_industry_desc, afford_dropdown_industry_opts,
-                        #               afford_dropdown_industry_default, dd_id="afford_dropdown_industry",
-                        #               dd_style={"width": "200px"}),
                         # Personal information
                         html.Hr(className="center_text title"),
                         html.Span(afford_dropdown_person_info_title, className="left_text subtitle"),
@@ -648,7 +501,6 @@ app.layout = html.Div(
         # Sector/Industry and Neighborhood/Industry charts
         html.Div(
             [
-                #html.Span(sector_title, id="sector_title", className="center_text title"),
                 dcc.Graph(id='neighborhood_plot', style={'display': 'inline-block'}),
                 dcc.Graph(id='sector_plot', figure=plotIndustrySector(), style={'display': 'inline-block'}),
             ], className="subcontainer"),
@@ -754,34 +606,10 @@ def update_hcare_placeholder(incomeStr, adultCount, kidCount, ageStr):
 
     if incomeStr is None:
         return ''
-    age = int(ageStr)
-    income = int(incomeStr)
     totalOccupants = int(adultCount) + int(kidCount)
-    # switch for premium
-    if totalOccupants == 1:
-        premium = premiumHealthcareData.iloc[0, 1]
-    elif totalOccupants == 2:
-        premium = premiumHealthcareData.iloc[1, 1]
-    else:
-        premium = premiumHealthcareData.iloc[2, 1]
-    # switch for out-of-pocket
-    if income < 15000:
-        oopCost = oopHealthcareData.iloc[getAgeIdx(age), 3]
-    elif income >= 15000 and income < 30000:
-        oopCost = oopHealthcareData.iloc[getAgeIdx(age), 4]
-    elif income >= 30000 and income < 40000:
-        oopCost = oopHealthcareData.iloc[getAgeIdx(age), 5]
-    elif income >= 40000 and income < 50000:
-        oopCost = oopHealthcareData.iloc[getAgeIdx(age), 6]
-    elif income >= 50000 and income < 70000:
-        oopCost = oopHealthcareData.iloc[getAgeIdx(age), 7]
-    elif income >= 70000 and (income < 100000 or age < 25):
-        oopCost = oopHealthcareData.iloc[getAgeIdx(age), 8]
-    else:
-        oopCost = oopHealthcareData.iloc[getAgeIdx(age), 9]
-
-    total = int(premium + oopCost)
-    return '{} is average'.format(total)
+    return af.get_hcare_placeholder(int(incomeStr), totalOccupants, 
+                                    int(ageStr), premiumHealthcareData,
+                                    oopHealthcareData)
 
 # Function for creating plot of industry employment populations by neighborhood
 @app.callback(
@@ -875,79 +703,30 @@ def update_expenses(n, income, paymentType, homeSize, adultCount, kidCount, ccCo
         myHealthcare = int(hcarePlace.split()[0])
     else:
         myHealthcare = int(hcareStr)
-    # convert tech to int
-    myTech = int(techStr)
-    monthlyExpenses = 0.0
-    # switch for payment type dropdown
-    if paymentType == optsPayment[0]:
-        # switch for rental size dropdown
-        if homeSize == optsSize[0]:
-            myHousing = studio.loc[(studio['Neighborhood'] == hood)]['Median_Gross_Rent'].values[0]
-        elif homeSize == optsSize[1]:
-            myHousing = oneBR.loc[(oneBR['Neighborhood'] == hood)]['Median_Gross_Rent'].values[0]
-        elif homeSize == optsSize[2]:
-            myHousing = twoBR.loc[(twoBR['Neighborhood'] == hood)]['Median_Gross_Rent'].values[0]
-    else:
-        myHousing = mortgageData[0]
-    # switch for food age group
-    if age < 2:
-        myFood = foodData.iloc[0, 3]
-    elif age >= 2 and age <= 3:
-        myFood = foodData.iloc[1, 3]
-    elif age >= 4 and age <= 5:
-        myFood = foodData.iloc[2, 3]
-    elif age >= 6 and age <= 8:
-        myFood = foodData.iloc[3, 3]
-    elif age >= 9 and age <= 11:
-        myFood = foodData.iloc[4, 3]
-    elif age >= 12 and age <= 13:
-        myFood = foodData.iloc[5, 3]
-    elif age >= 14 and age <= 19:
-        myFood = foodData.iloc[6, 3]
-    elif age >= 20 and age <= 50:
-        myFood = foodData.iloc[7, 3]
-    elif age >= 51 and age <= 70:
-        myFood = foodData.iloc[8, 3]
-    else:
-        myFood = foodData.iloc[9, 3]
-    # Add housing cost
-    monthlyExpenses = monthlyExpenses + myHousing
+    # initialize monthly expenses variable with the housing payment
+    monthlyExpenses = af.get_housing_payment(paymentType, homeSize, studio, 
+                                             oneBR, twoBR, mortgageData, 
+                                             hood, optsPayment, optsSize)
     # Add childcare cost (currently using Toddler Family Child Care for all kids in cc)
-    monthlyExpenses = monthlyExpenses + int(ccCount) * 584.0
+    monthlyExpenses += int(ccCount) * 584.0
     # Add food cost (currently replicating adults age and using age 9-11 for all kids)
-    myFood = myFood + (int(adultCount) - 1) * myFood
-    myFood = myFood + int(kidCount) * foodData.iloc[4, 3]
-    monthlyExpenses = monthlyExpenses + myFood
+    monthlyExpenses += af.get_food_payment(age, int(adultCount), 
+                                           int(kidCount), foodData)
     # Add transport cost (currently assuming 15k mileage for every vehicle type)
-    if transportType == optsTransport[0]:
-        if senior:
-            myTransport = 10.0 # cost of CAT monthly for seniors
-        else:
-            myTransport = 20.0 # cost of CAT monthly for non-seniors
-    else:
-        if vehicleType == optsVehicle[0]:
-            myTransport = transportData.iloc[1, 3] # small sedan
-        elif vehicleType == optsVehicle[1]:
-            myTransport = transportData.iloc[4, 3] # medium sedan
-        elif vehicleType == optsVehicle[2]:
-            myTransport = transportData.iloc[7, 3] # compact suv
-        elif vehicleType == optsVehicle[3]:
-            myTransport = transportData.iloc[10, 3] # medium suv
-        elif vehicleType == optsVehicle[4]:
-            myTransport = transportData.iloc[13, 3] # pickup
-        elif vehicleType == optsVehicle[5]:
-            myTransport = transportData.iloc[16, 3] # hybrid
-        elif vehicleType == optsVehicle[6]:
-            myTransport = transportData.iloc[19, 3] # EV
-    monthlyExpenses = monthlyExpenses + myTransport
+    monthlyExpenses += af.get_transport_payment(transportType, vehicleType, 
+                                                senior, transportData, 
+                                                optsTransport, optsVehicle)
     # Add healthcare cost
-    monthlyExpenses = monthlyExpenses + (myHealthcare / 12.0)
+    monthlyExpenses += (myHealthcare / 12.0)
     # Add technology cost
-    monthlyExpenses = monthlyExpenses + myTech
+    monthlyExpenses += int(techStr)
     # Add tax cost
-    monthlyExpenses = monthlyExpenses + getTax(taxStatus, int(income), int(adultCount), int(kidCount))
+    monthlyExpenses += af.get_tax(taxStatus, int(income), 
+                                  int(adultCount), int(kidCount), 
+                                  afford_dropdown_tax_opts)
+    # check whether to add real estate tax for cville
     if paymentType == optsPayment[1]:
-        monthlyExpenses = monthlyExpenses + mortgageData[1]
+        monthlyExpenses += mortgageData[1]
     # Add misc cost
     monthlyExpenses = monthlyExpenses * 1.1
     # Calculate pct of hhIncome spent on housing
