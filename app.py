@@ -11,6 +11,7 @@ import dash_daq as daq
 from dash import Input, Output, State, dcc, html
 import base64
 import srcCode.affordFuncs as af
+import srcCode.cvillepedia as cv
 
 
 mapbox_token_public = "pk.eyJ1IjoieGlubHVuY2hlbmciLCJhIjoiY2t0c3g2eHRrMWp3MTJ3cDMwdDAyYnA2OSJ9.tCcD-LyXD1OK-T6uDd8CYA"
@@ -288,7 +289,7 @@ dropdown_neighborhood_lod_opts = ["Barracks Road", "Rose Hill", "Lewis Mountain"
                                   "Johnson Village", "Greenbrier", "Barracks / Rugby", "North Downtown",
                                   "Locust Grove", "Jefferson Park Avenue", "Fifeville", "Fry's Spring",
                                   "Ridge Street", "Venable", "Belmont"]
-dropdown_neighborhood_default = dropdown_neighborhood_lod_opts[0]
+dropdown_neighborhood_default = dropdown_neighborhood_lod_opts[11]
 ## Affordability
 afford_dropdown_person_info_title = "Affordability Calculator:"
 afford_input_salary_desc = "Household Income:"
@@ -327,7 +328,7 @@ afford_button = "Calculate"
 afford_dropdown_lod_desc = "Level of Detail"
 afford_dropdown_lod_opts = ["Neighborhood", "Individual Properties"]
 afford_dropdown_lod_default = afford_dropdown_lod_opts[0]
-afford_prediction_text = "You can afford 0% of houses in cville."
+afford_loading_text = "Loading..."
 afford_prediction_algo = "ALICE affordability info"
 ## History
 history_title = "History of Real Estate Sales"
@@ -433,6 +434,8 @@ app.layout = html.Div(
                                    dropdown_neighborhood_default, dd_id="dropdown_neighborhood",
                                    dd_style={"width": "200px"}, grid_width="1fr", clearable=False),
                 ], className="neighborhood_drop"),
+                # Neighborhood CVillepedia description
+                html.Div(afford_loading_text, id="hood_cvillepedia", className="left_text bodytext"),
                 #html.Span(afford_title, className="center_text title", id="afford_title"),
                 html.Div([
                     dcc.Graph(id="afford_map", style={"width": "100%"}),
@@ -486,7 +489,7 @@ app.layout = html.Div(
                     html.Button(afford_button, id="afford_button", className="right_text subtitle",
                                 style={"background-color": "#FFA858", "color": "#000000"}),
                 ], className="grid_container", style={"grid-template-columns": "minmax(600px, 4fr) 2fr 1fr"}),
-                html.Div(afford_prediction_text, id="afford_result", className="center_text subtitle"),
+                html.Div(afford_loading_text, id="afford_result", className="center_text subtitle"),
                 # Algorithm description
                 #html.Div(afford_prediction_algo, id="afford_neighborhood", className="left_text bodytext")
             ], className="subcontainer"),
@@ -586,8 +589,26 @@ def show_hide_homeSize(currentPay):
     Input('afford_map', 'clickData'))
 def printNeighborhood(clickData):
     if clickData is None:
-        return dropdown_neighborhood_lod_opts[0]
+        return dropdown_neighborhood_lod_opts[11]
     return(str(clickData['points'][len(clickData['points']) - 1]['hovertext']))
+
+@app.callback(
+    Output('hood_cvillepedia', 'children'),
+    Input('dropdown_neighborhood', 'value'))
+def printCvillepedia(hood):
+    
+    i = 0
+    hoodLen = len(cv.dictionary[hood])
+    if hoodLen == 1:
+        return(cv.dictionary[hood][0])
+    else:
+        retParas = []
+        for paraIdx in range(hoodLen - 1):
+            retParas.append(cv.dictionary[hood][paraIdx])
+            retParas.append(html.Br())
+            retParas.append(html.Br())
+        retParas.append(cv.dictionary[hood][hoodLen - 1])
+        return(html.P(retParas))
 
 @app.callback(
    Output(component_id='afford_input_hcare', component_property='placeholder'),
