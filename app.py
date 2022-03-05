@@ -43,6 +43,13 @@ oopHealthcareData = pd.read_csv('data/oopHealthcareAnnual.csv')
 premiumHealthcareData = pd.read_csv('data/premiumHealthcare.csv')
 # Mortgage affordability data
 mortgageData = [1612.0, (0.0095 * 399628.7) / 12.0]
+# Sales data date cleaning
+sales_clean_simple["SaleDate"] = pd.to_datetime(sales_clean_simple["SaleDate"])
+# Loading rolling sales data
+sales_year = pd.read_pickle("rolling/sales_year.pkl")
+sales_year_single = pd.read_pickle("rolling/sales_year_single.pkl")
+sales_year_two = pd.read_pickle("rolling/sales_year_two.pkl")
+sales_year_multi = pd.read_pickle("rolling/sales_year_multi.pkl")
 # ----------------------------------------------------------------------------
 # Helper functions
 millnames = ['','k','M','B','T']
@@ -255,19 +262,6 @@ def history_zoning_price():
     fig['data'][0]['showlegend'] = True
     return fig
 
-
-# ----------------------------------------------------------------------------
-# Cleaned data file
-sales_clean_simple = gpd.read_file("real_estate_sales_simple.geojson")
-sales_clean_simple["SaleDate"] = pd.to_datetime(sales_clean_simple["SaleDate"])
-sales_year = pd.read_pickle("rolling/sales_year.pkl")
-sales_year_single = pd.read_pickle("rolling/sales_year_single.pkl")
-sales_year_two = pd.read_pickle("rolling/sales_year_two.pkl")
-sales_year_multi = pd.read_pickle("rolling/sales_year_multi.pkl")
-# Neighborhood data file
-neighborhood_simple = gpd.read_file("neighborhood_simple.geojson")
-# Census data file
-census_simple = gpd.read_file("censusBlockDataFull.geojson")
 # ----------------------------------------------------------------------------
 # All the texts
 ## Sidebar
