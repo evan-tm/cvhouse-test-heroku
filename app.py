@@ -12,6 +12,7 @@ from dash import Input, Output, State, dcc, html
 import base64
 import srcCode.affordFuncs as af
 import srcCode.cvillepedia as cv
+import srcCode.affordDescs as ad
 
 
 mapbox_token_public = "pk.eyJ1IjoieGlubHVuY2hlbmciLCJhIjoiY2t0c3g2eHRrMWp3MTJ3cDMwdDAyYnA2OSJ9.tCcD-LyXD1OK-T6uDd8CYA"
@@ -284,46 +285,6 @@ dropdown_neighborhood_lod_opts = ["Barracks Road", "Rose Hill", "Lewis Mountain"
                                   "Locust Grove", "Jefferson Park Avenue", "Fifeville", "Fry's Spring",
                                   "Ridge Street", "Venable", "Belmont"]
 dropdown_neighborhood_default = dropdown_neighborhood_lod_opts[11]
-## Affordability
-afford_dropdown_person_info_title = "Affordability Calculator:"
-afford_input_salary_desc = "Household Income:"
-afford_input_salary_default = 26000
-afford_dropdown_pay_desc = "Payment Type:"
-afford_dropdown_pay_opts = ['Renting', 'Buying']
-afford_dropdown_pay_default = afford_dropdown_pay_opts[0]
-afford_dropdown_homeSize_desc = "Rental Size:"
-afford_dropdown_homeSize_opts = ['Studio', '1 Bedroom', '2 Bedrooms']
-afford_dropdown_homeSize_default = afford_dropdown_homeSize_opts[1]
-afford_input_adults_desc = 'Adults:'
-afford_input_adults_default = 1
-afford_input_kids_desc = "Kids:"
-afford_input_kids_default = 0
-afford_input_childcare_desc = "# in Childcare:"
-afford_input_childcare_default = 0
-afford_input_age_desc = "Your Age:"
-afford_input_age_default = "30"
-afford_dropdown_transport_desc = "Transportation Type:"
-afford_dropdown_transport_opts = ['CAT Public Bus', 'Personal Vehicle']
-afford_dropdown_transport_default = afford_dropdown_transport_opts[0]
-afford_dropdown_vehicle_desc = "Vehicle Type:"
-afford_dropdown_vehicle_opts = ['Small Sedan', 'Medium Sedan', 
-                                'Compact SUV', 'Medium SUV', 
-                                'Pickup', 'Hybrid', 'Electric']
-afford_dropdown_vehicle_default = afford_dropdown_vehicle_opts[0]
-afford_input_hcare_desc = "Healthcare (Annually):"
-afford_input_hcare_default = ""
-afford_input_tech_desc = "Technology (Monthly):"
-afford_input_tech_default = 100
-afford_input_tech_tip = "Cell phone plan, internet, etc."
-afford_dropdown_tax_desc = "Tax Status:"
-afford_dropdown_tax_opts = ['Single', 'Married', 'Head of House']
-afford_dropdown_tax_default = afford_dropdown_tax_opts[0]
-afford_button = "Calculate"
-afford_dropdown_lod_desc = "Level of Detail"
-afford_dropdown_lod_opts = ["Neighborhood", "Individual Properties"]
-afford_dropdown_lod_default = afford_dropdown_lod_opts[0]
-afford_loading_text = "Loading..."
-afford_prediction_algo = "ALICE affordability info"
 ## History
 history_title = "History of Real Estate Sales"
 history_description = '''Click on the legend of plot to hide and unhide one category.'''
@@ -393,8 +354,6 @@ app.layout = html.Div(
                 [
                     dbc.NavItem(dbc.NavLink(sidebar_top, href="#", external_link=True, 
                                             className="background2 left_text subtitle")),
-                    #dbc.NavItem(dbc.NavLink(sidebar_afford, href="#afford_title", 
-                    #                        external_link=True, className="background2 left_text subtitle")),
                     dbc.NavItem(dbc.NavLink(sidebar_census, href="#census_title", external_link=True, 
                                             className="background2 left_text subtitle")),
                 ], id="sidebar", is_open=False, 
@@ -409,16 +368,6 @@ app.layout = html.Div(
                 )
             ),
         ], className="sidebar", color="#132C36", sticky="top"),
-        # Header
-        #html.Div([
-        #    html.Div(
-        #    [
-        #        html.Span(title, className="left_text title"),
-        #        html.Span(subtitle, className="left_text subtitle"),
-        #        html.Span(header_text, className="left_text bodytext"),
-        #    ], className="subcontainer"),
-        #    html.Img(src="assets/title.png", style={'height':'60%', 'weight':'60%'}, className="subcontainer")
-        #], className="grid_container background", style={'textAlign': 'center'}),
         # Affordability
         html.Div(
             [
@@ -429,45 +378,45 @@ app.layout = html.Div(
                                    dd_style={"width": "200px"}, grid_width="1fr", clearable=False),
                 ], className="neighborhood_drop"),
                 # Neighborhood CVillepedia description
-                html.Div(afford_loading_text, id="hood_cvillepedia", className="left_text bodytext"),
+                html.Div(ad.text['LOADING'], id="hood_cvillepedia", className="left_text bodytext"),
                 #html.Span(afford_title, className="center_text title", id="afford_title"),
                 html.Div([
                     dcc.Graph(id="afford_map", style={"width": "100%"}),
                     html.Div([
                         # Personal information
                         html.Hr(className="center_text title"),
-                        html.Span(afford_dropdown_person_info_title, className="left_text subtitle"),
-                        createInput(afford_input_salary_desc, "number", afford_input_salary_default, 
+                        html.Span(ad.text['DD_MAIN_TITLE'], className="left_text subtitle"),
+                        createInput(ad.text['IN_INCOME'], "number", ad.default['IN_INCOME'], 
                                     ip_id="afford_input_salary"),
-                        createDropdown(afford_dropdown_pay_desc, afford_dropdown_pay_opts,
-                                       afford_dropdown_pay_default, dd_id="afford_dropdown_pay",
+                        createDropdown(ad.text['DD_PAY'], ad.opts['DD_PAY'],
+                                       ad.default['DD_PAY'], dd_id="afford_dropdown_pay",
                                        clearable=False),
-                        createDropdown(afford_dropdown_homeSize_desc, afford_dropdown_homeSize_opts,
-                                       afford_dropdown_homeSize_default, dd_id="afford_dropdown_homeSize",
+                        createDropdown(ad.text['DD_HOMESIZE'], ad.opts['DD_HOMESIZE'],
+                                       ad.default['DD_HOMESIZE'], dd_id="afford_dropdown_homeSize",
                                        desc_id="afford_dropdown_homeSize_desc_id", clearable=False),
-                        createNumericInput(afford_input_adults_desc, afford_input_adults_default,
+                        createNumericInput(ad.text['IN_ADULTS'], ad.default['IN_ADULTS'],
                                            minimum=1, maximum=10, ip_id="afford_input_adults"),
-                        createNumericInput(afford_input_kids_desc, afford_input_kids_default, 
+                        createNumericInput(ad.text['IN_KIDS'], ad.default['IN_KIDS'], 
                                            maximum=10, ip_id="afford_input_kids"),
-                        createNumericInput(afford_input_childcare_desc, afford_input_kids_default, 
+                        createNumericInput(ad.text['IN_CC'], ad.default['IN_CC'], 
                                            maximum=10, ip_id="afford_input_childcare",
                                            desc_id = "afford_input_cc_desc_id"),
-                        createNumericInput(afford_input_age_desc, afford_input_age_default,
+                        createNumericInput(ad.text['IN_AGE'], ad.default['IN_AGE'],
                                            maximum=130, ip_id="afford_input_age"),
-                        createDropdown(afford_dropdown_transport_desc, afford_dropdown_transport_opts,
-                                       afford_dropdown_transport_default, dd_id="afford_dropdown_transport",
+                        createDropdown(ad.text['DD_TRANSPORT'], ad.opts['DD_TRANSPORT'],
+                                       ad.default['DD_TRANSPORT'], dd_id="afford_dropdown_transport",
                                        clearable=False),
-                        createDropdown(afford_dropdown_vehicle_desc, afford_dropdown_vehicle_opts,
-                                       afford_dropdown_vehicle_default, dd_id="afford_dropdown_vehicle",
+                        createDropdown(ad.text['DD_VEHICLE'], ad.opts['DD_VEHICLE'],
+                                       ad.default['DD_VEHICLE'], dd_id="afford_dropdown_vehicle",
                                        desc_id="afford_dropdown_vehicle_desc_id", clearable=False),
-                        createInput(afford_input_hcare_desc, "number", afford_input_hcare_default,
+                        createInput(ad.text['IN_HCARE'], "number", ad.default['IN_HCARE'],
                                     ip_id="afford_input_hcare"),
-                        createNumericInput(afford_input_tech_desc, afford_input_tech_default,
+                        createNumericInput(ad.text['IN_TECH'], ad.default['IN_TECH'],
                                            maximum=1000, ip_id="afford_input_tech"),
-                        dbc.Tooltip(afford_input_tech_tip, target="afford_input_tech", 
+                        dbc.Tooltip(ad.ttips['IN_TECH'], target="afford_input_tech", 
                                     placement='bottom'),
-                        createDropdown(afford_dropdown_tax_desc, afford_dropdown_tax_opts,
-                                       afford_dropdown_tax_default, dd_id="afford_dropdown_tax",
+                        createDropdown(ad.text['DD_TAX'], ad.opts['DD_TAX'],
+                                       ad.default['DD_TAX'], dd_id="afford_dropdown_tax",
                                        clearable=False),
                     ], className="subcontainer")
                 ], className="grid_container", style={"grid-template-columns": "minmax(600px, 2fr) 1fr"}),
@@ -477,15 +426,13 @@ app.layout = html.Div(
                                    tooltip={"placement": "bottom", "always_visible": True},
                                    id="afford_slider_year")
                     ], style={"width": "100%"}),
-                    createDropdown(afford_dropdown_lod_desc, afford_dropdown_lod_opts,
-                                   afford_dropdown_lod_default, dd_id="afford_dropdown_lod", 
+                    createDropdown(ad.text['DD_LOD'], ad.opts['DD_LOD'],
+                                   ad.default['DD_LOD'], dd_id="afford_dropdown_lod", 
                                    dd_style={"width": "200px"}, clearable=False, searchable = False),
-                    html.Button(afford_button, id="afford_button", className="right_text subtitle",
+                    html.Button(ad.text['CALC_BUTTON'], id="afford_button", className="right_text subtitle",
                                 style={"background-color": "#FFA858", "color": "#000000"}),
                 ], className="grid_container", style={"grid-template-columns": "minmax(600px, 4fr) 2fr 1fr"}),
-                html.Div(afford_loading_text, id="afford_result", className="center_text subtitle"),
-                # Algorithm description
-                #html.Div(afford_prediction_algo, id="afford_neighborhood", className="left_text bodytext")
+                html.Div(ad.text['LOADING'], id="afford_result", className="center_text subtitle"),
             ], className="subcontainer"),
         html.Hr(className="center_text title"),
         # Sector/Industry and Neighborhood/Industry charts
@@ -556,7 +503,7 @@ def show_hide_childCare(kidCount):
    [Input(component_id='afford_dropdown_transport', component_property='value')])
 def show_hide_vehicle(currentTransport):
 
-    optsTransport = afford_dropdown_transport_opts
+    optsTransport = ad.opts['DD_TRANSPORT']
     if currentTransport == optsTransport[0]:
         return ({'display': 'none'}, 
                 {'display': 'none'})
@@ -570,7 +517,7 @@ def show_hide_vehicle(currentTransport):
    [Input(component_id='afford_dropdown_pay', component_property='value')])
 def show_hide_homeSize(currentPay):
 
-    optsPayment = afford_dropdown_pay_opts
+    optsPayment = ad.opts['DD_PAY']
     if currentPay == optsPayment[1]:
         return ({'display': 'none'}, 
                 {'display': 'none'})
@@ -698,10 +645,10 @@ def update_expenses(n, income, paymentType, homeSize, adultCount, kidCount, ccCo
         return 'Enter your information to see whether Charlottesville \
              is affordable for you!'
     # get switch options from global vars
-    optsSize = afford_dropdown_homeSize_opts
-    optsTransport = afford_dropdown_transport_opts
-    optsVehicle = afford_dropdown_vehicle_opts
-    optsPayment = afford_dropdown_pay_opts
+    optsSize = ad.opts['DD_HOMESIZE']
+    optsTransport = ad.opts['DD_TRANSPORT']
+    optsVehicle = ad.opts['DD_VEHICLE']
+    optsPayment = ad.opts['DD_PAY']
     # convert age to int
     age = int(ageStr)
     # determine seniority
@@ -732,7 +679,7 @@ def update_expenses(n, income, paymentType, homeSize, adultCount, kidCount, ccCo
     # Add tax cost
     monthlyExpenses += af.get_tax(taxStatus, int(income), 
                                   int(adultCount), int(kidCount), 
-                                  afford_dropdown_tax_opts)
+                                  ad.opts['DD_TAX'])
     # check whether to add real estate tax for cville
     if paymentType == optsPayment[1]:
         monthlyExpenses += mortgageData[1]
