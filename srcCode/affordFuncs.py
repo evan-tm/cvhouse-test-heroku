@@ -2,7 +2,23 @@
 
 # modules to import
 import pandas as pd
+from dash import Input, Output, State, dcc, html, callback
+import srcCode.affordDescs as ad
 
+# Rental affordability data
+rentData = pd.read_csv('data/acsRent2019.csv')
+# Childcare affordability data
+ccareData = pd.read_csv('data/childcareCosts.csv')
+# Food affordability data
+foodData = pd.read_csv('data/foodCosts.csv')
+# Transportation affordability data
+transportData = pd.read_csv('data/transportCosts.csv')
+# Mortgage affordability data
+mortgageData = [1612.0, (0.0095 * 399628.7) / 12.0]
+# Health care out-of-pocket affordability data
+oopHealthcareData = pd.read_csv('data/oopHealthcareAnnual.csv')
+# Health care premium affordability data
+premiumHealthcareData = pd.read_csv('data/premiumHealthcare.csv')
 
 ## logic for getting correct index to pull from oopData
 ## in: age to find group for
@@ -248,3 +264,146 @@ def get_transport_payment(transportType, vehicleType, senior,
     
     return myTransport
 
+@callback(
+   Output(component_id='afford_input_childcare', component_property='style'),
+   Output(component_id='afford_input_cc_desc_id', component_property='style'),
+   Output(component_id='afford_input_childcare', component_property='max'),
+   [Input(component_id='afford_input_kids', component_property='value')])
+def show_hide_childCare(kidCount):
+
+    if kidCount is None:
+        return ({'display': 'none'}, 
+                {'display': 'none'},
+                0)
+    elif kidCount > 0:
+        return ({'display': 'block', "width": "150px"}, 
+                {'display': 'block', "width": "150px"},
+                kidCount)
+    else:
+        return ({'display': 'none'}, 
+                {'display': 'none'},
+                0)
+
+@callback(
+   Output(component_id='afford_dropdown_vehicle', component_property='style'),
+   Output(component_id='afford_dropdown_vehicle_desc_id', component_property='style'),
+   [Input(component_id='afford_dropdown_transport', component_property='value')])
+def show_hide_vehicle(currentTransport):
+
+    optsTransport = ad.opts['DD_TRANSPORT']
+    if currentTransport == optsTransport[0]:
+        return ({'display': 'none'}, 
+                {'display': 'none'})
+    else:
+        return ({'display': 'block', "width": "150px"}, 
+                {'display': 'block', "width": "150px"})
+
+@callback(
+   Output(component_id='afford_dropdown_homeSize', component_property='style'),
+   Output(component_id='afford_dropdown_homeSize_desc_id', component_property='style'),
+   [Input(component_id='afford_dropdown_pay', component_property='value')])
+def show_hide_homeSize(currentPay):
+
+    optsPayment = ad.opts['DD_PAY']
+    if currentPay == optsPayment[1]:
+        return ({'display': 'none'}, 
+                {'display': 'none'})
+    else:
+        return ({'display': 'block', "width": "150px"}, 
+                {'display': 'block', "width": "150px"})
+
+@callback(
+   Output(component_id='afford_input_hcare', component_property='placeholder'),
+   [Input("afford_input_salary", "value"),
+    Input("afford_input_adults", "value"),
+    Input("afford_input_kids", "value"),
+    Input("afford_input_age", "value")])
+def update_hcare_placeholder(incomeStr, adultCount, kidCount, ageStr):
+
+    if incomeStr is None:
+        return ''
+    totalOccupants = int(adultCount) + int(kidCount)
+    return get_hcare_placeholder(int(incomeStr), totalOccupants, 
+                                 int(ageStr), premiumHealthcareData,
+                                 oopHealthcareData)
+
+# Update expense defaults and affordability message
+@callback(Output('afford_result', 'children'),
+          [Input("afford_button", "n_clicks"), 
+          State('afford_input_salary', 'value'), 
+          State('afford_dropdown_pay', 'value'), 
+          State('afford_dropdown_homeSize', 'value'), 
+          State('afford_input_adults', 'value'),
+          State('afford_input_kids', 'value'),
+          State('afford_input_childcare', 'value'),
+          State('afford_input_age', 'value'),
+          State('afford_dropdown_transport', 'value'),
+          State('afford_dropdown_vehicle', 'value'),
+          State('afford_input_hcare', 'value'),
+          State('afford_input_hcare', 'placeholder'),
+          State('afford_input_tech', 'value'),
+          State('afford_dropdown_tax' ,'value'),
+          State('dropdown_neighborhood', 'value')])
+def update_expenses(n, income, paymentType, homeSize, adultCount, kidCount, ccCount, ageStr,
+                    transportType, vehicleType, hcareStr, hcarePlace, techStr, 
+                    taxStatus, hood):
+
+    # Starting message
+    if income is None:
+        return 'Enter your information to see whether Charlottesville \
+             is affordable for you!'
+    # get switch options from global vars
+    optsSize = ad.opts['DD_HOMESIZE']
+    optsTransport = ad.opts['DD_TRANSPORT']
+    optsVehicle = ad.opts['DD_VEHICLE']
+    optsPayment = ad.opts['DD_PAY']
+    # convert age to int
+    age = int(ageStr)
+    # determine seniority
+    senior = (age >= 65)
+    # convert hcare to int or use avg
+    if hcareStr is None:
+        myHealthcare = int(hcarePlace.split()[0])
+    else:
+        myHealthcare = int(hcareStr)
+    # initialize monthly expenses variable with the housing payment
+    monthlyExpenses = get_housing_payment(paymentType, homeSize, 
+                                          rentData, mortgageData, 
+                                          hood, optsPayment, optsSize)
+    myHousing = monthlyExpenses
+    # Add childcare cost (currently using Toddler Family Child Care for all kids in cc)
+    monthlyExpenses += int(ccCount) * 584.0
+    # Add food cost (currently replicating adults age and using age 9-11 for all kids)
+    monthlyExpenses += get_food_payment(age, int(adultCount), 
+                                        int(kidCount), foodData)
+    # Add transport cost (currently assuming 15k mileage for every vehicle type)
+    monthlyExpenses += get_transport_payment(transportType, vehicleType, 
+                                             senior, transportData, 
+                                             optsTransport, optsVehicle)
+    # Add healthcare cost
+    monthlyExpenses += (myHealthcare / 12.0)
+    # Add technology cost
+    monthlyExpenses += int(techStr)
+    # Add tax cost
+    monthlyExpenses += get_tax(taxStatus, int(income), 
+                                  int(adultCount), int(kidCount), 
+                                  ad.opts['DD_TAX'])
+    # check whether to add real estate tax for cville
+    if paymentType == optsPayment[1]:
+        monthlyExpenses += mortgageData[1]
+    # Add misc cost
+    monthlyExpenses = monthlyExpenses * 1.1
+    # Calculate pct of hhIncome spent on housing
+    housingPct = ((12 * myHousing) / income) * 100
+    # Determine affordability by comparing expenses to income
+    canAfford = (12 * monthlyExpenses - income)
+    # gather result message
+    if canAfford < 0:
+        affordMessage = 'Affordable: About {:.2f}% of your household\'s \
+            income would be spent on gross rent. Your approximate living \
+            expenses are ${:,} annually.'.format(housingPct, int(monthlyExpenses * 12))
+    else:
+        affordMessage = 'Not affordable: About {:.2f}% of your household\'s \
+            income would be spent on gross rent. Your approximate living \
+            expenses are ${:,} annually.'.format(housingPct, int(monthlyExpenses * 12))
+    return affordMessage
