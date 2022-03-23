@@ -6,19 +6,19 @@ from dash import Input, Output, State, dcc, html, callback
 import srcCode.affordDescs as ad
 
 # Rental affordability data
-rentData = pd.read_csv('data/acsRent2019.csv')
+rentData = pd.read_csv('data/calculator/acsRent2020.csv')
 # Childcare affordability data
-ccareData = pd.read_csv('data/childcareCosts.csv')
+ccareData = pd.read_csv('data/calculator/childcareCosts.csv')
 # Food affordability data
-foodData = pd.read_csv('data/foodCosts.csv')
+foodData = pd.read_csv('data/calculator/foodCosts.csv')
 # Transportation affordability data
-transportData = pd.read_csv('data/transportCosts.csv')
+transportData = pd.read_csv('data/calculator/transportCosts.csv')
 # Mortgage affordability data
 mortgageData = [1612.0, (0.0095 * 399628.7) / 12.0]
 # Health care out-of-pocket affordability data
-oopHealthcareData = pd.read_csv('data/oopHealthcareAnnual.csv')
+oopHealthcareData = pd.read_csv('data/calculator/oopHealthcareAnnual.csv')
 # Health care premium affordability data
-premiumHealthcareData = pd.read_csv('data/premiumHealthcare.csv')
+premiumHealthcareData = pd.read_csv('data/calculator/premiumHealthcare.csv')
 
 ## logic for getting correct index to pull from oopData
 ## in: age to find group for

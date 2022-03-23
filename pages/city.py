@@ -1,3 +1,4 @@
+# ------------------City page------------------#
 import numpy as np
 import os
 import pandas as pd
@@ -13,9 +14,9 @@ import base64
 import srcCode.affordFuncs as af
 import srcCode.affordDescs as ad
 import srcCode.toolbarDescs as tb
-import srcCode.industryFuncs as indf
 import srcCode.dashFuncs as df
 import srcCode.cityDescs as cd
+import srcCode.censusFuncs as cf
 
 mapbox_token_public = "pk.eyJ1IjoieGlubHVuY2hlbmciLCJhIjoiY2t0c3g2eHRrMWp3MTJ3cDMwdDAyYnA2OSJ9.tCcD-LyXD1OK-T6uDd8CYA"
 mapbox_style = "mapbox://styles/xinluncheng/cktsxjvd923p618mw4fut9gav"
@@ -25,8 +26,6 @@ mapbox_style = "mapbox://styles/xinluncheng/cktsxjvd923p618mw4fut9gav"
 sales_clean_simple = gpd.read_file("real_estate_sales_simple.geojson")
 # Neighborhood data file
 neighborhood_simple = gpd.read_file("neighborhood_simple.geojson")
-# Census data file
-census_simple = gpd.read_file("censusBlockDataFull.geojson")
 # Sales data date cleaning
 sales_clean_simple["SaleDate"] = pd.to_datetime(sales_clean_simple["SaleDate"])
 # Loading rolling sales data
@@ -55,18 +54,6 @@ def nanformat(n, strcode):
         return "Not available"
     else:
         return strcode % n
-    
-def plothhInc():
-    # Function for creating plot of population size by hh income bracket
-    fig = px.bar(hhIncPcts, x='bracket', y='hhInc', color='hhInc', 
-                 labels={'bracket':'Income Bracket', 
-                         'hhInc':'Households (% of total, n = 89829)'}, height=400)
-    fig.update_layout(margin=go.layout.Margin(l=0, r=0, b=0, t=0),
-                      plot_bgcolor="rgba(0,0,0,0)",
-                      paper_bgcolor="rgba(0,0,0,0)",
-                      autosize=True,
-                      font=dict(size=16, color="rgb(255,255,255)"))
-    return fig
 
 # History by zoning graph (number of sales)
 def history_zoning_num():
@@ -85,7 +72,7 @@ def history_zoning_num():
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
                       autosize=True,
-                      font=dict(size=16, color="rgb(255,255,255)"))
+                      font=dict(size=13, color="rgb(255,255,255)"))
     fig['data'][0]['showlegend'] = True
     return fig
 
@@ -106,7 +93,7 @@ def history_zoning_price():
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
                       autosize=True,
-                      font=dict(size=16, color="rgb(255,255,255)"))
+                      font=dict(size=13, color="rgb(255,255,255)"))
     fig['data'][0]['showlegend'] = True
     return fig
 
@@ -120,30 +107,10 @@ history_zoning_checklist_two = "Two family"
 history_zoning_checklist_multi = "Multi family and others"
 history_neighborhood_title = "By Neighborhood"
 
-## Census
-census_title = "Census Information"
 ## footnote
-source = '''Data from Charlotteville Open Data Portal. Last update March 1, 2022.
+source = '''Data from Charlotteville Open Data Portal. Last update March 22, 2022.
 Prices have been adjusted for inflation. Only sales with state code Residential 
 (urban/suburban) and Multifamily are included.'''
-# ----------------------------------------------------------------------------
-# Data processing for census_plot
-colsHHInc = ['GEOID', 'hhInc10E', 'hhInc10to15E', 'hhInc15to20E', 
-             'hhInc20to25E', 'hhInc25to30E', 'hhInc30to35E', 
-             'hhInc35to40E', 'hhInc40to45E', 'hhInc45to50E', 
-             'hhInc50to60E', 'hhInc60to75E', 'hhInc75to100E', 
-             'hhInc100to125E', 'hhInc125to150E', 'hhInc150to200E',
-             'hhInc200E']
-hhIncDF = census_simple[colsHHInc]
-hhIncPivot = pd.wide_to_long(hhIncDF, stubnames="hhInc", i="GEOID", j="bracket", suffix='\\w+')
-hhIncPivot = hhIncPivot.reset_index().reindex(["GEOID", "bracket", "hhInc"], axis=1)
-hhIncPcts = hhIncPivot.groupby(hhIncPivot['bracket']).agg({'hhInc':'sum'}).reset_index()
-n = sum(hhIncPcts['hhInc'])
-hhIncPcts['hhInc'] = 100 * hhIncPcts['hhInc'] / sum(hhIncPcts['hhInc'])
-hhIncPcts = hhIncPcts.reindex([1,2,5,7,8,9,10,11,12,13,14,15,0,3,4,6])
-hhIncPcts['bracket'] = '$' + hhIncPcts['bracket'].str[:-1] + 'k'
-hhIncPcts.at[1,'bracket'] = "< " + hhIncPcts['bracket'][1]
-hhIncPcts.at[6,'bracket'] = hhIncPcts['bracket'][6] + "+"
 # ----------------------------------------------------------------------------
 # Building dash
 year = np.arange(1945, 2021, 1, dtype=int)
@@ -159,11 +126,9 @@ layout = html.Div(
                 [
                     dbc.NavItem(dbc.NavLink(tb.opts['TOP'], href="#", external_link=True, 
                                             className="background2 left_text subtitle")),
-                    dbc.NavItem(dbc.NavLink(tb.opts['SECTOR'], href="#sector_plot", external_link=True, 
+                    dbc.NavItem(dbc.NavLink(tb.opts['SECTOR'], href="#ind_city_plot", external_link=True, 
                                             className="background2 left_text subtitle")),
                     dbc.NavItem(dbc.NavLink(tb.opts['HIST'], href="#history_title", external_link=True, 
-                                            className="background2 left_text subtitle")),
-                    dbc.NavItem(dbc.NavLink(tb.opts['CENSUS'], href="#census_title", external_link=True, 
                                             className="background2 left_text subtitle")),
                 ], id="city_sidebar", is_open=False, 
                 style={"width": "400px", "margin-left": "0", "position": "fixed", "top": "80px"}, className="background"),
@@ -200,10 +165,27 @@ layout = html.Div(
         # Sector/Industry chart
         html.Div(
             [
-                dcc.Graph(id='sector_plot', figure=indf.plotIndustrySector(), style={'display': 'block'}),
+                dcc.Graph(id='ind_city_plot', figure=cf.plotIndustrySector(), style={'display': 'block'}),
             ], className="subcontainer"),
         html.Hr(className="center_text title"),
-        # Neighborhood characteristics
+        # Age chart
+        html.Div(
+            [
+                dcc.Graph(id='age_city_plot', figure=cf.plotAgeCity(), style={'display': 'block'}),
+            ], className="subcontainer"),
+        html.Hr(className="center_text title"),
+        # Race plot
+        html.Div(
+            [
+                dcc.Graph(id='race_city_plot', figure=cf.plotRaceCity(), style={'display': 'block'}),
+            ], className="subcontainer"),
+        html.Hr(className="center_text title"),
+        # Income plot
+        html.Div(
+            [
+                dcc.Graph(id='income_city_plot', figure=cf.plotIncomeCity(), style={'display': 'block'}),
+            ], className="subcontainer"),
+        html.Hr(className="center_text title"),
         # History of price
         html.Div([
             html.Span(history_title, id="history_title", className="center_text title"),
@@ -213,11 +195,6 @@ layout = html.Div(
                       config={'displayModeBar': False}, figure=history_zoning_num()),
             dcc.Graph(id='history_zoning_price_plot', style={"width": "100%"},
                       config={'displayModeBar': False}, figure=history_zoning_price()),
-        ], className="subcontainer"),
-        # Census
-        html.Div([
-            html.Span(census_title, id="census_title", className="center_text title"),
-            dcc.Graph(id='bar_plot', figure=plothhInc())
         ], className="subcontainer"),
         # Disclaimers
         html.Div([dcc.Markdown(children=source)], className="subcontainer left_text bodytext"),

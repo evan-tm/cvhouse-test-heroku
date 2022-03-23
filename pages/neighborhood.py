@@ -1,3 +1,4 @@
+# ------------------Neighborhood page------------------#
 from dash import dcc, html, Input, Output, State, callback
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
@@ -8,6 +9,7 @@ import srcCode.neighborhoodDescs as nd
 import srcCode.dashFuncs as df
 import srcCode.affordDescs as ad
 import srcCode.cvillepedia as cv
+import srcCode.censusFuncs as cf
 
 # Loading rolling sales data
 sales_year = pd.read_pickle("rolling/sales_year.pkl")
@@ -34,7 +36,7 @@ layout = html.Div(
                                             className="background2 left_text subtitle")),
                     dbc.NavItem(dbc.NavLink(tb.opts['SECTOR'], href="#hood_cvillepedia", external_link=True, 
                                             className="background2 left_text subtitle")),
-                    dbc.NavItem(dbc.NavLink(tb.opts['HIST'], href="#neighborhood_plot", external_link=True, 
+                    dbc.NavItem(dbc.NavLink(tb.opts['HIST'], href="#ind_neighborhood_plot", external_link=True, 
                                             className="background2 left_text subtitle")),
                     dbc.NavItem(dbc.NavLink(tb.opts['CENSUS'], 
                                             href="#history_neighborhood_price_plot", 
@@ -55,7 +57,7 @@ layout = html.Div(
         html.H3(nd.text['MAIN_TITLE'], className = "center_text title"),
         html.Div(
             [
-                # Neighborhood dropdown for industry chart
+                # Neighborhood dropdown
                 html.Div([
                     df.createDropdown(dropdown_neighborhood, dropdown_neighborhood_lod_opts,
                                       dropdown_neighborhood_default, dd_id="dropdown_neighborhood",
@@ -64,12 +66,31 @@ layout = html.Div(
                 # Neighborhood CVillepedia description
                 html.Div(ad.text['LOADING'], id="hood_cvillepedia", className="left_text bodytext"),
             ], className = "subcontainer"),
-        # Sector/Industry and Neighborhood/Industry charts
+        # Industry chart
         html.Div(
             [
-                dcc.Graph(id='neighborhood_plot', style={'display': 'block'}),
+                dcc.Graph(id='ind_neighborhood_plot', style={'display': 'block'}),
             ], className="subcontainer"),
         html.Hr(className="center_text title"),
+        # Age chart
+        html.Div(
+            [
+                dcc.Graph(id='age_neighborhood_plot', style={'display': 'block'}),
+            ], className="subcontainer"),
+        html.Hr(className="center_text title"),
+        # Race plot
+        html.Div(
+            [
+                dcc.Graph(id='race_neighborhood_plot', style={'display': 'block'}),
+            ], className="subcontainer"),
+        html.Hr(className="center_text title"),
+        # Income plot
+        html.Div(
+            [
+                dcc.Graph(id='income_neighborhood_plot', style={'display': 'block'}),
+            ], className="subcontainer"),
+        html.Hr(className="center_text title"),
+        # History of price
         html.Div(
             [
                 html.Span(HIST_NEIGHBORHOOD_TITLE, className="center_text subtitle"),
@@ -127,7 +148,7 @@ def history_neighborhood_num(neigh):
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
                       autosize=True,
-                      font=dict(size=16, color="rgb(255,255,255)"))
+                      font=dict(size=13, color="rgb(255,255,255)"))
     fig['data'][0]['showlegend'] = True
     return fig
 
@@ -145,6 +166,6 @@ def history_neighborhood_price(neigh):
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
                       autosize=True,
-                      font=dict(size=16, color="rgb(255,255,255)"))
+                      font=dict(size=13, color="rgb(255,255,255)"))
     fig['data'][0]['showlegend'] = True
     return fig
