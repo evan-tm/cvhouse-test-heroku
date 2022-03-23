@@ -29,10 +29,10 @@ neighborhood_simple = gpd.read_file("neighborhood_simple.geojson")
 # Sales data date cleaning
 sales_clean_simple["SaleDate"] = pd.to_datetime(sales_clean_simple["SaleDate"])
 # Loading rolling sales data
-sales_year = pd.read_pickle("rolling/sales_year.pkl")
-sales_year_single = pd.read_pickle("rolling/sales_year_single.pkl")
-sales_year_two = pd.read_pickle("rolling/sales_year_two.pkl")
-sales_year_multi = pd.read_pickle("rolling/sales_year_multi.pkl")
+sales_year = pd.read_pickle("data/rolling/sales_year.pkl")
+sales_year_single = pd.read_pickle("data/rolling/sales_year_single.pkl")
+sales_year_two = pd.read_pickle("data/rolling/sales_year_two.pkl")
+sales_year_multi = pd.read_pickle("data/rolling/sales_year_multi.pkl")
 # ----------------------------------------------------------------------------
 # Helper functions
 millnames = ['','k','M','B','T']
@@ -157,6 +157,9 @@ layout = html.Div(
                     html.Div([
                         dcc.Slider(min=1945, max=2021, step=1, value=2020, 
                                    tooltip={"placement": "bottom", "always_visible": True},
+                                   marks={1945: "1945", 1950: "", 1955: "1955", 1960: "", 1965: "1965", 1970: "",
+                                          1975: "1975", 1980: "", 1985: "1985", 1990: "", 1995: "1995", 2000: "",
+                                          2005: "2005", 2010: "", 2015: "2015", 2020: "2020"},
                                    id="afford_slider_year")
                     ], style={"width": "100%"}),
                 ], className="grid_container", style={"grid-template-columns": "minmax(600px, 4fr) 2fr 1fr"}),
