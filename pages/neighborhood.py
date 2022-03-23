@@ -12,7 +12,7 @@ import srcCode.cvillepedia as cv
 import srcCode.censusFuncs as cf
 
 # Loading rolling sales data
-sales_year = pd.read_pickle("rolling/sales_year.pkl")
+sales_year = pd.read_pickle("data/rolling/sales_year.pkl")
 
 # Neighborhood dropdown texts
 dropdown_neighborhood = ""
@@ -140,7 +140,7 @@ def printCvillepedia(hood):
           [Input("dropdown_neighborhood", "value"),])
 def history_neighborhood_num(neigh):
     fig = go.Figure()
-    syn = pd.read_pickle("rolling/sales_year_nb_" + base64.b64encode(neigh.encode('ascii')).decode('ascii') + ".pkl")
+    syn = pd.read_pickle("data/rolling/sales_year_nb_" + base64.b64encode(neigh.encode('ascii')).decode('ascii') + ".pkl")
     fig.add_trace(go.Scatter(x=syn["SaleDate"], y=syn["SaleAmountAdjusted"]["count"] * 0.5, name=neigh))
     fig.update_layout(xaxis_title="Year",
                       yaxis_title="Yearly Number of Sales",
@@ -158,7 +158,7 @@ def history_neighborhood_num(neigh):
 def history_neighborhood_price(neigh):
     fig = go.Figure(data=go.Scatter(x=sales_year["SaleDate"], y=sales_year["SaleAmountAdjusted"]["median"], 
                                     name="All Sales"))
-    syn = pd.read_pickle("rolling/sales_year_nb_" + base64.b64encode(neigh.encode('ascii')).decode('ascii') + ".pkl")
+    syn = pd.read_pickle("data/rolling/sales_year_nb_" + base64.b64encode(neigh.encode('ascii')).decode('ascii') + ".pkl")
     fig.add_trace(go.Scatter(x=syn["SaleDate"], y=syn["SaleAmountAdjusted"]["median"], name=neigh))
     fig.update_layout(xaxis_title="Year",
                       yaxis_title="Yearly Median Sale Price [$, inflation adjusted]",
