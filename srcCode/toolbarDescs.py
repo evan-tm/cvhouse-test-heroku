@@ -13,6 +13,10 @@ text = {
 }
 
 opts = {
+    "HOME": "Home",
+    "CITY": "Explore the City",
+    "NEIGHBORHOOD": "Explore the Neighborhoods",
+    "NBCOMPARE": "Compare the Neighborhoods",
     "TOP": "Top",
     "CENSUS": "Census Information",
     "HIST": "Price History",

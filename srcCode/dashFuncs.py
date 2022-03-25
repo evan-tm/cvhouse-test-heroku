@@ -7,6 +7,7 @@ import plotly.graph_objects as go
 from dash import Input, Output, State, dcc, html, callback
 import dash_bootstrap_components as dbc
 import dash_daq as daq
+import srcCode.toolbarDescs as tb
 
 
 ## Creates a Dash dropdown menu
@@ -63,3 +64,19 @@ def createNumericInput(description, default_value, maximum, minimum=0,
                              max=maximum, className="subcontainer", style=ip_style, 
                              size=size, **kwargs)
             ], className="grid_container", style={"grid-template-columns": grid_width})
+
+    
+def createTopBar():
+    return html.A(dbc.Row(
+        [
+            dbc.Col(dbc.NavItem(dbc.NavLink(tb.opts['HOME'], href="/home", external_link=True, 
+                                            className="background2 center_text subtitle", style={'height':'70px'}))),
+            dbc.Col(dbc.NavItem(dbc.NavLink(tb.opts['CITY'], href="/city", external_link=True, 
+                                            className="background2 center_text subtitle", style={'height':'70px'}))),
+            dbc.Col(dbc.NavItem(dbc.NavLink(tb.opts['NEIGHBORHOOD'], href="/neighborhood", external_link=True, 
+                                            className="background2 center_text subtitle", style={'height':'70px'}))),
+            dbc.Col(dbc.NavItem(dbc.NavLink(tb.opts['NBCOMPARE'], href="/nbcompare", external_link=True, 
+                                            className="background2 center_text subtitle", style={'height':'70px'}))),
+            dbc.Col(html.Img(src = 'assets/title.png', style={'height':'70px'}), className="ml-5"),
+        ], 
+        align="center", className="g-0"))

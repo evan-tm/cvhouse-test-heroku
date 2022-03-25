@@ -29,15 +29,7 @@ layout = html.Div(
                                             className="background2 left_text subtitle")),
                 ], id="home_sidebar", is_open=False, 
                 style={"width": "400px", "margin-left": "0", "position": "fixed", "top": "80px"}, className="background"),
-            html.A(
-                dbc.Row(
-                    [
-                        dbc.Col(html.Img(src = 'assets/title.png', style={'height':'50px'}), className="ml-5"),
-                    ],
-                    align="center",
-                    className="g-0"
-                )
-            ),
+            df.createTopBar()
         ], className="sidebar", color="#132C36", sticky="top"),
     html.H3(hd.text['MAIN_TITLE'], className = "center_text title"),
     html.Div(
@@ -45,7 +37,7 @@ layout = html.Div(
             html.Div(hd.text['COPY'], id="copy_text", className="left_text bodytext"),
         ], className = "subcontainer"),
     html.Hr(className="center_text title"),
-    html.Span(ad.text['DD_MAIN_TITLE'], className="left_text subtitle"),
+    html.Span(ad.text['DD_MAIN_TITLE'], className="center_text subtitle"),
     html.Div(
             [
                 # Neighborhood dropdown for industry chart
@@ -94,9 +86,6 @@ layout = html.Div(
                                 style={"background-color": "#FFA858", "color": "#000000"}),
         ], className="subcontainer"),
     html.Div(ad.text['LOADING'], id="afford_result", className="center_text subtitle"),
-    dcc.Link('Take me to the map', href='/city'),
-    html.Br(),
-    dcc.Link('By neighborhood, please', href='/neighborhood')
     ], className = "container background")
 
 # Collapsable sidebar
