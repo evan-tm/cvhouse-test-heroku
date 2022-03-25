@@ -23,6 +23,7 @@ dropdown_neighborhood_lod_opts = ["Barracks Road", "Rose Hill", "Lewis Mountain"
                                   "Ridge Street", "Venable", "Belmont"]
 dropdown_neighborhood_default = dropdown_neighborhood_lod_opts[11]
 HIST_NEIGHBORHOOD_TITLE = 'History of Residential Sales:'
+dropdown_neighborhood_history_opts = ["Number of Sales", "Median Price"]
 
 layout = html.Div(
     [
@@ -94,10 +95,10 @@ layout = html.Div(
         html.Div(
             [
                 html.Span(HIST_NEIGHBORHOOD_TITLE, className="center_text subtitle"),
-                dcc.Graph(id='history_neighborhood_num_plot', style={"width": "100%"},     
-                          config={'displayModeBar': False}),
-                dcc.Graph(id='history_neighborhood_price_plot', style={"width": "100%"},
-                          config={'displayModeBar': False}),
+                df.createDropdown("", dropdown_neighborhood_history_opts,
+                                  dropdown_neighborhood_history_opts[0], dd_id="dropdown_neighborhood_history",
+                                  dd_style={"width": "200px"}, clearable=False),
+                dcc.Graph(id='neighborhood_history_plot', style={"width": "100%"}, config={'displayModeBar': False}),
             ], className="subcontainer"),
         dcc.Link('Take me home', href='/home'),
     ], className = "container background")
@@ -136,32 +137,21 @@ def printCvillepedia(hood):
 #        return dropdown_neighborhood_lod_opts[11]
 #    return(str(clickData['points'][len(clickData['points']) - 1]['hovertext']))
 
-@callback(Output("history_neighborhood_num_plot", "figure"),
-          [Input("dropdown_neighborhood", "value"),])
-def history_neighborhood_num(neigh):
-    fig = go.Figure()
-    syn = pd.read_pickle("data/rolling/sales_year_nb_" + base64.b64encode(neigh.encode('ascii')).decode('ascii') + ".pkl")
-    fig.add_trace(go.Scatter(x=syn["SaleDate"], y=syn["SaleAmountAdjusted"]["count"] * 0.5, name=neigh))
+@callback(Output("neighborhood_history_plot", "figure"),
+          [Input("dropdown_neighborhood", "value"), Input("dropdown_neighborhood_history", "value")])
+def history_neighborhood_price(neighs, var):
+    if var == "Number of Sales":
+        to_plot = "count"
+        y_label = "Yearly Number of Sales"
+    else:
+        to_plot = "median"
+        y_label = "Yearly Median Sale Price [$, inflation adjusted]"
+    fig = go.Figure(data=go.Scatter(x=sales_year["SaleDate"], y=sales_year["SaleAmountAdjusted"][to_plot], 
+                                    name="Charlottesville City"))
+    syn = pd.read_pickle("data/rolling/sales_year_nb_" + base64.b64encode(neighs.encode('ascii')).decode('ascii') + ".pkl")
+    fig.add_trace(go.Scatter(x=syn["SaleDate"], y=syn["SaleAmountAdjusted"][to_plot], name=neighs))
     fig.update_layout(xaxis_title="Year",
-                      yaxis_title="Yearly Number of Sales",
-                      margin=go.layout.Margin(l=0, r=0, b=0, t=0),
-                      plot_bgcolor="rgba(0,0,0,0)",
-                      paper_bgcolor="rgba(0,0,0,0)",
-                      autosize=True,
-                      font=dict(size=13, color="rgb(255,255,255)"))
-    fig['data'][0]['showlegend'] = True
-    return fig
-
-
-@callback(Output("history_neighborhood_price_plot", "figure"),
-          [Input("dropdown_neighborhood", "value"),])
-def history_neighborhood_price(neigh):
-    fig = go.Figure(data=go.Scatter(x=sales_year["SaleDate"], y=sales_year["SaleAmountAdjusted"]["median"], 
-                                    name="All Sales"))
-    syn = pd.read_pickle("data/rolling/sales_year_nb_" + base64.b64encode(neigh.encode('ascii')).decode('ascii') + ".pkl")
-    fig.add_trace(go.Scatter(x=syn["SaleDate"], y=syn["SaleAmountAdjusted"]["median"], name=neigh))
-    fig.update_layout(xaxis_title="Year",
-                      yaxis_title="Yearly Median Sale Price [$, inflation adjusted]",
+                      yaxis_title=y_label,
                       margin=go.layout.Margin(l=0, r=0, b=0, t=0),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",

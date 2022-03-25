@@ -231,6 +231,10 @@ def plotIncomeCity():
 @callback(
     Output('ind_neighborhood_plot', 'figure'),
     Input('dropdown_neighborhood', 'value'))
+def ind_neighborhood_plot(n):
+    return plotIndustryByNeighborhood(n)
+
+
 def plotIndustryByNeighborhood(n):
     fig = px.bar(industryNeighborhood, 
                  x=n,
@@ -289,6 +293,10 @@ def plotIndustryByNeighborhood(n):
 @callback(
     Output('age_neighborhood_plot', 'figure'),
     Input('dropdown_neighborhood', 'value'))
+def age_neighborhood_plot(n):
+    return plotAgeNeighborhood(n)
+
+
 def plotAgeNeighborhood(n):
     # begin building figure
     fig = px.bar(ageNeighborhood, 
@@ -340,6 +348,10 @@ def plotAgeNeighborhood(n):
 @callback(
     Output('race_neighborhood_plot', 'figure'),
     Input('dropdown_neighborhood', 'value'))
+def race_neighborhood_plot(n):
+    return plotRaceNeighborhood(n)
+
+
 def plotRaceNeighborhood(n):
     # begin building figure
     fig = px.bar(raceNeighborhood, 
@@ -391,6 +403,10 @@ def plotRaceNeighborhood(n):
 @callback(
     Output('income_neighborhood_plot', 'figure'),
     Input('dropdown_neighborhood', 'value'))
+def income_neighborhood_plot(n):
+    return plotIncomeNeighborhood(n)
+
+
 def plotIncomeNeighborhood(n):
     # begin building figure
     fig = px.bar(incomeNeighborhood, 
