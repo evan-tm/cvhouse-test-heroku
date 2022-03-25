@@ -46,15 +46,7 @@ layout = html.Div(
                                             className="background2 left_text subtitle")),
                 ], id="nbc_sidebar", is_open=False, 
                 style={"width": "400px", "margin-left": "0", "position": "fixed", "top": "80px"}, className="background"),
-            html.A(
-                dbc.Row(
-                    [
-                        dbc.Col(html.Img(src = 'assets/title.png', style={'height':'50px'}), className="ml-5"),
-                    ],
-                    align="center",
-                    className="g-0"
-                )
-            ),
+            df.createTopBar()
         ], className="sidebar", color="#132C36", sticky="top"),
         html.H3(nbcd.text['MAIN_TITLE'], className = "center_text title"),
         # Neighborhood selector

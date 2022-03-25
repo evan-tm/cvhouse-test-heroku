@@ -132,27 +132,13 @@ layout = html.Div(
                                             className="background2 left_text subtitle")),
                 ], id="city_sidebar", is_open=False, 
                 style={"width": "400px", "margin-left": "0", "position": "fixed", "top": "80px"}, className="background"),
-            html.A(
-                dbc.Row(
-                    [
-                        dbc.Col(html.Img(src = 'assets/title.png', style={'height':'50px'}), className="ml-5"),
-                    ],
-                    align="center",
-                    className="g-0"
-                )
-            ),
+            df.createTopBar()
         ], className="sidebar", color="#132C36", sticky="top"),
-        html.H3(cd.text['MAIN_TITLE'], className = "center_text title"),
-        # Level of detail dropdown
-        df.createDropdown(ad.text['DD_LOD'], ad.opts['DD_LOD'],
-                          ad.default['DD_LOD'], dd_id="afford_dropdown_lod", 
-                          dd_style={"width": "200px"}, clearable=False, searchable = False),
+        html.H3(cd.text['MAIN_TITLE'], className = "center_text title"), 
         # Affordability
         html.Div(
             [
-                html.Div([
-                    dcc.Graph(id="afford_map", style={"width": "100%"}),
-                ], className="grid_container", style={"grid-template-columns": "minmax(600px, 2fr) 1fr"}),
+                dcc.Graph(id="afford_map", style={"width": "100%", "height": "600px"}),
                 html.Div([
                     html.Div([
                         dcc.Slider(min=1945, max=2021, step=1, value=2020, 
@@ -162,7 +148,11 @@ layout = html.Div(
                                           2005: "2005", 2010: "", 2015: "2015", 2020: "2020"},
                                    id="afford_slider_year")
                     ], style={"width": "100%"}),
-                ], className="grid_container", style={"grid-template-columns": "minmax(600px, 4fr) 2fr 1fr"}),
+                # Level of detail dropdown
+                df.createDropdown(ad.text['DD_LOD'], ad.opts['DD_LOD'],
+                                  ad.default['DD_LOD'], dd_id="afford_dropdown_lod", 
+                                  dd_style={"width": "200px"}, clearable=False, searchable = False),
+                ], className="grid_container", style={"grid-template-columns": "minmax(600px, 4fr) 2fr"}),
             ], className="subcontainer"),
         html.Hr(className="center_text title"),
         # Sector/Industry chart
@@ -235,7 +225,7 @@ def update_afford_map(lod, y):
                                    labels={"MeanSales": "Average Total Sale Price"},
                                    hover_name="Neighborhood", 
                                    hover_data={"MeanSalesStr": True, "NumSales": True},
-                                   center={"lat": 38.0293, "lon": -78.4767}, 
+                                   center={"lat": 38.039, "lon": -78.47826}, 
                                    zoom=12, 
                                    )
         fig.update_traces(hovertemplate="<br>".join([
@@ -255,7 +245,7 @@ def update_afford_map(lod, y):
                                    hover_name="Address", 
                                    hover_data={"SaleAmountStr": True, "AcreageStr": True, 
                                                "SaleDateStr": True, "Zone": True},
-                                   center={"lat": 38.0293, "lon": -78.4767}, 
+                                   center={"lat": 38.039, "lon": -78.47826}, 
                                    zoom=14,
                                   )
         fig.update_traces(hovertemplate="<br>".join([
