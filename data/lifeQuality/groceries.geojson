@@ -1,0 +1,25 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "name": "Kroger", "addr:street": "1159 Emmet St N" }, "geometry": { "type": "Point", "coordinates": [ -78.5006204, 38.0535319 ] } },
+{ "type": "Feature", "properties": { "name": "The Corner Grocery", "addr:street": "1325 W Main St" }, "geometry": { "type": "Point", "coordinates": [ -78.4989337, 38.0337944 ] } },
+{ "type": "Feature", "properties": { "name": "Reid Market", "addr:street": "600 Preston Ave" }, "geometry": { "type": "Point", "coordinates": [ -78.4860321, 38.0349767 ] } },
+{ "type": "Feature", "properties": { "name": "Food Lion", "addr:street": "1131 5th St SW" }, "geometry": { "type": "Point", "coordinates": [ -78.5027412, 38.013414 ] } },
+{ "type": "Feature", "properties": { "name": "Harris Teeter", "addr:street": "975 Emmet St N" }, "geometry": { "type": "Point", "coordinates": [ -78.5042131, 38.0499778 ] } },
+{ "type": "Feature", "properties": { "name": "Foods of All Nations", "addr:street": "2121 Ivy Rd" }, "geometry": { "type": "Point", "coordinates": [ -78.5119486, 38.0431314 ] } },
+{ "type": "Feature", "properties": { "name": "Asian Market", "addr:street": "1417 Emmet St N" }, "geometry": { "type": "Point", "coordinates": [ -78.4966832, 38.0561993 ] } },
+{ "type": "Feature", "properties": { "name": "Kroger", "addr:street": "1904 Emmet St N" }, "geometry": { "type": "Point", "coordinates": [ -78.4912101, 38.0595143 ] } },
+{ "type": "Feature", "properties": { "name": "La Guadalupana Latin Grocery", "addr:street": "221 Carlton Rd #15" }, "geometry": { "type": "Point", "coordinates": [ -78.4704928, 38.0230893 ] } },
+{ "type": "Feature", "properties": { "name": "Blue Ridge Country Store", "addr:street": "518 E Market St" }, "geometry": { "type": "Point", "coordinates": [ -78.4780084, 38.029581 ] } },
+{ "type": "Feature", "properties": { "name": "Whole Foods Market", "addr:street": "1797 Hydraulic Rd" }, "geometry": { "type": "Point", "coordinates": [ -78.489237911433463, 38.059668229828667 ] } },
+{ "type": "Feature", "properties": { "name": "Cohn's On the Corner", "addr:street": "1611 University Ave" }, "geometry": { "type": "Point", "coordinates": [ -78.501031553889845, 38.035748996029838 ] } },
+{ "type": "Feature", "properties": { "name": "SunShine Mini Mart", "addr:street": "827 Cherry Ave" }, "geometry": { "type": "Point", "coordinates": [ -78.4941777714822, 38.029029917439928 ] } },
+{ "type": "Feature", "properties": { "name": "7 Day Junior", "addr:street": "111 Maury Ave" }, "geometry": { "type": "Point", "coordinates": [ -78.515564324868677, 38.026481024286106 ] } },
+{ "type": "Feature", "properties": { "name": "7 Day Junior", "addr:street": "104 14th St NW" }, "geometry": { "type": "Point", "coordinates": [ -78.499043250227217, 38.034581058578027 ] } },
+{ "type": "Feature", "properties": { "name": "El Tio Variedades", "addr:street": "259 Ridge McIntire Rd" }, "geometry": { "type": "Point", "coordinates": [ -78.485555887531802, 38.032511121068687 ] } },
+{ "type": "Feature", "properties": { "name": "Tom Thumb Food Mart", "addr:street": "828 Cherry Ave" }, "geometry": { "type": "Point", "coordinates": [ -78.494516536886579, 38.02852974968016 ] } },
+{ "type": "Feature", "properties": { "name": "Grand Market", "addr:street": "323 W Main St" }, "geometry": { "type": "Point", "coordinates": [ -78.486136918042106, 38.030635332874326 ] } },
+{ "type": "Feature", "properties": { "name": "The Salvation Army Family Store", "addr:street": "604 Cherry Ave" }, "geometry": { "type": "Point", "coordinates": [ -78.491553468455251, 38.027261061060244 ] } }
+]
+}

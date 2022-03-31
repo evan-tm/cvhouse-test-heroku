@@ -5,6 +5,7 @@ import srcCode.toolbarDescs as tb
 import srcCode.affordFuncs as af
 import srcCode.affordDescs as ad
 import srcCode.dashFuncs as df
+import srcCode.qolFuncs as qf
 
 # Neighborhood dropdown texts
 dropdown_neighborhood = ""
@@ -35,6 +36,12 @@ layout = html.Div(
     html.Div(
         [
             html.Div(hd.text['COPY'], id="copy_text", className="left_text bodytext"),
+        ], className = "subcontainer"),
+    html.Hr(className="center_text title"),
+    html.Div(
+        [
+            # QoL map
+            dcc.Graph(id='qol_map', figure=qf.plotResourcesMap(), style={"width": "100%", "height": "600px"})
         ], className = "subcontainer"),
     html.Hr(className="center_text title"),
     html.Span(ad.text['DD_MAIN_TITLE'], className="center_text subtitle"),

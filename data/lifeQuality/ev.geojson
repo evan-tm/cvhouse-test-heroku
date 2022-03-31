@@ -1,0 +1,13 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Location": "The Flats at West Village", "Description": "Tesla Charger", "Address": "852 W Main St" }, "geometry": { "type": "Point", "coordinates": [ -78.49324869297422, 38.031930555712535 ] } },
+{ "type": "Feature", "properties": { "Location": "First and Market Parking Garage", "Description": "Level 2, DC Fast", "Address": "104 1st St N" }, "geometry": { "type": "Point", "coordinates": [ -78.480904889015392, 38.03109855559488 ] } },
+{ "type": "Feature", "properties": { "Location": "Water Street Parking", "Description": "DC Fast", "Address": "Water St" }, "geometry": { "type": "Point", "coordinates": [ -78.481434687877169, 38.029703555434494 ] } },
+{ "type": "Feature", "properties": { "Location": "Oakhurst Inn", "Description": "Level 2", "Address": "100 Oakhurst Circle" }, "geometry": { "type": "Point", "coordinates": [ -78.50763169657013, 38.031463553713436 ] } },
+{ "type": "Feature", "properties": { "Location": "Martin Horn", "Description": "Level 2", "Address": "210 Carlton Rd" }, "geometry": { "type": "Point", "coordinates": [ -78.469101684898817, 38.023135554681097 ] } },
+{ "type": "Feature", "properties": { "Location": "Homewood Suites", "Description": "DC Fast", "Address": "2036 India Rd" }, "geometry": { "type": "Point", "coordinates": [ -78.488892592670055, 38.061128561263352 ] } },
+{ "type": "Feature", "properties": { "Location": "Timbercreek Market", "Description": "Level 2", "Address": "722 Preston Ave" }, "geometry": { "type": "Point", "coordinates": [ -78.487973690296215, 38.035968556791595 ] } }
+]
+}

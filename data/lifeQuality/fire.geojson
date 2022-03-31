@@ -1,0 +1,9 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Station Name": "Headquarters", "Address": "203 Ridge St" }, "geometry": { "type": "Point", "coordinates": [ -78.486364175051477, 38.029384494810444 ] } },
+{ "type": "Feature", "properties": { "Station Name": "Station 1", "Address": "350 US-250 Bypass" }, "geometry": { "type": "Point", "coordinates": [ -78.480397890330011, 38.050728133043989 ] } },
+{ "type": "Feature", "properties": { "Station Name": "Station 10", "Address": "2420 Fontaine Ave" }, "geometry": { "type": "Point", "coordinates": [ -78.520276567152536, 38.025796856594148 ] } }
+]
+}

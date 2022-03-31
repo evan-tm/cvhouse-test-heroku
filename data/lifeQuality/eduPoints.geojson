@@ -1,0 +1,15 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "name": "Burnley-Moran Elementary School", "address": "1300 Long St" }, "geometry": { "type": "Point", "coordinates": [ -78.46288910679317, 38.035598002775302 ] } },
+{ "type": "Feature", "properties": { "name": "Clark Elementary School", "address": "1000 Belmont Ave" }, "geometry": { "type": "Point", "coordinates": [ -78.474202370243489, 38.022893986165144 ] } },
+{ "type": "Feature", "properties": { "name": "Venable Elementary School", "address": "406 14th St NW" }, "geometry": { "type": "Point", "coordinates": [ -78.496715934139203, 38.038553999456106 ] } },
+{ "type": "Feature", "properties": { "name": "Jackson-Via Elementary School", "address": "508 Harris Rd" }, "geometry": { "type": "Point", "coordinates": [ -78.503776720934525, 38.014322438640669 ] } },
+{ "type": "Feature", "properties": { "name": "Johnson Elementary School", "address": "1645 Cherry Ave" }, "geometry": { "type": "Point", "coordinates": [ -78.506245512955687, 38.02209537261021 ] } },
+{ "type": "Feature", "properties": { "name": "Greenbrier Elementary School", "address": "2228 Greenbrier Dr" }, "geometry": { "type": "Point", "coordinates": [ -78.470195927008035, 38.063188665283299 ] } },
+{ "type": "Feature", "properties": { "name": "Walker Upper Elementary School", "address": "1564 Dairy Rd" }, "geometry": { "type": "Point", "coordinates": [ -78.48383098086515, 38.053712038511222 ] } },
+{ "type": "Feature", "properties": { "name": "Buford Middle School", "address": "1000 Cherry Ave" }, "geometry": { "type": "Point", "coordinates": [ -78.497005922414942, 38.026400934657126 ] } },
+{ "type": "Feature", "properties": { "name": "Charlottesville High School", "address": "1400 Melbourne Rd" }, "geometry": { "type": "Point", "coordinates": [ -78.475317702296152, 38.052861507787782 ] } }
+]
+}
