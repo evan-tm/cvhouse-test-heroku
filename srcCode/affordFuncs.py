@@ -22,20 +22,20 @@ premiumHealthcareData = pd.read_csv('data/calculator/premiumHealthcare.csv')
 
 ## logic for getting correct index to pull from oopData
 ## in: age to find group for
-## out: index for age_group row
+## out: indexes for age_group rows
 def getAgeIdx(age):
     if age < 25:
-        return 3
+        return 3, 24
     elif age >= 25 and age < 35:
-        return 7
+        return 7, 25
     elif age >= 35 and age < 45:
-        return 11
+        return 11, 26
     elif age >= 45 and age < 55:
-        return 15
+        return 15, 27
     elif age >= 55 and age < 65:
-        return 19
+        return 19, 28
     else:
-        return 23
+        return 23, 29
 
 ## Approximates monthly tax payment for a given income
 ## in: status, income, adultCount, kidCount, tax options
@@ -151,31 +151,37 @@ def get_tax(status, income, adultCount, kidCount, optsTax):
 
 ## Calculates average healthcare cost given income, occupants, and age
 ## as well as the data for premiums and out-of-pocket costs
-## in: income, totalOccupants, age
+## in: income, totalOccupants, age, premiums data, oop data
 ## out: placeholder string for healthcare input
-def get_hcare_placeholder(income, totalOccupants, age, premData, oopData):
+def get_hcare_placeholder(income, totalOccupants, ageList, premData, oopData):
     # switch for premium
     if totalOccupants == 1:
         premium = premData.iloc[0, 1]
+    # assuming employee-plus-one premium for two people
     elif totalOccupants == 2:
         premium = premData.iloc[1, 1]
+    # assuming family premium for 3+ people
     else:
         premium = premData.iloc[2, 1]
-    # switch for out-of-pocket
-    if income < 15000:
-        oopCost = oopData.iloc[getAgeIdx(age), 3]
-    elif income >= 15000 and income < 30000:
-        oopCost = oopData.iloc[getAgeIdx(age), 4]
-    elif income >= 30000 and income < 40000:
-        oopCost = oopData.iloc[getAgeIdx(age), 5]
-    elif income >= 40000 and income < 50000:
-        oopCost = oopData.iloc[getAgeIdx(age), 6]
-    elif income >= 50000 and income < 70000:
-        oopCost = oopData.iloc[getAgeIdx(age), 7]
-    elif income >= 70000 and (income < 100000 or age < 25):
-        oopCost = oopData.iloc[getAgeIdx(age), 8]
-    else:
-        oopCost = oopData.iloc[getAgeIdx(age), 9]
+    # get out-of-pocket costs for each person
+    oopCost = 0.0
+    for age in ageList:
+        costIdx, peopleIdx = getAgeIdx(age)
+        # switch for out-of-pocket
+        if income < 15000:
+            oopCost += oopData.iloc[costIdx, 3] / oopData.iloc[peopleIdx, 3]
+        elif income >= 15000 and income < 30000:
+            oopCost += oopData.iloc[costIdx, 4] / oopData.iloc[peopleIdx, 4]
+        elif income >= 30000 and income < 40000:
+            oopCost += oopData.iloc[costIdx, 5] / oopData.iloc[peopleIdx, 5]
+        elif income >= 40000 and income < 50000:
+            oopCost += oopData.iloc[costIdx, 6] / oopData.iloc[peopleIdx, 6]
+        elif income >= 50000 and income < 70000:
+            oopCost += oopData.iloc[costIdx, 7] / oopData.iloc[peopleIdx, 7]
+        elif income >= 70000 and (income < 100000 or age < 25):
+            oopCost += oopData.iloc[costIdx, 8] / oopData.iloc[peopleIdx, 8]
+        else:
+            oopCost += oopData.iloc[costIdx, 9] / oopData.iloc[peopleIdx, 9]
 
     total = int(premium + oopCost)
     return '{} is average'.format(total)
@@ -198,38 +204,40 @@ def get_housing_payment(paymentType, homeSize,
             return dfRent.loc[(dfRent['Neighborhood'] == hood)]['oneBR'].values[0]
         elif homeSize == optsSize[2]:
             return dfRent.loc[(dfRent['Neighborhood'] == hood)]['twoBR'].values[0]
+        elif homeSize == optsSize[3]:
+            return dfRent.loc[(dfRent['Neighborhood'] == hood)]['threeBR'].values[0]
+        elif homeSize == optsSize[4]:
+            return dfRent.loc[(dfRent['Neighborhood'] == hood)]['fourBR'].values[0]
     else:
         return mortgageData[0]
 
 ## Gets the food payment for the household
-## in: age of user, adultCount, kidCount, foodData
+## in: age of user, foodData
 ## out: monthly food payment for household
-def get_food_payment(age, adultCount, kidCount, foodData):
-    # switch for food age group
-    if age < 2:
-        myFood = foodData.iloc[0, 3]
-    elif age >= 2 and age <= 3:
-        myFood = foodData.iloc[1, 3]
-    elif age >= 4 and age <= 5:
-        myFood = foodData.iloc[2, 3]
-    elif age >= 6 and age <= 8:
-        myFood = foodData.iloc[3, 3]
-    elif age >= 9 and age <= 11:
-        myFood = foodData.iloc[4, 3]
-    elif age >= 12 and age <= 13:
-        myFood = foodData.iloc[5, 3]
-    elif age >= 14 and age <= 19:
-        myFood = foodData.iloc[6, 3]
-    elif age >= 20 and age <= 50:
-        myFood = foodData.iloc[7, 3]
-    elif age >= 51 and age <= 70:
-        myFood = foodData.iloc[8, 3]
-    else:
-        myFood = foodData.iloc[9, 3]
-
-    # Add food cost (currently replicating adults age and using age 9-11 for all kids)
-    myFood += (adultCount - 1) * myFood
-    myFood += kidCount * foodData.iloc[4, 3]
+def get_food_payment(ages, foodData):
+    myFood = 0.0
+    for age in ages:
+        # switch for food age group
+        if age < 2:
+            myFood += foodData.iloc[0, 3]
+        elif age >= 2 and age <= 3:
+            myFood += foodData.iloc[1, 3]
+        elif age >= 4 and age <= 5:
+            myFood += foodData.iloc[2, 3]
+        elif age >= 6 and age <= 8:
+            myFood += foodData.iloc[3, 3]
+        elif age >= 9 and age <= 11:
+            myFood += foodData.iloc[4, 3]
+        elif age >= 12 and age <= 13:
+            myFood += foodData.iloc[5, 3]
+        elif age >= 14 and age <= 19:
+            myFood += foodData.iloc[6, 3]
+        elif age >= 20 and age <= 50:
+            myFood += foodData.iloc[7, 3]
+        elif age >= 51 and age <= 70:
+            myFood += foodData.iloc[8, 3]
+        else:
+            myFood += foodData.iloc[9, 3]
 
     return myFood
 
@@ -240,37 +248,96 @@ def get_food_payment(age, adultCount, kidCount, foodData):
 def get_transport_payment(transportType, vehicleType, senior, 
                           transportData, optsTransport, optsVehicle):
 
+    myTransport = 0.0
     # Add transport cost (currently assuming 15k mileage for every vehicle type)
     if transportType == optsTransport[0]:
-        if senior:
-            myTransport = 10.0 # cost of CAT monthly for seniors
-        else:
-            myTransport = 20.0 # cost of CAT monthly for non-seniors
+        for isSenior in senior:
+            if isSenior:
+                myTransport += 10.0 # cost of CAT monthly for seniors
+            else:
+                myTransport += 20.0 # cost of CAT monthly for non-seniors
     else:
         if vehicleType == optsVehicle[0]:
-            myTransport = transportData.iloc[1, 3] # small sedan
+            myTransport += transportData.iloc[1, 3] # small sedan
         elif vehicleType == optsVehicle[1]:
-            myTransport = transportData.iloc[4, 3] # medium sedan
+            myTransport += transportData.iloc[4, 3] # medium sedan
         elif vehicleType == optsVehicle[2]:
-            myTransport = transportData.iloc[7, 3] # compact suv
+            myTransport += transportData.iloc[7, 3] # compact suv
         elif vehicleType == optsVehicle[3]:
-            myTransport = transportData.iloc[10, 3] # medium suv
+            myTransport += transportData.iloc[10, 3] # medium suv
         elif vehicleType == optsVehicle[4]:
-            myTransport = transportData.iloc[13, 3] # pickup
+            myTransport += transportData.iloc[13, 3] # pickup
         elif vehicleType == optsVehicle[5]:
-            myTransport = transportData.iloc[16, 3] # hybrid
+            myTransport += transportData.iloc[16, 3] # hybrid
         elif vehicleType == optsVehicle[6]:
-            myTransport = transportData.iloc[19, 3] # EV
+            myTransport += transportData.iloc[19, 3] # EV
     
     return myTransport
+
+@callback(
+    Output('afford_dropdown_people', 'style'),
+    Output('afford_dropdown_people_desc_id', 'style'),
+    Input('afford_dropdown_people', 'value')
+)
+def show_hide_people(people):
+    
+    # convert age list of str to list of ints
+    ages = []
+    if isinstance(people, str):
+        if people != '':
+            ages.append(int(people))
+    else:
+        for ageStr in people:
+            if ageStr != '':
+                ages.append(int(ageStr))
+    peopleCount = len(ages)
+    if peopleCount > 0:
+        return ({'display': 'block', "width": "150px"}, 
+                {'display': 'block', "width": "150px"})
+    else:
+        return ({'display': 'none'}, 
+                {'display': 'none'})
+
+
+@callback(
+    Output('afford_dropdown_people', 'options'),
+    Output('afford_dropdown_people', 'value'),
+    [Input('age_button', 'n_clicks')],
+    [State('afford_input_age', 'value'),
+     State('afford_dropdown_people', 'options'),
+     State('afford_dropdown_people', 'value')],
+)
+def update_dropdown_people(n_clicks, new_value, current_options, current_values):
+    
+    if not n_clicks:
+        return current_options, current_values
+    
+    current_options.append({'label': new_value, 'value': new_value})
+    return_values = []
+    if isinstance(current_values, str):
+        return_values.append(current_values)
+    else:
+        return_values = current_values
+    return_values.append(new_value)
+    return current_options, return_values
 
 @callback(
    Output(component_id='afford_input_childcare', component_property='style'),
    Output(component_id='afford_input_cc_desc_id', component_property='style'),
    Output(component_id='afford_input_childcare', component_property='max'),
-   [Input(component_id='afford_input_kids', component_property='value')])
-def show_hide_childCare(kidCount):
+   [Input(component_id='afford_dropdown_people', component_property='value')])
+def show_hide_childCare(people):
 
+    # convert age list of str to list of ints
+    ages = []
+    if isinstance(people, str):
+        if people != '':
+            ages.append(int(people))
+    else:
+        for ageStr in people:
+            if ageStr != '':
+                ages.append(int(ageStr))
+    kidCount = sum([age < 18 for age in ages])
     if kidCount is None:
         return ({'display': 'none'}, 
                 {'display': 'none'},
@@ -315,28 +382,35 @@ def show_hide_homeSize(currentPay):
 @callback(
    Output(component_id='afford_input_hcare', component_property='placeholder'),
    [Input("afford_input_salary", "value"),
-    Input("afford_input_adults", "value"),
-    Input("afford_input_kids", "value"),
-    Input("afford_input_age", "value")])
-def update_hcare_placeholder(incomeStr, adultCount, kidCount, ageStr):
+    Input("afford_dropdown_people", "value")])
+def update_hcare_placeholder(incomeStr, people):
 
-    if incomeStr is None:
+    if incomeStr is None or people is None:
         return ''
-    totalOccupants = int(adultCount) + int(kidCount)
+    # convert age list of str to list of ints
+    ages = []
+    if isinstance(people, str):
+        if people != '':
+            ages.append(int(people))
+        else:
+            return ''
+    else:
+        for ageStr in people:
+            if ageStr != '':
+                ages.append(int(ageStr))
+    totalOccupants = len(ages)
     return get_hcare_placeholder(int(incomeStr), totalOccupants, 
-                                 int(ageStr), premiumHealthcareData,
+                                 ages, premiumHealthcareData,
                                  oopHealthcareData)
 
 # Update expense defaults and affordability message
 @callback(Output('afford_result', 'children'),
           [Input("afford_button", "n_clicks"), 
           State('afford_input_salary', 'value'), 
+          State('afford_dropdown_people', 'value'),
           State('afford_dropdown_pay', 'value'), 
           State('afford_dropdown_homeSize', 'value'), 
-          State('afford_input_adults', 'value'),
-          State('afford_input_kids', 'value'),
           State('afford_input_childcare', 'value'),
-          State('afford_input_age', 'value'),
           State('afford_dropdown_transport', 'value'),
           State('afford_dropdown_vehicle', 'value'),
           State('afford_input_hcare', 'value'),
@@ -344,12 +418,12 @@ def update_hcare_placeholder(incomeStr, adultCount, kidCount, ageStr):
           State('afford_input_tech', 'value'),
           State('afford_dropdown_tax' ,'value'),
           State('dropdown_neighborhood', 'value')])
-def update_expenses(n, income, paymentType, homeSize, adultCount, kidCount, ccCount, ageStr,
-                    transportType, vehicleType, hcareStr, hcarePlace, techStr, 
-                    taxStatus, hood):
+def update_expenses(n, income, people, paymentType, homeSize, ccCount, 
+                    transportType, vehicleType, hcareStr, hcarePlace, 
+                    techStr, taxStatus, hood):
 
     # Starting message
-    if income is None:
+    if income is None or people is None:
         return 'Enter your information to see whether Charlottesville \
              is affordable for you!'
     # get switch options from global vars
@@ -357,10 +431,19 @@ def update_expenses(n, income, paymentType, homeSize, adultCount, kidCount, ccCo
     optsTransport = ad.opts['DD_TRANSPORT']
     optsVehicle = ad.opts['DD_VEHICLE']
     optsPayment = ad.opts['DD_PAY']
-    # convert age to int
-    age = int(ageStr)
+    # convert age list of str to list of ints
+    ages = []
+    if isinstance(people, str):
+        if people != '':
+            ages.append(int(people))
+    else:
+        for ageStr in people:
+            if ageStr != '':
+                ages.append(int(ageStr))
+    adultCount = sum([age >= 18 for age in ages])
+    kidCount = len(ages) - adultCount
     # determine seniority
-    senior = (age >= 65)
+    senior = [age >= 65 for age in ages]
     # convert hcare to int or use avg
     if hcareStr is None:
         myHealthcare = int(hcarePlace.split()[0])
@@ -372,10 +455,10 @@ def update_expenses(n, income, paymentType, homeSize, adultCount, kidCount, ccCo
                                           hood, optsPayment, optsSize)
     myHousing = monthlyExpenses
     # Add childcare cost (currently using Toddler Family Child Care for all kids in cc)
-    monthlyExpenses += int(ccCount) * 584.0
-    # Add food cost (currently replicating adults age and using age 9-11 for all kids)
-    monthlyExpenses += get_food_payment(age, int(adultCount), 
-                                        int(kidCount), foodData)
+    if ccCount is not None:
+        monthlyExpenses += int(ccCount) * 584.0
+    # Add food cost
+    monthlyExpenses += get_food_payment(ages, foodData)
     # Add transport cost (currently assuming 15k mileage for every vehicle type)
     monthlyExpenses += get_transport_payment(transportType, vehicleType, 
                                              senior, transportData, 
@@ -384,7 +467,7 @@ def update_expenses(n, income, paymentType, homeSize, adultCount, kidCount, ccCo
     monthlyExpenses += (myHealthcare / 12.0)
     # Add technology cost
     monthlyExpenses += int(techStr)
-    # Add tax cost
+    # Add tax cost NEED TO FIX WITH NEW ADULT TAGS
     monthlyExpenses += get_tax(taxStatus, int(income), 
                                   int(adultCount), int(kidCount), 
                                   ad.opts['DD_TAX'])

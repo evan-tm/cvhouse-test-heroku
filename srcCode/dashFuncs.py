@@ -1,10 +1,7 @@
 # ------------------General dash functions------------------#
 
 # modules to import
-import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
-from dash import Input, Output, State, dcc, html, callback
+from dash import dcc, html
 import dash_bootstrap_components as dbc
 import dash_daq as daq
 import srcCode.toolbarDescs as tb
@@ -14,7 +11,10 @@ import srcCode.toolbarDescs as tb
 def createDropdown(description, opts, default_value, 
                    dd_style={"width": "150px"}, dd_id=None, desc_id=None, 
                    grid_width="1fr 1fr", **kwargs):
-    opts_dict = [{"label": each, "value": each} for each in opts]
+    if opts is not None:
+        opts_dict = [{"label": each, "value": each} for each in opts]
+    else:
+        opts_dict = None
     if desc_id:
         return html.Div([
             html.Span(description, id=desc_id, className="center_text bodytext"), 
@@ -64,6 +64,31 @@ def createNumericInput(description, default_value, maximum, minimum=0,
                              max=maximum, className="subcontainer", style=ip_style, 
                              size=size, **kwargs)
             ], className="grid_container", style={"grid-template-columns": grid_width})
+
+def createTagInput(description, default_value, maximum, minimum=0, 
+                   ip_style={"width": "150px"}, ip_id=None, desc_id=None, 
+                   button_desc=None,
+                   button_id=None, grid_width="1fr 1fr 1fr 1fr", size=150, **kwargs):
+    
+    if desc_id:
+        return html.Div([
+            html.Span(description, id=desc_id, className="center_text bodytext"), 
+            daq.NumericInput(id=ip_id, value=default_value, min=minimum, 
+                             max=maximum, className="subcontainer", style=ip_style, 
+                             size=size, **kwargs),
+            html.Button(button_desc, id=button_id, className="right_text subtitle",
+                        style={"background-color": "#FFA858", "color": "#000000"}),
+            ], className="grid_container", style={"grid-template-columns": grid_width})
+    else:
+        return html.Div([
+            html.Span(description, className="elem1 center_text bodytext"), 
+            daq.NumericInput(id=ip_id, value=default_value, min=minimum, 
+                             max=maximum, className="elem2", style=ip_style, 
+                             size=size, **kwargs),
+            html.Button(button_desc, id=button_id, className="elem3 center_text subtitle",
+                        style={"background-color": "#FFA858", "color": "#000000", 'width': '150px'}),
+            #createDropdown('Your household:', opts=[], default_value="", dd_id="ages_id")
+            ], className="grid_ages")
 
     
 def createTopBar():
