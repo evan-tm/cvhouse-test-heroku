@@ -42,7 +42,7 @@ layout = html.Div(
                               value=[], id="nbc_checklist", className="center_text bodytext", style={'width':'50%'},
                               inputStyle={"margin-left": "20px", "margin-right": "5px"}),
                 html.Button(nbcd.text['COMPARE_BUTTON'], id="compare_button", className="center_text bodytext",
-                            style={"background-color": "#FFA858", "color": "#000000"}),
+                            style={"background-color": "#FFE133", "color": "#000000"}),
                 html.Span(id="compare_warning", className="center_text subtitle"),
             ], className="subcontainer"),
         html.Hr(className="center_text title"),
