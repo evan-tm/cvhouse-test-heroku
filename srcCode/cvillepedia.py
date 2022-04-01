@@ -6,189 +6,179 @@ dictionary = {
         City Council has approved an $8.6 million Smart Scale application to \
         improve Emmet Street from Barracks Road in FY2018. The Barracks \
         Road and Emmet Street improvements project is in the design stage."], 
-    "Rose Hill": ["The Rose Hill neighborhood is located in the center of \
-        Charlottesville and was annexed by the city of Charlottesville in \
-        1916. It is home to Washington Park. Other than parkland and \
-        educational use, Rose Hill is mostly comprised of single-family \
-        residential housing to the north of Rose Hill Drive with shopping \
-        centers along Preston Avenue, a mixture of commercial buildings, \
-        apartments, condominiums and single-family residential housing along \
-        Rose Hill Drive and areas to the south.", "Its name is derived from the \
-        original Rose Hill Plantation which was part of about a half a dozen \
-        large family farms that surrounded the town of Charlottesville in the \
-        years prior to the Civil War.", "The Rose Hill Property, as platted by \
-        The Charlottesville Industrial and Land Company (also called The \
-        Charlottesville Land Company), was annexed by the City of \
-        Charlottesville on August 1, 1916. At that time, lots were advertised \
-        as “within three to ten minutes’ walk to the Junction depot” and \
-        inclusive blocks “reserved for manufacturing purposes.” Much of the \
-        current neighborhood north of Rose Hill Drive was developed in the \
-        early 1900’s.", "By the 1950's the Rose Hill neighborhood was comprised \
-        of a mixture of working-class housing, small family-owned businesses \
-        and large manufacturing companies, such as the Essex Corp. fountain \
-        pens and pencils company, built to be served by the rail spurs.",
-        "The City of Charlottesville has designated lots and parcels of land \
-        contiguous to Preston Avenue, from McIntire Road to Rosser Avenue, \
-        as Entrance Corridor Overlay districts \"to ensure through design \
-        review that corridor development is compatible with the City’s \
-        historic landmarks, buildings, and structures.\""], 
-    "Lewis Mountain": ["The Lewis Mountain neighborhood is a Charlottesville \
-        neighborhood designated by the Department of Neighborhood Development \
-        Services.", "The neighborhood is located in the midst of the University of \
-        Virginia, east of the university's Central Grounds. Much of the land was \
-        annexed by the City of Charlottesville in 1938."], 
-    "Starr Hill": ["The Starr Hill neighborhood is located between downtown \
-        Charlottesville and UVA. It is home to several churches as well as \
-        Jefferson High School and the City Yard.", "Starr Hill got its name \
-        because it was home to many educated and wealthy black families, \
-        or \"Stars.\" The origin of the extra \"r\" in \"Starr\" is unknown.",
-        "The New Hill Development Corporation was awarded funding for the city \
-        to develop a small area plan for the neighborhood. A presentation was \
-        made to Charlottesville City Council on November 4, 2019."],
-    "Woolen Mills": ["Charlottesville's Woolen Mills neighborhood is bordered \
-        by the Rivanna River to the east, railroad tracks to the south, and \
-        Meade Avenue to the west.", "It is named for the historic Woolen Mills \
-        Factory located at the intersection of the river and the railroad \
-        tracks. Part of the neighborhood designated the Woolen Mills Village \
-        was added to the Virginia Landmarks Register in 2009 in part because \
-        of its role in Virginia's textile industry.", "Riverview Park and Meade \
-        Park, which hosts a Wednesday evening farmer's market in the summer \
-        months, are within the neighborhood."], 
-    "10th & Page": ["10th & Page is a Charlottesville neighborhood named for a \
-        street intersection near the center of the neighborhood. The 10th and Page \
-        neighborhood is one of Charlottesville's most compact neighborhoods, \
-        consisting of 83.86 acres.", "Much of the neighborhood was developed by \
-        John West, an emancipated slave who purchased land and subdivided it \
-        for African-American families in the late 19th and early 20th century. \
-        The neighborhood was kept predominantly Black throughout the 20th century \
-        due to the work of people like Charles H. Brown who sought to ensure \
-        ownership stayed within African-American families.", "The City worked \
-        with the Piedmont Housing Alliance to purchase thirteen single family \
-        homes for renovation. Some of these properties have been resold to \
-        individual families in the hopes of increasing a family-oriented \
-        neighborhood."], 
-    "The Meadows": ["The Meadows neighborhood is a Charlottesville neighborhood \
-        as designated by the Department of Neighborhood Development Services, \
-        comprising residential and commercial developments on both sides of \
-        U.S. 29.", "The neighborhood is in the north of the city, with the \
-        northern borders contiguous with the city's boundary to Albemarle \
-        County, including along Greenbrier Drive. The southern boundary is \
-        the Meadow Creek. The southeastern corner is at tbe intersection of \
-        Emmet Street and the U.S. 29/250 interchange. The northern corner of \
-        the neighborhood is home to the Seminole Square Shopping Center.",
-        "Meadows Presbyterian Church is used as a meeting place for the \
-        community. The Meadows is represented by the Meadows Neighborhood \
-        Association. The neighborhood will be impacted by the development \
-        of Stonefield in Albemarle County."],
-    "Martha Jefferson": ["The Martha Jefferson neighborhood is a Charlottesville \
-        neighborhood around the old Martha Jefferson Hospital.", "In April 2010, \
-        the Martha Jefferson Neighborhood Association formally asked the city \
-        to designate the neighborhood as a historic district. The district \
-        would include 125 structures along Locust, Lexington and Grove Avenues.",
-        "During a meeting July 20, 2010, the Board of Architectural Review (BAR) \
-        unanimously voted to establish the Martha Jefferson Historic \
-        Conservation District. The new designation calls for extra scrutiny \
-        any time a property owner wants to demolish a building or construct a \
-        new one."],
-    "Johnson Village": ["Johnson Village is a neighborhood in south-east \
-        Charlottesville primarily built with single-family homes. It is on \
-        land annexed from Albemarle County in 1964."], 
-    "Greenbrier": ["The Greenbrier Neighborhood consists of nearly 650 acres of \
-        area located in the extreme northern section of Charlottesville. The \
-        boundaries of the neighborhood are the 250 Bypass, Brandywine Drive, \
-        Rio Road and the Albemarle County border.", "The neighborhood was \
-        originally located in Albemarle County but Charlottesville annexed \
-        the land in 1964."], 
-    "Barracks / Rugby": ["The Barracks/Rugby Neighborhood is a combination of \
-        the smaller neighborhoods Rugby, Greenleaf, Kellytown, and Barracks \
-        Road.", "Each of these areas has a slightly different housing type. \
-        These areas became part of the City of Charlottesville between 1916 \
-        and 1963."], 
-    "North Downtown": ["North Downtown is a \
-        city-designated neighborhood extending from McIntire Park south, down \
-        Park Street. The neighborhood includes the Charlottesville-Albemarle \
-        County Courthouse District. North Downtown is listed as an historic \
-        district on the National Register of Historic Places and the Virginia \
-        Landmarks Register.", "At the center of the North Downtown neighborhood is \
-        historic Court Square, the oldest portion of the City of Charlottesville. \
-        Settled around the Albemarle County Courthouse, some of the buildings \
-        date to the early 1800's. Court Square was the first commercial center.",
-        "As this neighborhood lies in the heart of Charlottesville, it also \
-        contains City Hall, the County Office Building, and all Courts: \
-        Federal, City and County Circuit Courts, City and County District \
-        Courts, and Juvenile Court. There is a large art gallery (McGuffey \
-        Arts Center, an historic building), the main library (an historic \
-        building), the Historical Society (an historic building) a USPS post \
-        office branch, the Downtown Transit Center, several churches including \
-        the only synagogue (an historic building), a Catholic Church (an \
-        historic building), the only Greek Orthodox Church and several \
-        entertainment venues including a restored historic theater. The \
-        central piece after our historic properties is the Downtown Mall.",
-        "The neighborhood is pedestrian oriented, as residents walk to the \
-        above venues. The North Downtown Neighborhood is represented by the \
-        North Downtown Residents Association."],
-    "Locust Grove": ["Locust Grove is a neighborhood in the Northeast corner of \
-        Charlottesville. It includes portions of the Rivanna Trail, Park Street, \
-        Meadowcreek, Northeast Park and Pen Park. While the neighborhood is \
-        mostly made up of single family homes, River Road and Long Street are \
-        commercial centers.", "The neighborhood first started in the 1890s as the \
-        Locust Grove Subdivision. This history gives the neighborhood its name. \
-        However, between the 1940s and 1970s the neighborhood saw the bulk of \
-        its build out and transitioned from a rural neighborhood to suburban \
-        in this time and with the help of the 250 Bypass.", "The borders of the \
-        neighborhood are the 250 Bypass, Rivanna River, the border with \
-        Albemarle County, and Schenks Branch."], 
-    "Jefferson Park Avenue": ["The Jefferson Park Avenue neighborhood (JPA) is \
-        a 172.8-acre neighborhood in southwest Charlottesville. The JPA \
-        neighborhood is bounded by Stadium Road and the University of \
-        Virginia’s Central Grounds to the north, City limits to the west, \
-        and Norfolk Southern Railroad to the south and east.", "Because of the \
-        neighborhood's close proximity to the University, it has a high \
-        percentage of properties which are student rentals (94%). This high \
-        student rental ratio has been possible due to the neighborhood's \
-        extensive R-3 zoning (multi-family)."], 
-    "Fifeville": ["Fifeville is a city-designated neighborhood in southwest \
-        Charlottesville. Many of its residents have called for a small-area \
-        plan to be conducted to guide future development. The neighborhood \
-        contains Tonsler Park, Forest Hills Park, and Fifeville Park.",
-        "Fifeville students attend Buford Middle School. Other resources \
-        for neighborhood kids include the Smith Aquatic & Fitness Center \
-        and the Boys and Girls Club.", "Cherry Avenue is the main corridor, \
-        running approximately east-west. Prospect Avenue also carries traffic \
-        at peak hour.", "In order to respond to an increasing need for affordable \
-        housing and the pressure of displacement for long-term \
-        residents, a Cherry Avenue Small Area Plan was developed by residents \
-        and the City Planning Commission."], 
-    "Fry's Spring": ["The Fry's Spring Neighborhood is located in the south-west \
-        corner of the City of Charlottesville. Landmarks include the Fry's \
-        Spring Beach Club, Azalea Park, a bridge carrying Jefferson Park \
-        Avenue Extended over the railroad tracks, as well as the service \
-        station in the northeast corner of the intersection of JPA/Fontaine \
-        Avenue/Maury Avenue.", "Parts of the neighborhood are listed on the \
-        National Register of Historic Places. The median on JPA Extended \
-        is the former alignment for a railway that carried a trolley to the \
-        Fry's Spring Beach Club."],
-    "Ridge Street": ["The Ridge Street neighborhood is located in the south \
-        central part of Charlotttesville. It is characterized by its diversity \
-        of housing. It became a historic district in 1995.", "Because it has \
-        been home to Black property owners since the 1840s, it is an important \
-        part of the history of the African-American community in \
-        Charlottesville."], 
-    "Venable": ["The historic Venable neighborhood was created to house UVA \
-        professors during the 1890s. The neighborhood's architectural \
-        designs show how the University expanded until the 1970s.", "The Venable \
-        neighborhood acquired its name from Venable Elementary School, which \
-        opened in 1925 and was named for Confederate officer and UVA professor \
-        Charles Scott Venable."], 
-    "Belmont": ["Belmont, a.k.a. Belmont-Carlton, is a neighborhood in the \
-        southeast corner of Charlottesville. It includes Avon Street, \
-        Monticello Avenue and Road, Carlton Avenue and Road, Rives Street, \
-        and the areas known as Hogwaller, Big Hill, and Coal Bin. The borders \
-        of the neighborhood are 6th Street SE, Moores Creek (the border with \
-        Albemarle County), and the CSX railroad tracks.", "Belmont became \
-        attractive as an expansion area for the new city of Charlottesville \
-        in the late 19th century due to its location along transportation \
-        corridors to the James River and Scottsville. A portion of the \
-        neighborhood is listed on the Virginia Landmarks Register and \
-        the National Register of Historic Places."]
+    "Rose Hill": ["Like many other neighborhoods, Rose Hill was a plantation \
+        before it was subdivided and then annexed by the city in 1916. Many \
+        of its homes were built around the time of World War II, and ghosts \
+        of its industrial past — still remain. Rose Hill boasts a number of \
+        amenities that other neighborhoods do not, including a pharmacy, \
+        hardware store, two grocery stores, and, more recently, a \
+        French-style bakery and hip barbecue spot. It’s also home to \
+        Booker T. Washington Park (initially a segregated park for Black \
+        citizens and built on the site of a former dump), and is close to \
+        both Downtown Charlottesville and the Rt. 250 Bypass. Many longtime \
+        residents worry that this neighborhood, which has historically been \
+        one of the city’s more affordable areas, will be the next to gentrify."], 
+    "Lewis Mountain": ["Lewis Mountain developed on land annexed by the city \
+        in 1938, on a parcel that was home to the Lewis Mountain estate. \
+        Surrounded by the University of Virginia’s central grounds, Lewis \
+        Mountain is otherwise residential, though the university continues \
+        to buy up in the neighborhood: In 2008, it purchased a chunk of land \
+        at the intersection of Emmet Street and Ivy Road — one of the city’s \
+        busiest — and plans to build a new entryway to the university."], 
+    "Starr Hill": ["Located between downtown Charlottesville and the \
+        University of Virginia, Starr Hill got its name from the many educated \
+        and wealthy Black families — the stars — that called the neighborhood \
+        home. But take a look at the data presented here for “racial group” to \
+        see that Starr Hill’s Black population has dwindled drastically in the \
+        past decade. In that time, West Main Street has been redeveloped to \
+        include boutique hotels, specialty shops, and restaurants. The \
+        neighborhood has close ties to Vinegar Hill, and one of its major \
+        landmarks is the Jefferson School City Center, which houses a city \
+        recreation center, the local African American heritage center, a \
+        Caribbean restaurant, and an organization that helps people who were \
+        once incarcerated re-integrate into their communities and improve their \
+        lives. The building itself was for nearly 100 years a Black school, \
+        until integration in 1965."],
+    "Woolen Mills": ["There was indeed a woolen mill — that also manufactured \
+        cotton textiles, as well as uniforms for the Confederate Army — in \
+        this part of town. The older, more modest homes in Woolen Mills, as \
+        well as some of the park areas, were initially built for mill workers \
+        and management, with many of them built after World War II. For years, \
+        the Moores Creek Wastewater Treatment Plant gave the neighborhood air \
+        an unpleasant stench, but that was remedied recently, around the same \
+        time a local tech company bought the empty mill building and turned it \
+        into a technology campus for its staff."], 
+    "10th & Page": ["Barber John West, who was born enslaved, is credited with \
+        establishing this neighborhood, which hasn’t always been called 10th \
+        and Page. After his emancipation, West bought a large piece of land in \
+        this area and, in the late 19th and early 20th century, he subdivided \
+        the property and sold the lots to Black families. While some of the \
+        homes date back to the 1800s, most of the area’s development happened \
+        in the 1920s, when the neighborhood was home to many employees of the \
+        C&O Railroad as well as people who worked at the nearby dairy (which is \
+        now a food hall with attached, newly-built luxury offices and apartments) \
+        and Coca-Cola bottling plants. The neighborhood has close ties to the \
+        Vinegar Hill neighborhood: Many Vinegar Hill business owners lived \
+        here, and it’s where many Vinegar Hill residents landed — in the \
+        Westhaven public housing community — when the city razed their own \
+        neighborhood. It’s now considered one of the city’s more vulnerable \
+        neighborhoods: Over the last two decades, home prices have risen \
+        drastically, moreso than any other neighborhood in the city, and that’s \
+        had major effects on who lives in 10th and Page today."], 
+    "The Meadows": ["One of the northernmost neighborhoods in the city, The \
+        Meadows neighborhood grew out of the Meadows Farm subdivision, which \
+        was built off of Angus Road in the mid-1950s. A mix of renters and \
+        homeowners live in the neighborhood’s midcentury ranches, duplexes, \
+        and apartment buildings, and in more recent years, it’s been one of \
+        the city’s more affordable neighborhoods. It’s close to many grocery \
+        stores, restaurants, and shopping centers, including Stonefield and \
+        Seminole Square."],
+    "Martha Jefferson": ["Once part of the Locust Grove farm, this \
+        neighborhood’s population grew quickly after the completion of Martha \
+        Jefferson Hospital in 1903. The neighborhood’s homes were built for \
+        middle- and upper-class residents and lent a suburban feel to the \
+        area despite its close proximity to the downtown area, something that \
+        persists. The hospital moved to Pantops in Albemarle County in 2011 \
+        and the CFA Institute moved its global headquarters into the \
+        building."],
+    "Johnson Village": ["Single-family ranch style homes make up the Johnson \
+        Village neighborhood off of Cherry Avenue, built on land annexed from \
+        Albemarle County in 1964. When it was first developed, Johnson Village \
+        was home to many young families, and a number of those residents \
+        remain, mixed in with faculty and staff from the nearby and \
+        ever-growing University of Virginia and its Medical Center."], 
+    "Greenbrier": ["Greenbrier is the city’s northernmost neighborhood and \
+        has a lot of green space, as it is home to McIntire Park (donated to \
+        the city by Paul Goodloe McIntire as a park for Charlottesville’s \
+        white citizens) as well as Meadow Creek Park, which, true to its name, \
+        has a meadow, a creek, sycamore groves, and a natural marsh thought to \
+        be one of just two in the Virginia Piedmont region. Like a few other \
+        neighborhoods, it was part of Albemarle County before it was annexed \
+        by the city in 1964."], 
+    "Barracks / Rugby": ["A few, very different smaller neighborhoods make up \
+        the Barracks/Rugby area, which thus has a variety of architectural \
+        styles and residents of varying socioeconomic status. The Barracks \
+        portion, for instance, has larger, more expensive homes built in the \
+        1930s, whereas the Greenleaf section of bungalow-style homes on \
+        smaller lots was built after World War II. Rugby Road, which serves \
+        as a sort of transitional space between the University of Virginia \
+        and residential Charlottesville, boasts mostly large, expensive homes \
+        on large lots."], 
+    "North Downtown": ["North Downtown is the oldest part of the city, with \
+        some of its buildings (including parts of the Albemarle County \
+        Courthouse, as well as the building at Number Nothing Court Square, \
+        both of which played a significant role in the transatlantic slave \
+        trade) dating to the 1800s. While there are residential areas of this \
+        neighborhood, it’s chock-full of churches and a synagogue, a library \
+        branch, a post office, the Downtown Transit Center, the Downtown Mall, \
+        and more. It’s also home to the local powers that be: Charlottesville \
+        City Hall, an Albemarle County office building, and all courts for \
+        both Charlottesville and Albemarle County are all located here."],
+    "Locust Grove": ["Beginning as the Locust Grove subdivision in the 1890s, \
+        this was one of Charlottesville’s more rural neighborhoods until it \
+        was built out significantly between the 1940s and 1970s, particularly \
+        with the construction of the Rt. 250 Bypass starting in the late \
+        1940s."], 
+    "Jefferson Park Avenue": ["The Jefferson Park Ave. neighborhood borders \
+        the University of Virginia grounds and was initially inhabited and \
+        developed by University of Virginia professors and their families. \
+        As the university has grown, more and more students have moved into \
+        those older houses, and developers have built apartment buildings to \
+        house even more students along the avenue, which is a main road in \
+        and out of the city."], 
+    "Fifeville": ["One of the city’s oldest and most dense neighborhoods, \
+        the narrow streets of Fifeville have seen a number of major changes \
+        in recent years — more than most other neighborhoods in \
+        Charlottesville — due in large part to the significant expansion of \
+        the nearby University of Virginia Medical Center. In 1822, a builder \
+        who worked for Thomas Jefferson built a manor home, Oak Lawn, at the \
+        corner of what is now Cherry Avenue and Ninth St. Smaller homes for \
+        manor workers popped up around it. In the 1880s, a nearby farm owned \
+        mostly by the Fife family was subdivided and sold to Black and white \
+        families, resulting in a mixed race neighborhood to the west and a \
+        working class mostly-Black neighborhood to the east. It was heavily \
+        developed until the 1920s and saw very little construction until \
+        recently, as the hospital has brought more white and white-collar \
+        families to Fifeville."], 
+    "Fry's Spring": ["Fry’s Spring gets its name from two natural springs \
+        and a prominent landowner, James Francis Fry, whose Azalea Hall \
+        mansion in the mid-1800s sat on a large plot of land rife with \
+        apple orchards, vegetable gardens and tobacco fields. By the early \
+        20th century, Fry’s estate had been subdivided and developed into \
+        residential lots (and thus homes) of various sizes. While it’s home \
+        to a number of families, and, increasingly, students, the area used \
+        to be a vacation destination for wealthy city residents and folks \
+        who’d come from Richmond and elsewhere to drink from the medicinal \
+        springs."],
+    "Ridge Street": ["Alexander Garrett, an enslaver and associate of Thomas \
+        Jefferson, owned this parcel of land before it was subdivided \
+        starting in the 1830s. The parcels on the southern end were sold \
+        mainly to Black families while those on the northern end were sold \
+        to white families. As automobile travel became more widespread in \
+        the 1930s and ’40s, white families began moving out of the Ridge \
+        Street area into the suburbs, which allowed more Black families — who \
+        were legally restricted from owning property and homes in other areas \
+        of the city — to buy property in the neighborhood."], 
+    "Venable": ["Developed near the end of the 19th century and bordering the \
+        University of Virginia grounds, Venable is another of Charlottesville’s \
+        oldest neighborhoods. The Corner district originated in the mid-1800s, \
+        and by the later part of the 19th century, the area was full of homes \
+        for university faculty and administration, as well as boarding houses \
+        for students. However, after UVA’s enrollment boom in the 1970s, many \
+        of those boarding houses and homes were converted into student rentals \
+        and remain that way today, with some of the larger houses owned and \
+        rented by fraternities and sororities. There are now a number of \
+        large apartments for students in the area, as well."], 
+    "Belmont": ["Initially an estate built by one of Thomas Jefferson’s \
+        bricklayers and dubbed Belle Mont by its second owner, Belmont was a \
+        horse farm for a time before it was subdivided in the late 19th \
+        century. Its location near corridors to the James River, Scottsville, \
+        and Richmond made it an attractive spot that grew even more popular in \
+        the early 1900s, when employees of the nearby C&O Railroad needed \
+        housing. A majority white working-class neighborhood for a long time, \
+        Belmont long had the reputation of being unwelcoming to Black \
+        citizens. It’s now a mix of homeowners, renters, and, more recently, a \
+        lot of Air BnBs, perhaps due to its own little “downtown” area of \
+        well-regarded restaurants and its relative proximity to the Downtown \
+        Mall."]
 }
