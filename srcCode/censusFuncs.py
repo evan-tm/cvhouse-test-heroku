@@ -4,8 +4,6 @@
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from dash import Input, Output, State, dcc, html, callback
-import dash_bootstrap_components as dbc
 
 import srcCode.censusDescs as cd
 
@@ -225,14 +223,6 @@ def plotIncomeCity():
 
     return fig
 
-## Function for creating plot of industry employment populations by neighborhood
-## in: current neighborhood
-## out: figure
-@callback(
-    Output('ind_neighborhood_plot', 'figure'),
-    Input('dropdown_neighborhood', 'value'))
-def ind_neighborhood_plot(n):
-    return plotIndustryByNeighborhood(n)
 
 
 def plotIndustryByNeighborhood(n):
@@ -287,14 +277,6 @@ def plotIndustryByNeighborhood(n):
 
     return fig
 
-## Function for creating age chart by neighborhood
-## in: current neighborhood
-## out: figure
-@callback(
-    Output('age_neighborhood_plot', 'figure'),
-    Input('dropdown_neighborhood', 'value'))
-def age_neighborhood_plot(n):
-    return plotAgeNeighborhood(n)
 
 
 def plotAgeNeighborhood(n):
@@ -342,14 +324,6 @@ def plotAgeNeighborhood(n):
 
     return fig
 
-## Function for creating race plot by neighborhood
-## in: current neighborhood
-## out: figure
-@callback(
-    Output('race_neighborhood_plot', 'figure'),
-    Input('dropdown_neighborhood', 'value'))
-def race_neighborhood_plot(n):
-    return plotRaceNeighborhood(n)
 
 
 def plotRaceNeighborhood(n):
@@ -397,14 +371,7 @@ def plotRaceNeighborhood(n):
 
     return fig
 
-## Function for creating income plot by neighborhood
-## in: current neighborhood
-## out: figure
-@callback(
-    Output('income_neighborhood_plot', 'figure'),
-    Input('dropdown_neighborhood', 'value'))
-def income_neighborhood_plot(n):
-    return plotIncomeNeighborhood(n)
+
 
 
 def plotIncomeNeighborhood(n):

@@ -66,20 +66,20 @@ for feature, detail, width in zip(bikeLanes.geometry, bikeLanes['Lane Detail'], 
 ## out: figure
 def plotResourcesMap():
     # groceries scatter
-    fig = px.scatter_mapbox(groceries, lon = groceries.geometry.x, 
+    fig1 = px.scatter_mapbox(groceries, lon = groceries.geometry.x, 
                             lat = groceries.geometry.y,
                             hover_name="name", hover_data={"addr:street": True},
                             center={"lat": 38.039, "lon": -78.47826}, 
                             color_discrete_sequence=['green'],
                             zoom=12)
-    fig.update_layout(mapbox_accesstoken=mapbox_token_public, 
+    fig1.update_layout(mapbox_accesstoken=mapbox_token_public, 
                       mapbox_style=mapbox_style,
                       margin=go.layout.Margin(l=0, r=0,  b=0, t=0),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
                       autosize=True,
                       font={'size': 16, 'color': "rgb(255,255,255)"})
-    fig.update_traces(hovertemplate="<br>".join([
+    fig1.update_traces(hovertemplate="<br>".join([
                                     "%{hovertext}",
                                     "",
                                     "Address: %{customdata[0]}"]),
@@ -237,6 +237,8 @@ def plotResourcesMap():
                                     "Address: %{customdata[1]}"]),
                     marker={'size': 9})
 
+    fig = go.Figure(layout = fig1.layout)
+    fig.add_trace(fig1.data[0])
     fig.add_trace(fig2.data[0])
     fig.add_trace(fig3.data[0])
     fig.add_trace(fig4.data[0])

@@ -1,30 +1,16 @@
 # ------------------Neighborhood page------------------#
 from dash import dcc, html, Input, Output, State, callback
 import dash_bootstrap_components as dbc
-import plotly.graph_objects as go
-import base64
-import pandas as pd
 import srcCode.toolbarDescs as tb
-import srcCode.neighborhoodDescs as nd
 import srcCode.nbcDescs as nbcd
 import srcCode.dashFuncs as df
-import srcCode.affordDescs as ad
 import srcCode.cvillepedia as cv
 import srcCode.censusFuncs as cf
-
-# Loading rolling sales data
-sales_year = pd.read_pickle("data/rolling/sales_year.pkl")
-
+import srcCode.historyFuncs as hf
+#------------------------------------------------------------------------------
 # Neighborhood dropdown texts
-dropdown_neighborhood = ""
-neighborhood_list = ["Barracks Road", "Rose Hill", "Lewis Mountain", "Starr Hill",
-                     "Woolen Mills", "10th & Page", "The Meadows", "Martha Jefferson",
-                     "Johnson Village", "Greenbrier", "Barracks / Rugby", "North Downtown",
-                     "Locust Grove", "Jefferson Park Avenue", "Fifeville", "Fry's Spring",
-                     "Ridge Street", "Venable", "Belmont"]
-checklist_nbc_opts = [{"value": each, "label": each} for each in neighborhood_list]
+checklist_nbc_opts = [{"value": each, "label": each} for each in nbcd.opts['DROPDOWN_NEIGHBORHOOD']]
 max_selected_checklist = 2
-dropdown_nbc_history_opts = ["Number of Sales", "Median Price"]
 
 layout = html.Div(
     [
@@ -88,12 +74,15 @@ layout = html.Div(
         html.Div(
             [
                 html.Span(nbcd.text["HIST_NEIGHBORHOOD_TITLE"], className="center_text subtitle"),
-                df.createDropdown("", dropdown_nbc_history_opts,
-                                  dropdown_nbc_history_opts[0], dd_id="dropdown_nbc_history",
-                                  dd_style={"width": "200px"}, clearable=False),
-                dcc.Graph(id='nbc_history_plot', style={"width": "100%"}, config={'displayModeBar': False}),
+                df.createDropdown(nbcd.text['DROPDOWN_HISTORY'], nbcd.opts['DROPDOWN_HISTORY'],
+                                  nbcd.default['DROPDOWN_HISTORY'], dd_id="dropdown_nbc_history",
+                                  dd_style={"width": "200px"}, clearable=False, searchable = False),
+                dcc.Graph(id='nbc_history_plot', 
+                          figure=hf.plotCompareHistorySales(0, nbcd.default['DROPDOWN_HISTORY'], ''),
+                          style={"width": "100%"}, 
+                          config={'displayModeBar': False}),
             ], className="subcontainer"),
-        dcc.Link('Take me home', href='/home'),
+        dcc.Link('Take me back up', href='#'),
     ], className = "container background")
 
 
@@ -147,65 +136,53 @@ def nbc_names(n, value):
 
 @callback(Output("nbc_ind_plots", "children"),
           [Input("compare_button", "n_clicks"), State("nbc_checklist", "value")])
-def nbc_ind_plots(n, value):
+def nbc_industry_plots(n, value):
     ind_plots = []
     if n:
         for each in value:
-            ind_plots.append(dcc.Graph(figure=cf.plotIndustryByNeighborhood(each), style={'display': 'block'}))
+            ind_plots.append(dcc.Graph(figure=cf.plotIndustryByNeighborhood(each), 
+                             config={'displayModeBar': False},
+                             style={'display': 'block'}))
     return ind_plots
 
 
 @callback(Output("nbc_age_plots", "children"),
           [Input("compare_button", "n_clicks"), State("nbc_checklist", "value")])
 def nbc_age_plots(n, value):
-    ind_plots = []
+    age_plots = []
     if n:
         for each in value:
-            ind_plots.append(dcc.Graph(figure=cf.plotAgeNeighborhood(each), style={'display': 'block'}))
-    return ind_plots
+            age_plots.append(dcc.Graph(figure=cf.plotAgeNeighborhood(each), 
+                                       config={'displayModeBar': False},
+                                       style={'display': 'block'}))
+    return age_plots
 
 
 @callback(Output("nbc_race_plots", "children"),
           [Input("compare_button", "n_clicks"), State("nbc_checklist", "value")])
 def nbc_race_plots(n, value):
-    ind_plots = []
+    race_plots = []
     if n:
         for each in value:
-            ind_plots.append(dcc.Graph(figure=cf.plotRaceNeighborhood(each), style={'display': 'block'}))
-    return ind_plots
+            race_plots.append(dcc.Graph(figure=cf.plotRaceNeighborhood(each), 
+                              config={'displayModeBar': False},
+                              style={'display': 'block'}))
+    return race_plots
 
 
 @callback(Output("nbc_income_plots", "children"),
           [Input("compare_button", "n_clicks"), State("nbc_checklist", "value")])
-def nbc_race_plots(n, value):
-    ind_plots = []
+def nbc_income_plots(n, value):
+    income_plots = []
     if n:
         for each in value:
-            ind_plots.append(dcc.Graph(figure=cf.plotIncomeNeighborhood(each), style={'display': 'block'}))
-    return ind_plots
+            income_plots.append(dcc.Graph(figure=cf.plotIncomeNeighborhood(each), 
+                                config={'displayModeBar': False},
+                                style={'display': 'block'}))
+    return income_plots
 
 
 @callback(Output("nbc_history_plot", "figure"),
           [Input("compare_button", "n_clicks"), Input("dropdown_nbc_history", "value"), State("nbc_checklist", "value")])
 def history_neighborhood_price(n, var, neighs):
-    if var == "Number of Sales":
-        to_plot = "count"
-        y_label = "Yearly Number of Sales"
-    else:
-        to_plot = "median"
-        y_label = "Yearly Median Sale Price [$, inflation adjusted]"
-    fig = go.Figure(data=go.Scatter(x=sales_year["SaleDate"], y=sales_year["SaleAmountAdjusted"][to_plot], 
-                                    name="Charlottesville City"))
-    if n:
-        for each in neighs:
-            syn = pd.read_pickle("data/rolling/sales_year_nb_" + base64.b64encode(each.encode('ascii')).decode('ascii') + ".pkl")
-            fig.add_trace(go.Scatter(x=syn["SaleDate"], y=syn["SaleAmountAdjusted"][to_plot], name=each))
-    fig.update_layout(xaxis_title="Year",
-                      yaxis_title=y_label,
-                      margin=go.layout.Margin(l=0, r=0, b=0, t=0),
-                      plot_bgcolor="rgba(0,0,0,0)",
-                      paper_bgcolor="rgba(0,0,0,0)",
-                      autosize=True,
-                      font=dict(size=13, color="rgb(255,255,255)"))
-    fig['data'][0]['showlegend'] = True
-    return fig
+    return hf.plotCompareHistorySales(n, var, neighs)

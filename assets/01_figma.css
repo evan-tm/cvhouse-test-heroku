@@ -21,7 +21,7 @@
 	position:relative;
 	margin:5px auto;
 	display:grid;
-	grid-gap:15px;
+	grid-gap:0px;
 	align-items:center;
 	align-content: space-evenly;
 	justify-items:center;
@@ -74,7 +74,6 @@
 	font-size:25px;
 	margin:15px auto
 }
-
 .neighborhood_drop {
 	position:relative;
 	display: block;
@@ -82,4 +81,26 @@
 	align-content: space-evenly;
 	justify-items:center;
 	justify-content: space-evenly;
+}
+.js-plotly-plot .plotly .modebar {
+    left: 0%;
+}
+.grid_ages {
+	display: grid;
+  	grid-template-areas: 
+  		"elem1 . elem2 elem3 .";
+	grid-template-columns: 6fr 1fr 2fr 2fr 1fr;
+	max-width:1600px;
+	margin:5px auto;
+	align-items:center;
+	justify-items:center;
+}
+.elem1 {
+  grid-area: elem1;
+}
+.elem2 {
+  grid-area: elem2;
+}
+.elem3 {
+  grid-area: elem3;
 }
