@@ -6,7 +6,9 @@ text = {
         has grown over the years, things that have affected it (like \
         zoning...dictating what can be built where, and the fact that \
         that ultimately affects who can afford to live here), \
-        and the project.",
+        and the project. We acknowledge the Monacan Indian Nation, the \
+        traditional custodians of the land and waters upon which the city \
+        we call Charlottesville sits.",
     "LOADING": "Loading...",
     "DROPDOWN_NEIGHBORHOOD": ""
 }
