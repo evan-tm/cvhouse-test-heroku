@@ -106,7 +106,7 @@ layout = html.Div(
                               ad.default['DD_TAX'], dd_id="afford_dropdown_tax",
                               clearable=False),
             html.Button(ad.text['CALC_BUTTON'], id="afford_button", className="right_text subtitle",
-                                style={"background-color": "#FFA858", "color": "#000000"}),
+                                style={"background-color": "#FFE133", "color": "#000000"}),
         ], className="subcontainer"),
     html.Div(ad.text['LOADING'], id="afford_result", className="center_text subtitle"),
     ], className = "container background")
