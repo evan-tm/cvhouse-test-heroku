@@ -1,12 +1,10 @@
-# cvhouse-test-heroku
-Deployment test for CVille Housing capstone project at cvhouse-test.heroku.com
+# cvhouse-heroku
+Deployment test for CVille Housing capstone project at cvhouse.heroku.com
 
 Data Sources:
 
-ALICE Project
+ALICE Project - ALICE Household Survival and Stability Budget Methodologies
 
-American Community Survey (Tables C24030 & C24070)
-
-US Census
+U.S. Census - American Community Survey
 
 Charlottesville Open Data Portal
