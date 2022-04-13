@@ -140,7 +140,7 @@ def nbc_industry_plots(n, value):
     ind_plots = []
     if n:
         for each in value:
-            ind_plots.append(dcc.Graph(figure=cf.plotIndustryByNeighborhood(each), 
+            ind_plots.append(dcc.Graph(figure=cf.plotIndustryByNeighborhood(each, True), 
                              config={'displayModeBar': False},
                              style={'display': 'block'}))
     return ind_plots
@@ -164,7 +164,7 @@ def nbc_race_plots(n, value):
     race_plots = []
     if n:
         for each in value:
-            race_plots.append(dcc.Graph(figure=cf.plotRaceNeighborhood(each), 
+            race_plots.append(dcc.Graph(figure=cf.plotRaceNeighborhood(each, True), 
                               config={'displayModeBar': False},
                               style={'display': 'block'}))
     return race_plots
@@ -176,7 +176,7 @@ def nbc_income_plots(n, value):
     income_plots = []
     if n:
         for each in value:
-            income_plots.append(dcc.Graph(figure=cf.plotIncomeNeighborhood(each), 
+            income_plots.append(dcc.Graph(figure=cf.plotIncomeNeighborhood(each, True), 
                                 config={'displayModeBar': False},
                                 style={'display': 'block'}))
     return income_plots

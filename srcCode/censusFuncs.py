@@ -97,7 +97,7 @@ def plotIndustrySector():
     fig.update_xaxes(ticktext = ["0", "5", "10", "15", "20", 
                                  "25", "30", "35", "40"], 
                     tickvals = [i*5 for i in range(9)], 
-                    range = [0, 49.5])
+                    range = [0, 45])
     #fig['layout']['updatemenus'][0]['pad']=dict(r= 0, t= 70)
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
@@ -224,8 +224,9 @@ def plotIncomeCity():
     return fig
 
 
-
-def plotIndustryByNeighborhood(n):
+## Function for creating plot of industry employment populations by neighborhood
+## out: figure
+def plotIndustryByNeighborhood(n, compare = False):
     fig = px.bar(industryNeighborhood, 
                  x=n,
                  y='Industry', 
@@ -258,12 +259,20 @@ def plotIndustryByNeighborhood(n):
                                for i in range(industryNeighborhood.shape[0])]
     ## Adds (count : pct) ticker at far right of chart
     fig = addFigAnnotations(fig, industryNeighborhood, [i for i in range(13)], 'Industry')
-    ## Fixed x axis size for each frame
-    fig.update_xaxes(ticktext = ["0", "5", "10", "15", "20", 
-                                 "25", "30", "35", "40", "45", 
-                                 "50", "55", "60"], 
-                     tickvals = [i*5 for i in range(13)], 
-                     range = [0, 72])
+    if compare:
+        ## Fixed x axis size for each frame
+        fig.update_xaxes(ticktext = ["0", "5", "10", "15", "20", 
+                                    "25", "30", "35", "40", "45", 
+                                    "50", "55", "60"], 
+                        tickvals = [i*5 for i in range(13)], 
+                        range = [0, 76])
+    else:
+        ## Fixed x axis size for each frame
+        fig.update_xaxes(ticktext = ["0", "5", "10", "15", "20", 
+                                    "25", "30", "35", "40", "45", 
+                                    "50", "55", "60"], 
+                        tickvals = [i*5 for i in range(13)], 
+                        range = [0, 65])
     ## move slider's and buttons' positions slightly left
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
@@ -278,7 +287,8 @@ def plotIndustryByNeighborhood(n):
     return fig
 
 
-
+## Function for creating plot of age by sex by neighborhood
+## out: figure
 def plotAgeNeighborhood(n):
     # begin building figure
     fig = px.bar(ageNeighborhood, 
@@ -324,9 +334,10 @@ def plotAgeNeighborhood(n):
 
     return fig
 
-
-
-def plotRaceNeighborhood(n):
+## Function for creating race plot for the individual neighborhoods
+## in: neighborhood, t/f whether the plot is for the comparison page
+## out: figure
+def plotRaceNeighborhood(n, compare = False):
     # begin building figure
     fig = px.bar(raceNeighborhood, 
                  y="Race", 
@@ -358,9 +369,14 @@ def plotRaceNeighborhood(n):
                                for i in range(raceNeighborhood.shape[0])]
     ## Adds (count : pct) ticker at far right of chart
     fig = addFigAnnotations(fig, raceNeighborhood, [i for i in range(7)], 'Race')
-    ## Fixed x axis size for each frame
-    fig.update_xaxes(tickvals = [i*10 for i in range(11)], 
-                     range = [0, 109])
+    if compare:
+        ## Fixed x axis size for each frame
+        fig.update_xaxes(tickvals = [i*10 for i in range(10)], 
+                        range = [0, 122])
+    else:
+        ## Fixed x axis size for each frame
+        fig.update_xaxes(tickvals = [i*10 for i in range(11)], 
+                        range = [0, 109])
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
     ## Loop through frames to edit hover and by-frame ticker annotations
@@ -371,10 +387,10 @@ def plotRaceNeighborhood(n):
 
     return fig
 
-
-
-
-def plotIncomeNeighborhood(n):
+## Function for creating income plot for the individual neighborhoods
+## in: neighborhood, t/f whether the plot is for the comparison page
+## out: figure
+def plotIncomeNeighborhood(n, compare = False):
     # begin building figure
     fig = px.bar(incomeNeighborhood, 
                  y="Bracket", 
@@ -404,9 +420,14 @@ def plotIncomeNeighborhood(n):
                                for i in range(incomeNeighborhood.shape[0])]
     ## Adds (count : pct) ticker at far right of chart
     fig = addFigAnnotations(fig, incomeNeighborhood, [i for i in range(16)], 'Bracket')
-    ## Fixed x axis size for each frame
-    fig.update_xaxes(tickvals = [i*5 for i in range(8)], 
-                     range = [0, 40])
+    if compare:
+        ## Fixed x axis size for each frame
+        fig.update_xaxes(tickvals = [i*5 for i in range(8)], 
+                        range = [0, 43])
+    else:
+        ## Fixed x axis size for each frame
+        fig.update_xaxes(tickvals = [i*5 for i in range(8)], 
+                        range = [0, 40])
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
     ## Loop through frames to edit hover and by-frame ticker annotations

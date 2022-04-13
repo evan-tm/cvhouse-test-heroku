@@ -13,8 +13,12 @@ sales_clean_simple["SaleDate"] = pd.to_datetime(sales_clean_simple["SaleDate"])
 # Neighborhood data file
 neighborhood_simple = gpd.read_file("neighborhood_simple.geojson")
 
-mapbox_token_public = "pk.eyJ1IjoieGlubHVuY2hlbmciLCJhIjoiY2t0c3g2eHRrMWp3MTJ3cDMwdDAyYnA2OSJ9.tCcD-LyXD1OK-T6uDd8CYA"
-mapbox_style = "mapbox://styles/xinluncheng/cktsxjvd923p618mw4fut9gav"
+#mapbox_token_public = "pk.eyJ1IjoieGlubHVuY2hlbmciLCJhIjoiY2t0c3g2eHRrMWp3MTJ3cDMwdDAyYnA2OSJ9.tCcD-LyXD1OK-T6uDd8CYA"
+#mapbox_style = "mapbox://styles/xinluncheng/cktsxjvd923p618mw4fut9gav"
+mapbox_token_public_ind = "pk.eyJ1IjoiZXZhbi10bSIsImEiOiJjbDFlYTlncTMwM2J3M2RwbDdjaXc2bW02In0.cxB8jf_1CFeoeVUAuOsYuA"
+mapbox_style_ind = "mapbox://styles/evan-tm/cl1ik4lmv003z15ru0ip4isbz"
+mapbox_token_public_hood = "pk.eyJ1IjoiZXZhbi10bSIsImEiOiJjbDFlYTlncTMwM2J3M2RwbDdjaXc2bW02In0.cxB8jf_1CFeoeVUAuOsYuA"
+mapbox_style_hood = "mapbox://styles/evan-tm/cl1xthgjs000i14qv2eaz09w5"
 
 millnames = ['','k','M','B','T']
 
@@ -56,6 +60,14 @@ def plotAffordMap(lod, y):
             "",
             "Average Sale Price in Neighborhood: $%{customdata[0]}",
             "Number of Sales Recorded: %{customdata[1]}"]))
+        fig.update_layout(mapbox_accesstoken=mapbox_token_public_hood, 
+                        mapbox_style=mapbox_style_hood,
+                        margin=go.layout.Margin(l=0, r=0,  b=0, t=0),
+                        plot_bgcolor="rgba(0,0,0,0)",
+                        paper_bgcolor="rgba(0,0,0,0)",
+                        autosize=True,
+                        font=dict(size=16, color="rgb(255,255,255)"))
+        fig.update_yaxes(scaleanchor="x", scaleratio=1)
     else:
         # Individual property map
         vmin, vmax = np.nanpercentile(sales_year["SaleAmountAdjusted"], (5, 95))
@@ -78,12 +90,12 @@ def plotAffordMap(lod, y):
             "Acreage: %{customdata[1]}",
             "Last sale on %{customdata[2]}",
             "Zoning: %{customdata[3]}"]))
-    fig.update_layout(mapbox_accesstoken=mapbox_token_public, 
-                      mapbox_style=mapbox_style,
-                      margin=go.layout.Margin(l=0, r=0,  b=0, t=0),
-                      plot_bgcolor="rgba(0,0,0,0)",
-                      paper_bgcolor="rgba(0,0,0,0)",
-                      autosize=True,
-                      font=dict(size=16, color="rgb(255,255,255)"))
-    fig.update_yaxes(scaleanchor="x", scaleratio=1)
+        fig.update_layout(mapbox_accesstoken=mapbox_token_public_ind, 
+                        mapbox_style=mapbox_style_ind,
+                        margin=go.layout.Margin(l=0, r=0,  b=0, t=0),
+                        plot_bgcolor="rgba(0,0,0,0)",
+                        paper_bgcolor="rgba(0,0,0,0)",
+                        autosize=True,
+                        font=dict(size=16, color="rgb(255,255,255)"))
+        fig.update_yaxes(scaleanchor="x", scaleratio=1)
     return fig
