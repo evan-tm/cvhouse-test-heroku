@@ -3,7 +3,7 @@ text = {
     "MAIN_TITLE": "Compare Charlottesville's Neighborhoods",
     "LOADING": "Loading...",
     "COMPARE_BUTTON": "COMPARE",
-    "HIST_NEIGHBORHOOD_TITLE": 'History of Residential Sales:',
+    "HIST_NEIGHBORHOOD_TITLE": 'History of Residential Sales by',
     "COMPARE_DISCLAIMER": "Detailed descriptions of each neighborhood are available \
          on the \"Explore the Neighborhoods\" page.",
     "NoSelectionWarning": "Please select at least one neighborhood to compare",

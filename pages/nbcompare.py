@@ -71,12 +71,14 @@ layout = html.Div(
                  style={"grid-template-columns": "minmax(600px, 1fr) minmax(600px, 1fr)"}),
         html.Hr(className="center_text title"),
         # History of price
+        html.Div([
+            df.createLeftAlignDropdown(nbcd.text['HIST_NEIGHBORHOOD_TITLE'], nbcd.opts['DROPDOWN_HISTORY'],
+                            nbcd.default['DROPDOWN_HISTORY'], dd_id='dropdown_nbc_history',
+                            dd_style={'width': '150px'}, grid_class="grid_dd2",
+                            clearable=False, searchable=False),
+        ], className = "subcontainer"),
         html.Div(
             [
-                html.Span(nbcd.text["HIST_NEIGHBORHOOD_TITLE"], className="center_text subtitle"),
-                df.createDropdown(nbcd.text['DROPDOWN_HISTORY'], nbcd.opts['DROPDOWN_HISTORY'],
-                                  nbcd.default['DROPDOWN_HISTORY'], dd_id="dropdown_nbc_history",
-                                  dd_style={"width": "200px"}, clearable=False, searchable = False),
                 dcc.Graph(id='nbc_history_plot', 
                           figure=hf.plotCompareHistorySales(0, nbcd.default['DROPDOWN_HISTORY'], ''),
                           style={"width": "100%"}, 

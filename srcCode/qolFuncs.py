@@ -40,6 +40,8 @@ edu = edu.set_index('ElemSchool')
 #mapbox_style = "mapbox://styles/xinluncheng/cktsxjvd923p618mw4fut9gav"
 mapbox_token_public = "pk.eyJ1IjoiZXZhbi10bSIsImEiOiJjbDFlYTlncTMwM2J3M2RwbDdjaXc2bW02In0.cxB8jf_1CFeoeVUAuOsYuA"
 mapbox_style = "mapbox://styles/evan-tm/cl1ik4lmv003z15ru0ip4isbz"
+mapbox_token_public_hood = "pk.eyJ1IjoiZXZhbi10bSIsImEiOiJjbDFlYTlncTMwM2J3M2RwbDdjaXc2bW02In0.cxB8jf_1CFeoeVUAuOsYuA"
+mapbox_style_hood = "mapbox://styles/evan-tm/cl1xthgjs000i14qv2eaz09w5"
 
 lats = []
 lons = []
@@ -270,3 +272,51 @@ def plotResourcesMap():
 
     return fig
 
+def plotSchoolMap():
+    # school zones chloropleth
+    fig = px.choropleth_mapbox(edu, geojson = edu.geometry, 
+                            locations = edu.index,
+                            hover_name = edu.index,
+                            color = edu.index,
+                            center={"lat": 38.039, "lon": -78.47826},
+                            zoom=12, opacity = 0.5,
+                            labels={'ElemSchool': 'Elementary School Zone'})
+    fig.update_layout(mapbox_accesstoken=mapbox_token_public_hood, 
+                    mapbox_style=mapbox_style_hood,
+                    margin=go.layout.Margin(l=0, r=0,  b=0, t=0),
+                    plot_bgcolor="rgba(0,0,0,0)",
+                    paper_bgcolor="rgba(0,0,0,0)",
+                    autosize=True,
+                    font={'size': 16, 'color': "rgb(255,255,255)"})
+    fig.update_traces(hovertemplate=None, hoverinfo = 'skip')
+    #fig.update_traces(hovertemplate="<br>".join([
+    #                                "Elementary: %{hovertext}",
+    #                                "Upper Elementary: Walker",
+    #                                "Middle: Buford",
+    #                                "High: Charlottesville"]))
+    # school points scatter
+    fig2 = px.scatter_mapbox(eduPoints, lon = eduPoints.geometry.x, 
+                            lat = eduPoints.geometry.y,
+                            hover_name="name", hover_data={"address": True},
+                            color_discrete_sequence=['black'],
+                            center={"lat": 38.039, "lon": -78.47826}, 
+                            zoom = 12,
+                            opacity = 1)
+    fig2.update_layout(mapbox_accesstoken=mapbox_token_public_hood, 
+                    mapbox_style=mapbox_style_hood,
+                    margin=go.layout.Margin(l=0, r=0,  b=0, t=0),
+                    plot_bgcolor="rgba(0,0,0,0)",
+                    paper_bgcolor="rgba(0,0,0,0)",
+                    autosize=True,
+                    font={'size': 16, 'color': "rgb(255,255,255)"})
+    fig2.update_traces(hovertemplate="<br>".join([
+                                    "%{hovertext}",
+                                    "",
+                                    "Address: %{customdata[0]}"]), 
+                    marker={'size': 12})
+
+    fig.add_trace(fig2.data[0])
+    fig.update_yaxes(scaleanchor="x", scaleratio=1)
+    fig.data = fig.data[::-1]
+    
+    return fig

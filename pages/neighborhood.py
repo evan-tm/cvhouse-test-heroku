@@ -68,14 +68,20 @@ layout = html.Div(
             ], className="subcontainer"),
         html.Br(),
         # History of price
+        html.Div([
+            df.createLeftAlignDropdown(nd.text['HISTORY_TITLE'], nd.opts['DROPDOWN_HISTORY'],
+                            nd.default['DROPDOWN_HISTORY'], dd_id='dropdown_neighborhood_history',
+                            dd_style={'width': '150px'}, grid_class="grid_dd2",
+                            clearable=False, searchable=False),
+        ], className = "subcontainer"),
         html.Div(
             [
-                html.Span(nd.text['HISTORY_TITLE'], className="center_text subtitle"),
-                df.createDropdown(nd.text['DROPDOWN_HISTORY'], nd.opts['DROPDOWN_HISTORY'],
-                                  nd.default['DROPDOWN_HISTORY'], dd_id="dropdown_neighborhood_history",
-                                  dd_style={"width": "200px"}, clearable=False),
-                dcc.Graph(id='neighborhood_history_plot', 
+                dcc.Graph(id='neighborhood_price_history_plot', 
                           figure=hf.plotNeighborhoodHistorySales(nd.default['DROPDOWN_NEIGHBORHOOD'], nd.default['DROPDOWN_HISTORY']),
+                          style={"width": "100%"}, 
+                          config={'displayModeBar': False}),
+                dcc.Graph(id='neighborhood_quant_history_plot', 
+                          figure=hf.plotNeighborhoodHistorySales(nd.default['DROPDOWN_NEIGHBORHOOD'], nd.opts['DROPDOWN_HISTORY'][1]),
                           style={"width": "100%"}, 
                           config={'displayModeBar': False}),
             ], className="subcontainer"),
@@ -120,7 +126,21 @@ def update_census_neighborhood_plot(censusSelection, n):
 #        return dropdown_neighborhood_lod_opts[11]
 #    return(str(clickData['points'][len(clickData['points']) - 1]['hovertext']))
 
-@callback(Output("neighborhood_history_plot", "figure"),
-          [Input("dropdown_neighborhood", "value"), Input("dropdown_neighborhood_history", "value")])
-def history_neighborhood_sales(neighs, var):
-    return hf.plotNeighborhoodHistorySales(neighs, var)
+@callback(Output("neighborhood_price_history_plot", "figure"),
+          Output("neighborhood_quant_history_plot", "figure"),
+          [Input("dropdown_neighborhood", "value")])
+def history_neighborhood_sales(neighs):
+    fig1 = hf.plotNeighborhoodHistorySales(neighs, nd.default['DROPDOWN_HISTORY'])
+    fig2 = hf.plotNeighborhoodHistorySales(nd.default['DROPDOWN_NEIGHBORHOOD'], nd.opts['DROPDOWN_HISTORY'][1])
+    return fig1, fig2
+
+@callback(Output("neighborhood_price_history_plot", "style"),
+          Output("neighborhood_quant_history_plot", "style"),
+          Input("dropdown_neighborhood_history", "value"))
+def show_hide_history_plot(historySelection):
+    if historySelection == nd.opts['DROPDOWN_HISTORY'][0]:
+        return ({'display': 'block', "width": "100%"}, 
+                {'display': 'none'})
+    else:
+        return ({'display': 'none'}, 
+                {'display': 'block', "width": "100%"})

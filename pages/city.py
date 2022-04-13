@@ -27,7 +27,7 @@ history_zoning_title = "By Zoning"
 history_zoning_checklist_single = "Single family"
 history_zoning_checklist_two = "Two family"
 history_zoning_checklist_multi = "Multi family and others"
-HIST_NEIGHBORHOOD_TITLE = 'History of Residential Sales:'
+HIST_NEIGHBORHOOD_TITLE = 'History of Residential Sales by'
 
 ## footnote
 source = '''Prices have been adjusted for inflation. Only sales with state code Residential 
@@ -95,14 +95,20 @@ layout = html.Div(
             ], className="subcontainer"),
         html.Hr(className="center_text title"),
         # History of price
+        html.Div([
+            df.createLeftAlignDropdown(HIST_NEIGHBORHOOD_TITLE, cd.opts['DROPDOWN_HISTORY'],
+                            cd.default['DROPDOWN_HISTORY'], dd_id='dropdown_city_history',
+                            dd_style={'width': '150px'}, grid_class="grid_dd2",
+                            clearable=False, searchable=False),
+        ], className = "subcontainer"),
         html.Div(
             [
-                html.Span(HIST_NEIGHBORHOOD_TITLE, className="center_text subtitle"),
-                df.createDropdown(cd.text['DROPDOWN_HISTORY'], cd.opts['DROPDOWN_HISTORY'],
-                                  cd.default['DROPDOWN_HISTORY'], dd_id="dropdown_city_history",
-                                  dd_style={"width": "200px"}, clearable=False),
-                dcc.Graph(id='history_city_plot', 
+                dcc.Graph(id='history_price_city_plot', 
                           figure=hf.plotCityHistoryPrice(),
+                          style={"width": "100%"}, 
+                          config={'displayModeBar': False}),
+                dcc.Graph(id='history_quant_city_plot', 
+                          figure=hf.plotCityHistoryQuantity(),
                           style={"width": "100%"}, 
                           config={'displayModeBar': False}),
             ], className="subcontainer"),
@@ -133,13 +139,17 @@ def update_census_city_plot(censusSelection):
         return cf.plotRaceCity()
 
 @callback(
-    Output('history_city_plot', 'figure'),
+    Output('history_price_city_plot', 'style'),
+    Output('history_quant_city_plot', 'style'),
     Input('dropdown_city_history', 'value'))
 def update_history_city_plot(historySelection):
     if historySelection == cd.opts['DROPDOWN_HISTORY'][0]:
-        return hf.plotCityHistoryPrice()
+        return ({'display': 'block', "width": "100%"}, 
+                {'display': 'none'})
     else:
-        return hf.plotCityHistoryQuantity()
+        return ({'display': 'none'}, 
+                {'display': 'block', "width": "100%"})
+    
 
 # Update affordability graph
 @callback(Output("afford_map", "figure"),

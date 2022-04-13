@@ -116,10 +116,36 @@
 	letter-spacing: .16667em;
 	text-transform: uppercase;
 	text-align:center;
+	vertical-align: middle;
 	color:rgba(255, 255, 255, 1);
-	display:block;
 }
 .links_text {
 	display:block;
 	font-size:18px;
+}
+.dd_elem1 {
+	grid-area: dd_elem1;
+  }
+.dd_elem2 {
+	grid-area: dd_elem2;
+}
+.grid_dd {
+	display: grid;
+  	grid-template-areas: 
+  		"dd_elem1 dd_elem2 .";
+	grid-template-columns: 1fr 1fr 10fr;
+	max-width:1600px;
+	margin:5px auto;
+	align-items:center;
+	justify-items:center;
+}
+.grid_dd2 {
+	display: grid;
+  	grid-template-areas: 
+  		"dd_elem1 dd_elem2 .";
+	grid-template-columns: 3fr 1fr 8fr;
+	max-width:1600px;
+	margin:5px auto;
+	align-items:center;
+	justify-items:center;
 }

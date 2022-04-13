@@ -106,3 +106,24 @@ def createTopBar():
             dbc.Col(html.Img(src = 'assets/title.png', style={'height':'70px'}), className="ml-5"),
         ], 
         align="center", className="g-0"))
+
+def createLeftAlignDropdown(description, opts, default_value, 
+                   dd_style={"width": "150px"}, dd_id=None, desc_id=None,
+                   grid_class="grid_dd", 
+                   **kwargs):
+    if opts is not None:
+        opts_dict = [{"label": each, "value": each} for each in opts]
+    else:
+        opts_dict = None
+    if desc_id:
+        return html.Div([
+            html.Span(description, id=desc_id, className="dd_elem1 right_text bodytext"), 
+            dcc.Dropdown(id=dd_id, options=opts_dict, value=default_value, className="dd_elem2 subcontainer", 
+            style=dd_style, **kwargs)
+        ], className=grid_class)
+    else:
+        return html.Div([
+            html.Span(description, className="dd_elem1 right_text bodytext"),
+            dcc.Dropdown(id=dd_id, options=opts_dict, value=default_value, className="dd_elem2 subcontainer", 
+            style=dd_style, **kwargs)
+        ], className=grid_class)

@@ -5,7 +5,7 @@ text = {
     "DROPDOWN_CENSUS": "",
     "DROPDOWN_HISTORY": "",
     "DROPDOWN_NEIGHBORHOOD": "",
-    "HISTORY_TITLE": 'History of Residential Sales:'
+    "HISTORY_TITLE": 'History of Residential Sales by'
 }
 
 opts = {

@@ -6,6 +6,7 @@ import srcCode.affordFuncs as af
 import srcCode.affordDescs as ad
 import srcCode.dashFuncs as df
 import srcCode.qolFuncs as qf
+import srcCode.qolDescs as qd
 
 # Neighborhood dropdown texts
 
@@ -31,12 +32,25 @@ layout = html.Div(
             html.Div(hd.text['COPY'], id="copy_text", className="left_text bodytext"),
         ], className = "subcontainer"),
     html.Hr(className="center_text title"),
+    html.Div([
+        df.createLeftAlignDropdown(qd.text['DD_QOL'], qd.opts['DD_QOL'],
+                          qd.default['DD_QOL'], dd_id='qol_dropdown',
+                          dd_style={'width': '150px'}, 
+                          clearable=False, searchable=False),
+    ], className = "subcontainer"),
     # quality of life map
     html.Div(
         [
             # QoL map
             dcc.Graph(id='qol_map', 
                       figure=qf.plotResourcesMap(), 
+                      config={'displayModeBar': True,
+                              "displaylogo": False,
+                              'modeBarButtonsToRemove': ['pan2d', 'select2d', 'lasso2d']},
+                      style={"width": "100%", "height": "550px"}),
+            # School map
+            dcc.Graph(id='school_map', 
+                      figure=qf.plotSchoolMap(), 
                       config={'displayModeBar': True,
                               "displaylogo": False,
                               'modeBarButtonsToRemove': ['pan2d', 'select2d', 'lasso2d']},
@@ -111,6 +125,20 @@ layout = html.Div(
     html.Div(ad.text['LOADING'], id="afford_result", className="center_text subtitle"),
     html.Br(),
     ], className = "container background")
+
+@callback(
+   Output(component_id='qol_map', component_property='style'),
+   Output(component_id='school_map', component_property='style'),
+   [Input(component_id='qol_dropdown', component_property='value')])
+def show_hide_qol_map(currentMap):
+
+    optsMap = qd.opts['DD_QOL']
+    if currentMap == optsMap[0]:
+        return ({'display': 'block', "width": "100%", "height": "550px"}, 
+                {'display': 'none'})
+    else:
+        return ({'display': 'none'}, 
+                {'display': 'block', "width": "100%", "height": "550px"})
 
 # Collapsable sidebar
 # @callback(Output("home_sidebar", "is_open"),

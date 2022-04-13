@@ -15,7 +15,7 @@ text = {
 opts = {
     "HOME": "Home",
     "CITY": "Explore the City",
-    "NEIGHBORHOOD": "Explore the Neighborhoods",
+    "NEIGHBORHOOD": "Explore each Neighborhood",
     "NBCOMPARE": "Compare the Neighborhoods",
     "RESOURCES": "Resources",
     "TOP": "Top",
