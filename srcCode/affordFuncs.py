@@ -387,6 +387,9 @@ def update_hcare_placeholder(incomeStr, people):
 
     if incomeStr is None or people is None:
         return ''
+    # check for hourly income
+    if int(incomeStr) <= 100:
+        incomeStr = str(int(incomeStr) * 52 * 40)
     # convert age list of str to list of ints
     ages = []
     if isinstance(people, str):
@@ -426,6 +429,9 @@ def update_expenses(n, income, people, paymentType, homeSize, ccCount,
     if income is None or people is None:
         return 'Enter your information to see whether Charlottesville \
              is affordable for you!'
+    # Convert income to annual if hourly wage entered
+    if int(income) <= 100:
+        income = str(int(income) * 52 * 40)
     # get switch options from global vars
     optsSize = ad.opts['DD_HOMESIZE']
     optsTransport = ad.opts['DD_TRANSPORT']
@@ -477,9 +483,9 @@ def update_expenses(n, income, people, paymentType, homeSize, ccCount,
     # Add misc cost
     monthlyExpenses = monthlyExpenses * 1.1
     # Calculate pct of hhIncome spent on housing
-    housingPct = ((12 * myHousing) / income) * 100
+    housingPct = ((12 * myHousing) / int(income)) * 100
     # Determine affordability by comparing expenses to income
-    canAfford = (12 * monthlyExpenses - income)
+    canAfford = (12 * monthlyExpenses - int(income))
     # gather result message
     if canAfford < 0:
         affordMessage = 'Affordable: About {:.2f}% of your household\'s \

@@ -1,6 +1,6 @@
 from dash import Dash, dcc, html, Input, Output, callback
 import dash_bootstrap_components as dbc
-from pages import home, city, neighborhood, nbcompare
+from pages import home, city, neighborhood, nbcompare, resources
 
 external_stylesheets = [dbc.themes.BOOTSTRAP]
 
@@ -23,6 +23,8 @@ def display_page(pathname):
         return neighborhood.layout
     elif pathname == '/nbcompare':
         return nbcompare.layout
+    elif pathname == '/resources':
+        return resources.layout
     else:
         return home.layout
 

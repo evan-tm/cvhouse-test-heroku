@@ -13,7 +13,7 @@ text = {
     "IN_TECH": "Technology (monthly $):",
     "DD_TAX": "Tax filing status:",
     "CALC_BUTTON": "Calculate",
-    "DD_LOD": "Level of Detail",
+    "DD_LOD": "Level of Detail:",
     "LOADING": "Loading...",
 
 }
