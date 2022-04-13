@@ -1,6 +1,6 @@
 
 text = {
-    "MAIN_TITLE": "Neighborhood page:",
+    "MAIN_TITLE": "Learn About Charlottesville's Neighborhoods",
     "LOADING": "Loading...",
     "DROPDOWN_CENSUS": "",
     "DROPDOWN_HISTORY": "",

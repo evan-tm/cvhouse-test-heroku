@@ -13,19 +13,19 @@ layout = html.Div(
     [
         # Sidebar
         dbc.Navbar([
-            dbc.Button("☰", id='home_sidebar_button', className="background2 left_text title", 
-                       style={"margin-left": "0"}),
-            dbc.Collapse(
-                [
-                    dbc.NavItem(dbc.NavLink(tb.opts['TOP'], href="#", external_link=True, 
-                                            className="background2 left_text subtitle")),
-                    dbc.NavItem(dbc.NavLink(tb.opts['CENSUS'], href="#census_title", external_link=True, 
-                                            className="background2 left_text subtitle")),
-                ], id="home_sidebar", is_open=False, 
-                style={"width": "400px", "margin-left": "0", "position": "fixed", "top": "80px"}, className="background"),
+            #dbc.Button("☰", id='home_sidebar_button', className="background2 left_text title", 
+            #           style={"margin-left": "0"}),
+            # dbc.Collapse(
+            #     [
+            #         dbc.NavItem(dbc.NavLink(tb.opts['TOP'], href="#", external_link=True, 
+            #                                className="background2 left_text subtitle")),
+            #         dbc.NavItem(dbc.NavLink(tb.opts['CENSUS'], href="#census_title", external_link=True, 
+            #                                 className="background2 left_text subtitle")),
+            #     ], id="home_sidebar", is_open=False, 
+            #     style={"width": "400px", "margin-left": "0", "position": "fixed", "top": "80px"}, className="background"),
             df.createTopBar()
-        ], className="sidebar", color="#132C36", sticky="top"),
-    html.H3(hd.text['MAIN_TITLE'], className = "center_text title"),
+        ], className="sidebar", color="#132C36"),
+    #html.H3(hd.text['MAIN_TITLE'], className = "center_text title"),
     html.Div(
         [
             html.Div(hd.text['COPY'], id="copy_text", className="left_text bodytext"),
@@ -40,13 +40,13 @@ layout = html.Div(
                       config={'displayModeBar': True,
                               "displaylogo": False,
                               'modeBarButtonsToRemove': ['pan2d', 'select2d', 'lasso2d']},
-                      style={"width": "100%", "height": "600px"})
+                      style={"width": "100%", "height": "550px"})
         ], className = "subcontainer"),
     html.Hr(className="center_text title"),
-    html.Span(ad.text['DD_MAIN_TITLE'], className="center_text subtitle"),
+    html.Span(ad.text['DD_MAIN_TITLE'], className="center_text title"),
     html.Div(
             [
-                # Neighborhood dropdown for industry chart
+                # Neighborhood dropdown
                 html.Div([
                     df.createDropdown(hd.text['DROPDOWN_NEIGHBORHOOD'], hd.opts['DROPDOWN_NEIGHBORHOOD'],
                                       hd.default['DROPDOWN_NEIGHBORHOOD'], dd_id="dropdown_neighborhood",
@@ -109,15 +109,16 @@ layout = html.Div(
                                 style={"background-color": "#FFE133", "color": "#000000"}),
         ], className="subcontainer"),
     html.Div(ad.text['LOADING'], id="afford_result", className="center_text subtitle"),
+    html.Br(),
     ], className = "container background")
 
 # Collapsable sidebar
-@callback(Output("home_sidebar", "is_open"),
-          [Input("home_sidebar_button", "n_clicks"), State("home_sidebar", "is_open")])
-def home_sidebar_collapse(n, is_open):
-    if n:
-        return not is_open
-    return is_open
+# @callback(Output("home_sidebar", "is_open"),
+#           [Input("home_sidebar_button", "n_clicks"), State("home_sidebar", "is_open")])
+# def home_sidebar_collapse(n, is_open):
+#     if n:
+#         return not is_open
+#     return is_open
 
 #@callback(
 #    Output('dropdown_neighborhood', 'value'),

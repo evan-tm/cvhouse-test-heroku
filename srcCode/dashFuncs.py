@@ -101,6 +101,8 @@ def createTopBar():
                                             className="background2 header_links_text", style={'height':'70px'}))),
             dbc.Col(dbc.NavItem(dbc.NavLink(tb.opts['NBCOMPARE'], href="/nbcompare", external_link=True, 
                                             className="background2 header_links_text", style={'height':'70px'}))),
+            dbc.Col(dbc.NavItem(dbc.NavLink(tb.opts['RESOURCES'], href="/resources", external_link=True, 
+                                            className="background2 header_links_text", style={'height':'70px'}))),
             dbc.Col(html.Img(src = 'assets/title.png', style={'height':'70px'}), className="ml-5"),
         ], 
         align="center", className="g-0"))

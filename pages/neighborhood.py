@@ -28,20 +28,20 @@ layout = html.Div(
     [
         # Sidebar
         dbc.Navbar([
-            dbc.Button("☰", id='hood_sidebar_button', className="background2 left_text title", 
-                       style={"margin-left": "0"}),
-            dbc.Collapse(
-                [
-                    dbc.NavItem(dbc.NavLink(tb.opts['TOP'], href="#", external_link=True, 
-                                            className="background2 left_text subtitle")),
-                    dbc.NavItem(dbc.NavLink(tb.opts['CENSUS'], href="#dropdown_neighborhood_census", external_link=True, 
-                                            className="background2 left_text subtitle")),
-                    dbc.NavItem(dbc.NavLink(tb.opts['HIST'], href="#dropdown_neighborhood_history", external_link=True, 
-                                            className="background2 left_text subtitle")),
-                ], id="hood_sidebar", is_open=False, 
-                style={"width": "400px", "margin-left": "0", "position": "fixed", "top": "80px"}, className="background"),
+            # dbc.Button("☰", id='hood_sidebar_button', className="background2 left_text title", 
+            #            style={"margin-left": "0"}),
+            # dbc.Collapse(
+            #     [
+            #         dbc.NavItem(dbc.NavLink(tb.opts['TOP'], href="#", external_link=True, 
+            #                                 className="background2 left_text subtitle")),
+            #         dbc.NavItem(dbc.NavLink(tb.opts['CENSUS'], href="#dropdown_neighborhood_census", external_link=True, 
+            #                                 className="background2 left_text subtitle")),
+            #         dbc.NavItem(dbc.NavLink(tb.opts['HIST'], href="#dropdown_neighborhood_history", external_link=True, 
+            #                                 className="background2 left_text subtitle")),
+            #     ], id="hood_sidebar", is_open=False, 
+            #     style={"width": "400px", "margin-left": "0", "position": "fixed", "top": "80px"}, className="background"),
             df.createTopBar()
-        ], className="sidebar", color="#132C36", sticky="top"),
+        ], className="sidebar", color="#132C36"),
         html.H3(nd.text['MAIN_TITLE'], className = "center_text title"),
         html.Div(
             [
@@ -66,6 +66,7 @@ layout = html.Div(
                           config={'displayModeBar': False},
                           style={'display': 'block'})
             ], className="subcontainer"),
+        html.Br(),
         # History of price
         html.Div(
             [
@@ -82,12 +83,12 @@ layout = html.Div(
     ], className = "container background")
 
 # Collapsable sidebar
-@callback(Output("hood_sidebar", "is_open"),
-          [Input("hood_sidebar_button", "n_clicks"), State("hood_sidebar", "is_open")])
-def hood_sidebar_collapse(n, is_open):
-    if n:
-        return not is_open
-    return is_open
+# @callback(Output("hood_sidebar", "is_open"),
+#           [Input("hood_sidebar_button", "n_clicks"), State("hood_sidebar", "is_open")])
+# def hood_sidebar_collapse(n, is_open):
+#     if n:
+#         return not is_open
+#     return is_open
 
 @callback(
     Output('neighborhood_cvillepedia', 'children'),

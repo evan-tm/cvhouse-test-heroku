@@ -30,8 +30,7 @@ history_zoning_checklist_multi = "Multi family and others"
 HIST_NEIGHBORHOOD_TITLE = 'History of Residential Sales:'
 
 ## footnote
-source = '''Data from Charlotteville Open Data Portal. Last update March 31, 2022.
-Prices have been adjusted for inflation. Only sales with state code Residential 
+source = '''Prices have been adjusted for inflation. Only sales with state code Residential 
 (urban/suburban) and Multifamily are included.'''
 # ----------------------------------------------------------------------------
 # Building dash
@@ -41,21 +40,21 @@ layout = html.Div(
     [
         # Sidebar
         dbc.Navbar([
-            dbc.Button("☰", id='city_sidebar_button', className="background2 left_text title", 
-                       style={"margin-left": "0"}),
-            dbc.Collapse(
-                [
-                    dbc.NavItem(dbc.NavLink(tb.opts['TOP'], href="#", external_link=True, 
-                                            className="background2 left_text subtitle")),
-                    dbc.NavItem(dbc.NavLink(tb.opts['SECTOR'], href="#ind_city_plot", external_link=True, 
-                                            className="background2 left_text subtitle")),
-                    dbc.NavItem(dbc.NavLink(tb.opts['HIST'], href="#history_title", external_link=True, 
-                                            className="background2 left_text subtitle")),
-                ], id="city_sidebar", is_open=False, 
-                style={"width": "400px", "margin-left": "0", "position": "fixed", "top": "80px"}, className="background"),
+            # dbc.Button("☰", id='city_sidebar_button', className="background2 left_text title", 
+            #            style={"margin-left": "0"}),
+            # dbc.Collapse(
+            #     [
+            #         dbc.NavItem(dbc.NavLink(tb.opts['TOP'], href="#", external_link=True, 
+            #                                 className="background2 left_text subtitle")),
+            #         dbc.NavItem(dbc.NavLink(tb.opts['SECTOR'], href="#ind_city_plot", external_link=True, 
+            #                                 className="background2 left_text subtitle")),
+            #         dbc.NavItem(dbc.NavLink(tb.opts['HIST'], href="#history_title", external_link=True, 
+            #                                 className="background2 left_text subtitle")),
+            #     ], id="city_sidebar", is_open=False, 
+            #     style={"width": "400px", "margin-left": "0", "position": "fixed", "top": "80px"}, className="background"),
             df.createTopBar()
-        ], className="sidebar", color="#132C36", sticky="top"),
-        html.H3(cd.text['MAIN_TITLE'], className = "center_text title"), 
+        ], className="sidebar", color="#132C36"),
+        #html.H3(cd.text['MAIN_TITLE'], className = "center_text title"), 
         # Affordability
         html.Div(
             [
@@ -64,7 +63,7 @@ layout = html.Div(
                           config={'displayModeBar': True,
                                   "displaylogo": False,
                                   'modeBarButtonsToRemove': ['pan2d', 'select2d', 'lasso2d']},
-                          style={"width": "100%", "height": "600px"}),
+                          style={"width": "100%", "height": "550px"}),
                 html.Div([
                     html.Div([
                         dcc.Slider(min=1945, max=2021, step=1, value=2020, 
@@ -87,7 +86,8 @@ layout = html.Div(
                 # dropdown for census selection
                 df.createDropdown(cd.text['DROPDOWN_CENSUS'], cd.opts['DROPDOWN_CENSUS'],
                                   cd.default['DROPDOWN_CENSUS'], dd_id="dropdown_city_census",
-                                  dd_style={"width": "200px"}, clearable=False, searchable = False),
+                                  dd_style={"width": "200px"}, 
+                                  clearable=False, searchable = False),
                 dcc.Graph(id='census_city_plot', 
                           figure=cf.plotIndustrySector(),
                           config={'displayModeBar': False},
@@ -112,12 +112,12 @@ layout = html.Div(
     ], className="container background")
 
 # Collapsable sidebar
-@callback(Output("city_sidebar", "is_open"),
-          [Input("city_sidebar_button", "n_clicks"), State("city_sidebar", "is_open")])
-def sidebar_collapse(n, is_open):
-    if n:
-        return not is_open
-    return is_open
+# @callback(Output("city_sidebar", "is_open"),
+#           [Input("city_sidebar_button", "n_clicks"), State("city_sidebar", "is_open")])
+# def sidebar_collapse(n, is_open):
+#     if n:
+#         return not is_open
+#     return is_open
 
 @callback(
     Output('census_city_plot', 'figure'),
