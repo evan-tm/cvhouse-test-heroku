@@ -49,24 +49,30 @@ layout = html.Div(
                               'modeBarButtonsToRemove': ['pan2d', 'select2d', 'lasso2d']},
                       style={"width": "100%", "height": "550px"}),
             # School map
-            dcc.Graph(id='school_map', 
-                      figure=qf.plotSchoolMap(), 
+            # dcc.Graph(id='school_map', 
+            #           figure=qf.plotSchoolMap(), 
+            #           config={'displayModeBar': True,
+            #                   "displaylogo": False,
+            #                   'modeBarButtonsToRemove': ['pan2d', 'select2d', 'lasso2d']},
+            #           style={'diplay': 'block', "width": "100%", "height": "550px"}),
+            # Affordability map
+            dcc.Graph(id='results_map', 
                       config={'displayModeBar': True,
                               "displaylogo": False,
                               'modeBarButtonsToRemove': ['pan2d', 'select2d', 'lasso2d']},
-                      style={"width": "100%", "height": "550px"})
+                      style={'display': 'none', "width": "100%", "height": "550px"})
         ], className = "subcontainer"),
     html.Hr(className="center_text title"),
     html.Span(ad.text['DD_MAIN_TITLE'], className="center_text title"),
-    html.Div(
-            [
-                # Neighborhood dropdown
-                html.Div([
-                    df.createDropdown(hd.text['DROPDOWN_NEIGHBORHOOD'], hd.opts['DROPDOWN_NEIGHBORHOOD'],
-                                      hd.default['DROPDOWN_NEIGHBORHOOD'], dd_id="dropdown_neighborhood",
-                                      dd_style={"width": "200px"}, grid_width="1fr", clearable=False),
-                ], className="neighborhood_drop"),
-            ], className = "subcontainer"),
+    # html.Div(
+    #         [
+    #             # Neighborhood dropdown
+    #             html.Div([
+    #                 df.createDropdown(hd.text['DROPDOWN_NEIGHBORHOOD'], hd.opts['DROPDOWN_NEIGHBORHOOD'],
+    #                                   hd.default['DROPDOWN_NEIGHBORHOOD'], dd_id="dropdown_neighborhood",
+    #                                   dd_style={"width": "200px"}, grid_width="1fr", clearable=False),
+    #             ], className="neighborhood_drop"),
+    #         ], className = "subcontainer"),
     html.Div(
         [
             # Personal information
@@ -83,7 +89,7 @@ layout = html.Div(
             df.createDropdown(ad.text['DD_PEOPLE'], ad.opts['DD_PEOPLE'],
                               ad.default['DD_PEOPLE'], dd_id="afford_dropdown_people",
                               desc_id="afford_dropdown_people_desc_id", 
-                              searchable = False, multi = True),
+                              searchable = False, multi = True, clearable = False),
             # rent/buy
             df.createDropdown(ad.text['DD_PAY'], ad.opts['DD_PAY'],
                                           ad.default['DD_PAY'], dd_id="afford_dropdown_pay",
@@ -127,18 +133,19 @@ layout = html.Div(
     ], className = "container background")
 
 @callback(
-   Output(component_id='qol_map', component_property='style'),
-   Output(component_id='school_map', component_property='style'),
-   [Input(component_id='qol_dropdown', component_property='value')])
-def show_hide_qol_map(currentMap):
+   Output(component_id='qol_map', component_property='figure'),
+   [Input(component_id='qol_dropdown', component_property='value'),
+    Input('results_map', 'figure'),
+    Input('afford_button', 'n_clicks')])
+def show_hide_qol_map(currentMap, currentResultsFig, n):
 
     optsMap = qd.opts['DD_QOL']
     if currentMap == optsMap[0]:
-        return ({'display': 'block', "width": "100%", "height": "550px"}, 
-                {'display': 'none'})
+        return qf.plotResourcesMap()
+    elif currentMap == optsMap[1]:
+        return qf.plotSchoolMap()
     else:
-        return ({'display': 'none'}, 
-                {'display': 'block', "width": "100%", "height": "550px"})
+        return currentResultsFig
 
 # Collapsable sidebar
 # @callback(Output("home_sidebar", "is_open"),

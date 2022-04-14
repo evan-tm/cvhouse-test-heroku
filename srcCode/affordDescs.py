@@ -15,7 +15,6 @@ text = {
     "CALC_BUTTON": "Calculate",
     "DD_LOD": "Level of Detail:",
     "LOADING": "Loading...",
-
 }
 
 opts = {
@@ -28,6 +27,12 @@ opts = {
                     'Pickup', 'Hybrid', 'Electric'],
     "DD_TAX": ['Single', 'Married', 'Head of House'],
     "DD_LOD": ["Neighborhood", "Individual Properties"],
+    "DD_HOOD": ['10th & Page', 'Barracks / Rugby', 'Barracks Road',
+                              'Belmont','Fifeville',"Fry's Spring", 'Greenbrier',
+                              'Jefferson Park Avenue', 'Johnson Village', 'Lewis Mountain',
+                              'Locust Grove', 'Martha Jefferson', 'North Downtown',
+                              'Ridge Street', 'Rose Hill', 'Starr Hill',
+                              'The Meadows', 'Venable', 'Woolen Mills']
 
 }
 
@@ -44,6 +49,9 @@ default = {
     "IN_TECH": 100,
     "DD_TAX": opts['DD_TAX'][0],
     "DD_LOD": opts['DD_LOD'][0],
+    "AFFORD_MSG": 'Enter your \
+                information to see whether Charlottesville is affordable for \
+                you!'
 }
 
 ttips = {
