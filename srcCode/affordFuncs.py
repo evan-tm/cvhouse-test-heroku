@@ -4,6 +4,9 @@
 import pandas as pd
 from dash import Input, Output, State, dcc, html, callback
 import srcCode.affordDescs as ad
+import geopandas as gpd
+import plotly.express as px
+import plotly.graph_objects as go
 
 # Rental affordability data
 rentData = pd.read_csv('data/calculator/acsRent2020.csv')
@@ -19,6 +22,12 @@ mortgageData = [1612.0, (0.0095 * 399628.7) / 12.0]
 oopHealthcareData = pd.read_csv('data/calculator/oopHealthcareAnnual.csv')
 # Health care premium affordability data
 premiumHealthcareData = pd.read_csv('data/calculator/premiumHealthcare.csv')
+# Neighborhood data
+ns = gpd.read_file('neighborhood_simple.geojson')
+ns = ns.set_index('NAME')
+
+mapbox_token_public = "pk.eyJ1IjoiZXZhbi10bSIsImEiOiJjbDFlYTlncTMwM2J3M2RwbDdjaXc2bW02In0.cxB8jf_1CFeoeVUAuOsYuA"
+mapbox_style = "mapbox://styles/evan-tm/cl1ik4lmv003z15ru0ip4isbz"
 
 ## logic for getting correct index to pull from oopData
 ## in: age to find group for
@@ -274,24 +283,37 @@ def get_transport_payment(transportType, vehicleType, senior,
     
     return myTransport
 
+def plotAffordMap(ns):
+    # school zones chloropleth
+    fig = px.choropleth_mapbox(ns, geojson = ns.geometry, 
+                            locations = ns.index,
+                            #hover_name = ns.index,
+                            color = ns.afford,
+                            center={"lat": 38.039, "lon": -78.47826},
+                            zoom=12, opacity = 0.5,
+                            color_discrete_map={'Affordable':'green',
+                                            'Unaffordable':'orange'},
+                            labels={'afford': 'Results:'})
+    fig.update_layout(mapbox_accesstoken=mapbox_token_public, 
+                    mapbox_style=mapbox_style,
+                    margin=go.layout.Margin(l=0, r=0,  b=0, t=0),
+                    plot_bgcolor="rgba(0,0,0,0)",
+                    paper_bgcolor="rgba(0,0,0,0)",
+                    autosize=True,
+                    font={'size': 16, 'color': "rgb(255,255,255)"})
+    fig.update_traces(hovertemplate=None, hoverinfo = 'skip')
+
+    fig.update_yaxes(scaleanchor="x", scaleratio=1)
+    return fig
+
 @callback(
     Output('afford_dropdown_people', 'style'),
     Output('afford_dropdown_people_desc_id', 'style'),
-    Input('afford_dropdown_people', 'value')
+    Input('age_button', 'n_clicks')
 )
-def show_hide_people(people):
+def show_hide_people(n):
     
-    # convert age list of str to list of ints
-    ages = []
-    if isinstance(people, str):
-        if people != '':
-            ages.append(int(people))
-    else:
-        for ageStr in people:
-            if ageStr != '':
-                ages.append(int(ageStr))
-    peopleCount = len(ages)
-    if peopleCount > 0:
+    if n:
         return ({'display': 'block', "width": "150px"}, 
                 {'display': 'block', "width": "150px"})
     else:
@@ -407,7 +429,10 @@ def update_hcare_placeholder(incomeStr, people):
                                  oopHealthcareData)
 
 # Update expense defaults and affordability message
-@callback(Output('afford_result', 'children'),
+@callback(Output('qol_dropdown', 'value'),
+          Output('qol_dropdown', 'options'),
+          Output('afford_result', 'children'),
+          Output('results_map', 'figure'),
           [Input("afford_button", "n_clicks"), 
           State('afford_input_salary', 'value'), 
           State('afford_dropdown_people', 'value'),
@@ -420,15 +445,17 @@ def update_hcare_placeholder(incomeStr, people):
           State('afford_input_hcare', 'placeholder'),
           State('afford_input_tech', 'value'),
           State('afford_dropdown_tax' ,'value'),
-          State('dropdown_neighborhood', 'value')])
+          State('qol_dropdown', 'options'),
+          State('qol_dropdown', 'value')])
 def update_expenses(n, income, people, paymentType, homeSize, ccCount, 
                     transportType, vehicleType, hcareStr, hcarePlace, 
-                    techStr, taxStatus, hood):
+                    techStr, taxStatus, qolOpts, currentQOL):
 
+    global ns
     # Starting message
     if income is None or people is None:
-        return 'Enter your information to see whether Charlottesville \
-             is affordable for you!'
+        return currentQOL, qolOpts, 'Enter your information to see whether \
+            Charlottesville is affordable for you!', go.Figure()
     # Convert income to annual if hourly wage entered
     if int(income) <= 100:
         income = str(int(income) * 52 * 40)
@@ -446,6 +473,9 @@ def update_expenses(n, income, people, paymentType, homeSize, ccCount,
         for ageStr in people:
             if ageStr != '':
                 ages.append(int(ageStr))
+    if len(ages) == 0:
+        return currentQOL, qolOpts, 'Please add members to your household \
+            using the Add Person button!', go.Figure()
     adultCount = sum([age >= 18 for age in ages])
     kidCount = len(ages) - adultCount
     # determine seniority
@@ -456,43 +486,58 @@ def update_expenses(n, income, people, paymentType, homeSize, ccCount,
     else:
         myHealthcare = int(hcareStr)
     # initialize monthly expenses variable with the housing payment
-    monthlyExpenses = get_housing_payment(paymentType, homeSize, 
-                                          rentData, mortgageData, 
-                                          hood, optsPayment, optsSize)
-    myHousing = monthlyExpenses
+    housingPayments = []
+    for hood in ad.opts['DD_HOOD']:
+        housingPayments.append(get_housing_payment(paymentType, homeSize, 
+                                                    rentData, mortgageData, 
+                                                    hood, optsPayment, optsSize))
+    monthlyExpenses = [x for x in housingPayments]
     # Add childcare cost (currently using Toddler Family Child Care for all kids in cc)
     if ccCount is not None:
-        monthlyExpenses += int(ccCount) * 584.0
+        monthlyExpenses = [x+int(ccCount) * 584.0 for x in monthlyExpenses]
     # Add food cost
-    monthlyExpenses += get_food_payment(ages, foodData)
+    monthlyExpenses = [x+get_food_payment(ages, foodData) for x in monthlyExpenses]
     # Add transport cost (currently assuming 15k mileage for every vehicle type)
-    monthlyExpenses += get_transport_payment(transportType, vehicleType, 
-                                             senior, transportData, 
-                                             optsTransport, optsVehicle)
+    monthlyExpenses = [x+get_transport_payment(transportType, vehicleType, 
+                        senior, transportData, optsTransport, optsVehicle) 
+                        for x in monthlyExpenses]
     # Add healthcare cost
-    monthlyExpenses += (myHealthcare / 12.0)
+    monthlyExpenses = [x+(myHealthcare / 12.0) for x in monthlyExpenses]
     # Add technology cost
-    monthlyExpenses += int(techStr)
+    monthlyExpenses = [x+int(techStr) for x in monthlyExpenses]
     # Add tax cost NEED TO FIX WITH NEW ADULT TAGS
-    monthlyExpenses += get_tax(taxStatus, int(income), 
-                                  int(adultCount), int(kidCount), 
-                                  ad.opts['DD_TAX'])
+    monthlyExpenses = [x+get_tax(taxStatus, int(income), 
+                        int(adultCount), int(kidCount), 
+                        ad.opts['DD_TAX']) for x in monthlyExpenses]
     # check whether to add real estate tax for cville
     if paymentType == optsPayment[1]:
-        monthlyExpenses += mortgageData[1]
+        monthlyExpenses = [x+mortgageData[1] for x in monthlyExpenses]
     # Add misc cost
-    monthlyExpenses = monthlyExpenses * 1.1
+    monthlyExpenses = [x*1.1 for x in monthlyExpenses]
     # Calculate pct of hhIncome spent on housing
-    housingPct = ((12 * myHousing) / int(income)) * 100
+    avgHousing = sum(housingPayments) / len(housingPayments)
+    housingAvgPct = ((12 * avgHousing) / int(income)) * 100
+    # Getting average monthly expenses
+    avgExpenses = sum(monthlyExpenses) / len(monthlyExpenses)
     # Determine affordability by comparing expenses to income
-    canAfford = (12 * monthlyExpenses - int(income))
+    expensesDict = dict(zip(ad.opts['DD_HOOD'], monthlyExpenses))
+    afford = []
+    for x in ns.index:
+        if ((expensesDict[x] * 12 - int(income)) >= 0):
+            afford.append('Unaffordable')
+        else:
+            afford.append('Affordable')
+    ns['afford'] = afford
+    # add affordability map to options if not there
+    if not any(d['label'] == 'Affordability' for d in qolOpts):
+        qolOpts.append({'label': 'Affordability', 'value': 'Affordability'})
     # gather result message
-    if canAfford < 0:
+    if 'Affordable' in ns['afford']:
         affordMessage = 'Affordable: About {:.2f}% of your household\'s \
             income would be spent on gross rent. Your approximate living \
-            expenses are ${:,} annually.'.format(housingPct, int(monthlyExpenses * 12))
+            expenses are ${:,} annually.'.format(housingAvgPct, int(avgExpenses * 12))
     else:
         affordMessage = 'Not affordable: About {:.2f}% of your household\'s \
             income would be spent on gross rent. Your approximate living \
-            expenses are ${:,} annually.'.format(housingPct, int(monthlyExpenses * 12))
-    return affordMessage
+            expenses are ${:,} annually.'.format(housingAvgPct, int(avgExpenses * 12))
+    return 'Affordability', qolOpts, affordMessage, plotAffordMap(ns)
