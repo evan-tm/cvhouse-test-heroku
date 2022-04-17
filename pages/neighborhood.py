@@ -131,7 +131,7 @@ def update_census_neighborhood_plot(censusSelection, n):
           [Input("dropdown_neighborhood", "value")])
 def history_neighborhood_sales(neighs):
     fig1 = hf.plotNeighborhoodHistorySales(neighs, nd.default['DROPDOWN_HISTORY'])
-    fig2 = hf.plotNeighborhoodHistorySales(nd.default['DROPDOWN_NEIGHBORHOOD'], nd.opts['DROPDOWN_HISTORY'][1])
+    fig2 = hf.plotNeighborhoodHistorySales(neighs, nd.opts['DROPDOWN_HISTORY'][1])
     return fig1, fig2
 
 @callback(Output("neighborhood_price_history_plot", "style"),
