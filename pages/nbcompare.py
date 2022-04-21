@@ -66,7 +66,12 @@ layout = html.Div(
                 dcc.Graph(id='nbc_history_plot', 
                           figure=hf.plotCompareHistorySales(0, nbcd.default['DROPDOWN_HISTORY'], ''),
                           style={"width": "100%"}, 
-                          config={'displayModeBar': False}),
+                          config={'displayModeBar': True,
+                            "displaylogo": False,
+                            'modeBarButtonsToRemove': ['pan2d', 'select2d', 
+                                                        'lasso2d', 'zoom2d',
+                                                        'zoomIn2d', 'zoomOut2d',
+                                                        'autoScale2d']}),
             ], className="subcontainer"),
         dcc.Link('Take me back up', href='#', className = "subcontainer links_text"),
     ], className = "container background")
@@ -116,9 +121,15 @@ def nbc_names(n, value):
 def nbc_industry_plots(n, value):
     ind_plots = []
     if n:
-        for each in value:
-            ind_plots.append(dcc.Graph(figure=cf.plotIndustryByNeighborhood(each, True), 
-                             config={'displayModeBar': False},
+        for ind, each in enumerate(value):
+            ind_plots.append(dcc.Graph(id=('nbc_' + str(ind) + '_ind'),
+                            figure=cf.plotIndustryByNeighborhood(each, True), 
+                            config={'displayModeBar': True,
+                            "displaylogo": False,
+                            'modeBarButtonsToRemove': ['pan2d', 'select2d', 
+                                                        'lasso2d', 'zoom2d',
+                                                        'zoomIn2d', 'zoomOut2d',
+                                                        'autoScale2d']},
                              style={'display': 'block'}))
     return ind_plots
 
@@ -128,9 +139,15 @@ def nbc_industry_plots(n, value):
 def nbc_age_plots(n, value):
     age_plots = []
     if n:
-        for each in value:
-            age_plots.append(dcc.Graph(figure=cf.plotAgeNeighborhood(each), 
-                                       config={'displayModeBar': False},
+        for ind, each in enumerate(value):
+            age_plots.append(dcc.Graph(id=('nbc_' + str(ind) + '_age'),
+                            figure=cf.plotAgeNeighborhood(each), 
+                            config={'displayModeBar': True,
+                            "displaylogo": False,
+                            'modeBarButtonsToRemove': ['pan2d', 'select2d', 
+                                                        'lasso2d', 'zoom2d',
+                                                        'zoomIn2d', 'zoomOut2d',
+                                                        'autoScale2d']},
                                        style={'display': 'block'}))
     return age_plots
 
@@ -140,9 +157,15 @@ def nbc_age_plots(n, value):
 def nbc_race_plots(n, value):
     race_plots = []
     if n:
-        for each in value:
-            race_plots.append(dcc.Graph(figure=cf.plotRaceNeighborhood(each, True), 
-                              config={'displayModeBar': False},
+        for ind, each in enumerate(value):
+            race_plots.append(dcc.Graph(id=('nbc_' + str(ind) + '_race'),
+                            figure=cf.plotRaceNeighborhood(each, True), 
+                            config={'displayModeBar': True,
+                            "displaylogo": False,
+                            'modeBarButtonsToRemove': ['pan2d', 'select2d', 
+                                                        'lasso2d', 'zoom2d',
+                                                        'zoomIn2d', 'zoomOut2d',
+                                                        'autoScale2d']},
                               style={'display': 'block'}))
     return race_plots
 
@@ -152,9 +175,15 @@ def nbc_race_plots(n, value):
 def nbc_income_plots(n, value):
     income_plots = []
     if n:
-        for each in value:
-            income_plots.append(dcc.Graph(figure=cf.plotIncomeNeighborhood(each, True), 
-                                config={'displayModeBar': False},
+        for ind, each in enumerate(value):
+            income_plots.append(dcc.Graph(id=('nbc_' + str(ind) + '_income'),
+                                figure=cf.plotIncomeNeighborhood(each, True), 
+                                config={'displayModeBar': True,
+                            "displaylogo": False,
+                            'modeBarButtonsToRemove': ['pan2d', 'select2d', 
+                                                        'lasso2d', 'zoom2d',
+                                                        'zoomIn2d', 'zoomOut2d',
+                                                        'autoScale2d']},
                                 style={'display': 'block'}))
     return income_plots
 

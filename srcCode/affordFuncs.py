@@ -71,20 +71,37 @@ def get_cc_payment(ccCount, ccType, optsCC):
         return ccCount * 1268.0
 
 ## Approximates monthly tax payment for a given income
-## in: status, income, adultCount, kidCount, tax options
+## in: status, income, ages, adultCount, kidCount, tax options
 ## out: monthly tax
-def get_tax(status, income, adultCount, kidCount, optsTax):
+def get_tax(status, income, ages, adultCount, kidCount, optsTax):
     
     eitc = 0
     povc = 0
 
     numPeople = adultCount + kidCount
     povertyLine = 8870 + 4720 * numPeople
+
     # check for VA low income tax credit qualification
     if (income < povertyLine):
         povc = 300 * numPeople
     # switch for tax filing status
     if status == optsTax[0]:
+        numWorkers = sum([age >= 18 and age <= 64 for age in ages])
+        if numWorkers == 0:
+            numWorkers += 1
+        # assume workers are making the same incomes (not perfect)
+        income = income / float(numWorkers)
+        if income > 200000:
+            ficaTax = 147000 * 0.062
+            ficaTax = ficaTax + income * 0.0235
+            ficaTax = ficaTax * numWorkers
+        elif income > 147000:
+            ficaTax = 147000 * 0.062
+            ficaTax = ficaTax + income * 0.0145
+            ficaTax = ficaTax * numWorkers
+        else:
+            ficaTax = income * 0.0765
+            ficaTax = ficaTax * numWorkers
         income = income - 12950 # single filing status deduction for 2022
         # fed tax switch
         if income < 10276:
@@ -100,18 +117,30 @@ def get_tax(status, income, adultCount, kidCount, optsTax):
         elif income >= 215951 and income < 539901:
             fedTax = 49335.5 + (income - 215950) * 0.35
         else:
-            fedTax = 162718.0 + (income - 539900) * 0.37
+            fedTax = 162718.0 + (income - 539900) * 0.37\
+        # readjust for each worker
+        fedTax = fedTax * numWorkers
         
         # earned income tax credit switch
-        if income < 21431 and kidCount == 0:
-            eitc = 1502.0
-        elif income < 42159 and kidCount == 1:
-            eitc = 3618.0
-        elif income < 47916 and kidCount == 2:
-            eitc = 5980.0
-        elif income < 51465 and kidCount >= 3:
-            eitc = 6728.0
+        if income < 16481 and kidCount == 0:
+            eitc = 560.0
+        elif income < 43493 and kidCount == 1:
+            eitc = 3733.0
+        elif income < 49400 and kidCount == 2:
+            eitc = 6164.0
+        elif income < 53058 and kidCount >= 3:
+            eitc = 6935.0
+        # readjust for each worker
+        eitc = eitc * numWorkers
     elif status == optsTax[1]:
+        if income > 250000:
+            ficaTax = 147000 * 0.062
+            ficaTax = ficaTax + income * 0.0235
+        elif income > 147000:
+            ficaTax = 147000 * 0.062
+            ficaTax = ficaTax + income * 0.0145
+        else:
+            ficaTax = income * 0.0765
         income = income - 25900 # married filing status deduction for 2022
         if income < 20551:
             fedTax = income * 0.1
@@ -129,15 +158,24 @@ def get_tax(status, income, adultCount, kidCount, optsTax):
             fedTax = 174253.5 + (income - 647850) * 0.37
 
         # earned income tax credit switch
-        if income < 27381 and kidCount == 0:
-            eitc = 1502.0
-        elif income < 48109 and kidCount == 1:
-            eitc = 3618.0
-        elif income < 53866 and kidCount == 2:
-            eitc = 5980.0
-        elif income < 57415 and kidCount >= 3:
-            eitc = 6728.0
+        if income < 22611 and kidCount == 0:
+            eitc = 560.0
+        elif income < 49623 and kidCount == 1:
+            eitc = 3733.0
+        elif income < 55530 and kidCount == 2:
+            eitc = 6164.0
+        elif income < 59188 and kidCount >= 3:
+            eitc = 6935.0
+        eitc = eitc * 2
     else:
+        if income > 200000:
+            ficaTax = 147000 * 0.062
+            ficaTax = ficaTax + income * 0.0235
+        elif income > 147000:
+            ficaTax = 147000 * 0.062
+            ficaTax = ficaTax + income * 0.0145
+        else:
+            ficaTax = income * 0.0765
         income = income - 19400 # head of household filing status deduction for 2022
         if income < 14651:
             fedTax = income * 0.1
@@ -155,20 +193,14 @@ def get_tax(status, income, adultCount, kidCount, optsTax):
             fedTax = 161218.5 + (income - 539900) * 0.37
 
         # earned income tax credit switch
-        if income < 21431 and kidCount == 0:
-            eitc = 1502.0
-        elif income < 42159 and kidCount == 1:
-            eitc = 3618.0
-        elif income < 47916 and kidCount == 2:
-            eitc = 5980.0
-        elif income < 51465 and kidCount >= 3:
-            eitc = 6728.0
-    
-    # if income less than standard deduction
-    if income < 0:
-        return 0.0
-    
-    ficaTax = income * 0.0765
+        if income < 16481 and kidCount == 0:
+            eitc = 560.0
+        elif income < 43493 and kidCount == 1:
+            eitc = 3733.0
+        elif income < 49400 and kidCount == 2:
+            eitc = 6164.0
+        elif income < 53058 and kidCount >= 3:
+            eitc = 6935.0
 
     # state tax switch
     if income < 3001:
@@ -179,6 +211,13 @@ def get_tax(status, income, adultCount, kidCount, optsTax):
         stateTax = 120.0 + (income - 5000) * 0.05
     else:
         stateTax = 720.0 + (income - 17000) * 0.0575
+    if status == optsTax[0]:
+        stateTax = stateTax * numWorkers
+
+    # if income less than standard deduction
+    if income < 0:
+        fedTax = 0
+        stateTax = 0
     
     return (fedTax + stateTax + ficaTax - eitc - povc) / 12.0
 
@@ -532,9 +571,9 @@ def update_expenses(n, income, people, paymentType, homeSize, ccCount, ccType,
     monthlyExpenses = [x+(myHealthcare / 12.0) for x in monthlyExpenses]
     # Add technology cost
     monthlyExpenses = [x+int(techStr) for x in monthlyExpenses]
-    # Add tax cost NEED TO FIX WITH NEW ADULT TAGS
-    monthlyExpenses = [x+get_tax(taxStatus, int(income), 
-                        int(adultCount), int(kidCount), 
+    # Add tax cost
+    monthlyExpenses = [x+get_tax(taxStatus, int(income), ages, 
+                        int(adultCount), int(kidCount),
                         ad.opts['DD_TAX']) for x in monthlyExpenses]
     # check whether to add real estate tax for cville
     if paymentType == optsPayment[1]:
@@ -565,8 +604,8 @@ def update_expenses(n, income, people, paymentType, homeSize, ccCount, ccType,
             estimated to be affordable for you as shown on the map above. \
             About {:.2f}% of your household\'s income would be spent on \
             housing. Your approximate living expenses are ${:,} \
-            annually. Your affordable neighborhoods can be seen on the map \
-            above.'.format(afford_count, housingAvgPct, int(avgExpenses * 12))
+            annually.'.format(afford_count, 
+                                housingAvgPct, int(avgExpenses * 12))
     else:
         affordMessage = 'About {:.2f}% of your household\'s income would be \
             spent on housing. Your approximate living expenses are ${:,} \

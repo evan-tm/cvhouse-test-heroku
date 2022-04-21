@@ -94,7 +94,58 @@
 	justify-items:center;
 	justify-content: space-evenly;
 }
-.js-plotly-plot .plotly .modebar {
+#qol_map .js-plotly-plot .plotly .modebar {
+    left: 0%;
+}
+#afford_map .js-plotly-plot .plotly .modebar {
+    left: 0%;
+}
+#results_map .js-plotly-plot .plotly .modebar {
+    left: 0%;
+}
+#census_city_plot .js-plotly-plot .plotly .modebar {
+    left: 95%;
+}
+#history_price_city_plot .js-plotly-plot .plotly .modebar {
+    left: 95%;
+}
+#history_quant_city_plot .js-plotly-plot .plotly .modebar {
+    left: 95%;
+}
+#census_neighborhood_plot .js-plotly-plot .plotly .modebar {
+    left: 95%;
+}
+#neighborhood_price_history_plot .js-plotly-plot .plotly .modebar {
+    left: 4%;
+}
+#neighborhood_quant_history_plot .js-plotly-plot .plotly .modebar {
+    left: 4%;
+}
+#nbc_history_plot .js-plotly-plot .plotly .modebar {
+    left: 4%;
+}
+#nbc_0_ind .js-plotly-plot .plotly .modebar {
+    left: 0%;
+}
+#nbc_1_ind .js-plotly-plot .plotly .modebar {
+    left: 0%;
+}
+#nbc_0_age .js-plotly-plot .plotly .modebar {
+    left: 0%;
+}
+#nbc_1_age .js-plotly-plot .plotly .modebar {
+    left: 0%;
+}
+#nbc_0_race .js-plotly-plot .plotly .modebar {
+    left: 0%;
+}
+#nbc_1_race .js-plotly-plot .plotly .modebar {
+    left: 0%;
+}
+#nbc_0_income .js-plotly-plot .plotly .modebar {
+    left: 0%;
+}
+#nbc_1_income .js-plotly-plot .plotly .modebar {
     left: 0%;
 }
 .grid_ages {
@@ -131,17 +182,20 @@
 .links_text {
 	display:block;
 	font-size:18px;
+	color:rgb(102, 237, 255);
 }
 .inline_links {
 	display:inline-block;
 	margin-left: 0.4em;
 	font-size:18px;
+	color:rgb(102, 237, 255);
 }
 .inline_sublinks {
 	display:inline-block;
 	margin-right: 0.4em;
 	font-size:21px;
 	text-align: center;
+	color:rgb(102, 237, 255);
 }
 .dd_elem1 {
 	grid-area: dd_elem1;

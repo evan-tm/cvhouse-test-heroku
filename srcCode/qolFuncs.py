@@ -87,7 +87,7 @@ def plotResourcesMap():
                                     "%{hovertext}",
                                     "",
                                     "Address: %{customdata[0]}"]),
-                      marker={'size': 9})
+                      marker={'size': 11})
     # food kitchens
     fig2 = px.scatter_mapbox(kitchens, lon = kitchens.geometry.x, 
                              lat = kitchens.geometry.y,
@@ -108,7 +108,7 @@ def plotResourcesMap():
                                      "",
                                      "Address: %{customdata[0]}",
                                      "%{customdata[1]}"]),
-                       marker={'size': 9})
+                       marker={'size': 11})
     # libraries scatter
     fig3 = px.scatter_mapbox(libraries, lon = libraries.geometry.x, 
                              lat = libraries.geometry.y,
@@ -127,7 +127,7 @@ def plotResourcesMap():
                                      "%{hovertext}",
                                      "",
                                      "Address: %{customdata[0]}"]), 
-                       marker={'size': 9})
+                       marker={'size': 11})
     # fire stations scatter
     fig4 = px.scatter_mapbox(fire, lon = fire.geometry.x, 
                              lat = fire.geometry.y,
@@ -147,7 +147,7 @@ def plotResourcesMap():
                                      "%{hovertext}",
                                      "",
                                      "Address: %{customdata[0]}"]),
-                       marker={'size': 9})
+                       marker={'size': 11})
     # train station scatter
     fig5 = px.scatter_mapbox(train, lon = train.geometry.x, 
                              lat = train.geometry.y,
@@ -166,7 +166,7 @@ def plotResourcesMap():
                                     "%{hovertext}",
                                     "",
                                     "Address: %{customdata[0]}"]), 
-                    marker={'size': 9})
+                    marker={'size': 11})
     # CAT bus stop scatter
     fig6 = px.scatter_mapbox(busStops, lon = busStops.geometry.x, 
                             lat = busStops.geometry.y,
@@ -239,7 +239,7 @@ def plotResourcesMap():
                                     "Type: %{hovertext}",
                                     "Location: %{customdata[0]}",
                                     "Address: %{customdata[1]}"]),
-                    marker={'size': 9})
+                    marker={'size': 11})
 
     fig = go.Figure(layout = fig1.layout)
     fig.add_trace(fig1.data[0])

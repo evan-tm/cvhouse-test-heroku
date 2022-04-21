@@ -1,7 +1,18 @@
 
 text = {
     "MAIN_TITLE": "Homepage:", 
-    "COPY": "Short, snappy copy (written by Erin) \
+    "COPY": "Welcome to the Charlottesville Affordable Housing Dashboard! \
+        Here, you can see how housing regulations have impacted the city's \
+        housing prices and demographics over time. You can use our \
+        affordability calculator to get an estimate of what neighborhoods \
+        in Charlottesville are affordable for your personal household. \
+        Additionally, the overall city and neighborhood pages include \
+        animated demographic and housing price charts; the sources for \
+        each dashboard element can be found on the Resources tab. We also \
+        acknowledge the Monacan Indian Nation, the traditional custodians \
+        of the land and waters upon which the city we call Charlottesville \
+        sits.",
+    "COPY2": "Short, snappy copy (written by Erin) \
         that would provide a quick overview of how Charlottesville \
         has grown over the years, things that have affected it (like \
         zoning...dictating what can be built where, and the fact that \
