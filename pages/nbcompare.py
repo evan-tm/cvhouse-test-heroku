@@ -16,22 +16,6 @@ layout = html.Div(
     [
         # Sidebar
         dbc.Navbar([
-            # dbc.Button("☰", id='nbc_sidebar_button', className="background2 left_text title", 
-            #            style={"margin-left": "0"}),
-            # dbc.Collapse(
-            #     [
-            #         dbc.NavItem(dbc.NavLink(tb.opts['TOP'], href="#", external_link=True, 
-            #                                 className="background2 left_text subtitle")),
-            #         dbc.NavItem(dbc.NavLink(tb.opts['SECTOR'], href="#hood_cvillepedia", external_link=True, 
-            #                                 className="background2 left_text subtitle")),
-            #         dbc.NavItem(dbc.NavLink(tb.opts['HIST'], href="#ind_neighborhood_plot", external_link=True, 
-            #                                 className="background2 left_text subtitle")),
-            #         dbc.NavItem(dbc.NavLink(tb.opts['CENSUS'], 
-            #                                 href="#history_neighborhood_price_plot", 
-            #                                 external_link=True, 
-            #                                 className="background2 left_text subtitle")),
-            #     ], id="nbc_sidebar", is_open=False, 
-            #     style={"width": "400px", "margin-left": "0", "position": "fixed", "top": "80px"}, className="background"),
             df.createTopBar()
         ], className="sidebar", color="#132C36"),
         html.H3(nbcd.text['MAIN_TITLE'], className = "center_text title"),
@@ -84,17 +68,8 @@ layout = html.Div(
                           style={"width": "100%"}, 
                           config={'displayModeBar': False}),
             ], className="subcontainer"),
-        dcc.Link('Take me back up', href='#'),
+        dcc.Link('Take me back up', href='#', className = "subcontainer links_text"),
     ], className = "container background")
-
-
-# Collapsable sidebar
-# @callback(Output("nbc_sidebar", "is_open"),
-#           [Input("nbc_sidebar_button", "n_clicks"), State("nbc_sidebar", "is_open")])
-# def hood_sidebar_collapse(n, is_open):
-#     if n:
-#         return not is_open
-#     return is_open
 
 # Limit comparison
 @callback(Output("nbc_checklist", "options"),

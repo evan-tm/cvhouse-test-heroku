@@ -1,12 +1,16 @@
 
 text = {
-    "DD_MAIN_TITLE": "Affordability Calculator:", 
+    "DD_MAIN_TITLE": "Affordability Calculator", 
+    "DD_SUB_TITLE": " to view the methodology for the ALICE Household \
+        Survival Budget used to implement this calculator.",
+    "DD_LINK": "Click here",
     "IN_INCOME": "Household income:",
     "IN_AGE": "How old is each resident?",
     "DD_PEOPLE": "Your household:",
-    "DD_PAY": "Rent or buy?",
+    "DD_PAY": "Rent or mortgage?",
     "DD_HOMESIZE": "What rental size?",
     "IN_CC": "Kids in childcare:",
+    "DD_CC": "What type of childcare?",
     "DD_TRANSPORT": "How do you get around?",
     "DD_VEHICLE": "What type of vehicle?",
     "IN_HCARE": "Healthcare (annual $):",
@@ -19,8 +23,9 @@ text = {
 
 opts = {
     "DD_PEOPLE": [],
-    "DD_PAY": ['Renting', 'Buying'],
+    "DD_PAY": ['Renting', 'Mortgaging'],
     "DD_HOMESIZE": ['Studio', '1 Bedroom', '2 Bedrooms', '3 Bedrooms', '4 Bedrooms'],
+    "DD_CC": ['Family Child Care', 'Center'],
     "DD_TRANSPORT": ['CAT Public Bus', 'Personal Vehicle'],
     "DD_VEHICLE": ['Small Sedan', 'Medium Sedan', 
                     'Compact SUV', 'Medium SUV', 
@@ -43,6 +48,7 @@ default = {
     "DD_PAY": opts['DD_PAY'][0],
     "DD_HOMESIZE": opts['DD_HOMESIZE'][1],
     "IN_CC": 0,
+    "DD_CC": opts['DD_CC'][0],
     "DD_TRANSPORT": opts['DD_TRANSPORT'][0],
     "DD_VEHICLE": opts['DD_VEHICLE'][0],
     "IN_HCARE": "Enter amount",
@@ -59,3 +65,22 @@ ttips = {
     "IN_HCARE": "Leave blank to use average; Includes premiums and out-of-pocket costs",
     "IN_TECH": "Cell phone plan, internet, etc.",
 }
+
+links = {
+    "METHOD": "https://www.unitedforalice.org/methodology"
+}
+
+dd_style = {"width": "150px", "height": "40px", 
+            "display": "inline-block", 
+            "margin-bottom": "0.5em"}
+
+dd_style_2 = {"width": "150px", "height": "70px", 
+            "display": "inline-block"}
+
+dd_style_3 = {"width": "150px", "height": "100px", 
+            "display": "inline-block"}
+
+dd_style_4 = {"width": "150px", "height": "130px", 
+            "display": "inline-block"}
+
+text_style = {'display': 'block', "width": "150px"}

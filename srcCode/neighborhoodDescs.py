@@ -2,7 +2,7 @@
 text = {
     "MAIN_TITLE": "Learn About Charlottesville's Neighborhoods",
     "LOADING": "Loading...",
-    "DROPDOWN_CENSUS": "",
+    "DROPDOWN_CENSUS": "Describe the Population by",
     "DROPDOWN_HISTORY": "",
     "DROPDOWN_NEIGHBORHOOD": "",
     "HISTORY_TITLE": 'History of Residential Sales by'

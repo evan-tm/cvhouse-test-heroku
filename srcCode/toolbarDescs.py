@@ -19,8 +19,8 @@ opts = {
     "NBCOMPARE": "Compare the Neighborhoods",
     "RESOURCES": "Resources",
     "TOP": "Top",
-    "CENSUS": "Census Information",
-    "HIST": "Price History",
+    "CENSUS": "Demographic History",
+    "HIST": "Sales History",
     "SECTOR": "Industries",
 }
 

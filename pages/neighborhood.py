@@ -9,6 +9,9 @@ import srcCode.cvillepedia as cv
 import srcCode.censusFuncs as cf
 import srcCode.historyFuncs as hf
 
+## Gets the correct description from the cvillepedia file (written by Erin)
+## in: neighborhood
+## out: html formatted text with neighborhood description
 def getCvillepedia(n):
     if n is None:
         n = nd.default['DROPDOWN_NEIGHBORHOOD']
@@ -28,18 +31,6 @@ layout = html.Div(
     [
         # Sidebar
         dbc.Navbar([
-            # dbc.Button("☰", id='hood_sidebar_button', className="background2 left_text title", 
-            #            style={"margin-left": "0"}),
-            # dbc.Collapse(
-            #     [
-            #         dbc.NavItem(dbc.NavLink(tb.opts['TOP'], href="#", external_link=True, 
-            #                                 className="background2 left_text subtitle")),
-            #         dbc.NavItem(dbc.NavLink(tb.opts['CENSUS'], href="#dropdown_neighborhood_census", external_link=True, 
-            #                                 className="background2 left_text subtitle")),
-            #         dbc.NavItem(dbc.NavLink(tb.opts['HIST'], href="#dropdown_neighborhood_history", external_link=True, 
-            #                                 className="background2 left_text subtitle")),
-            #     ], id="hood_sidebar", is_open=False, 
-            #     style={"width": "400px", "margin-left": "0", "position": "fixed", "top": "80px"}, className="background"),
             df.createTopBar()
         ], className="sidebar", color="#132C36"),
         html.H3(nd.text['MAIN_TITLE'], className = "center_text title"),
@@ -54,18 +45,23 @@ layout = html.Div(
                 # Neighborhood CVillepedia description
                 html.Div(getCvillepedia(nd.default['DROPDOWN_NEIGHBORHOOD']), id="neighborhood_cvillepedia", className="left_text bodytext"),
             ], className = "subcontainer"),
+        html.Br(),
+        html.Br(),
         # Census charts
+        html.Div([
+            df.createLeftAlignDropdown(nd.text['DROPDOWN_CENSUS'], nd.opts['DROPDOWN_CENSUS'],
+                            nd.default['DROPDOWN_CENSUS'], dd_id='dropdown_neighborhood_census',
+                            dd_style={'width': '170px'}, grid_class="grid_dd2",
+                            clearable=False, searchable=False),
+        ], className = "subcontainer"),
         html.Div(
             [
-                # dropdown for census selection
-                df.createDropdown(nd.text['DROPDOWN_CENSUS'], nd.opts['DROPDOWN_CENSUS'],
-                                  nd.default['DROPDOWN_CENSUS'], dd_id="dropdown_neighborhood_census",
-                                  dd_style={"width": "200px"}, clearable=False, searchable = False),
                 dcc.Graph(id='census_neighborhood_plot', 
                           figure=cf.plotIndustryByNeighborhood(nd.default['DROPDOWN_NEIGHBORHOOD']),
                           config={'displayModeBar': False},
                           style={'display': 'block'})
             ], className="subcontainer"),
+        html.Br(),
         html.Br(),
         # History of price
         html.Div([
@@ -85,16 +81,8 @@ layout = html.Div(
                           style={"width": "100%"}, 
                           config={'displayModeBar': False}),
             ], className="subcontainer"),
-        dcc.Link('Take me back up', href='#'),
+        dcc.Link('Take me back up', href='#', className = "subcontainer links_text"),
     ], className = "container background")
-
-# Collapsable sidebar
-# @callback(Output("hood_sidebar", "is_open"),
-#           [Input("hood_sidebar_button", "n_clicks"), State("hood_sidebar", "is_open")])
-# def hood_sidebar_collapse(n, is_open):
-#     if n:
-#         return not is_open
-#     return is_open
 
 @callback(
     Output('neighborhood_cvillepedia', 'children'),

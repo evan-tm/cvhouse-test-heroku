@@ -12,20 +12,10 @@ import srcCode.qolDescs as qd
 
 layout = html.Div(
     [
-        # Sidebar
-        dbc.Navbar([
-            #dbc.Button("☰", id='home_sidebar_button', className="background2 left_text title", 
-            #           style={"margin-left": "0"}),
-            # dbc.Collapse(
-            #     [
-            #         dbc.NavItem(dbc.NavLink(tb.opts['TOP'], href="#", external_link=True, 
-            #                                className="background2 left_text subtitle")),
-            #         dbc.NavItem(dbc.NavLink(tb.opts['CENSUS'], href="#census_title", external_link=True, 
-            #                                 className="background2 left_text subtitle")),
-            #     ], id="home_sidebar", is_open=False, 
-            #     style={"width": "400px", "margin-left": "0", "position": "fixed", "top": "80px"}, className="background"),
-            df.createTopBar()
-        ], className="sidebar", color="#132C36"),
+    # Sidebar
+    dbc.Navbar([
+        df.createTopBar()
+    ], className="sidebar", color="#132C36"),
     #html.H3(hd.text['MAIN_TITLE'], className = "center_text title"),
     html.Div(
         [
@@ -48,13 +38,6 @@ layout = html.Div(
                               "displaylogo": False,
                               'modeBarButtonsToRemove': ['pan2d', 'select2d', 'lasso2d']},
                       style={"width": "100%", "height": "550px"}),
-            # School map
-            # dcc.Graph(id='school_map', 
-            #           figure=qf.plotSchoolMap(), 
-            #           config={'displayModeBar': True,
-            #                   "displaylogo": False,
-            #                   'modeBarButtonsToRemove': ['pan2d', 'select2d', 'lasso2d']},
-            #           style={'diplay': 'block', "width": "100%", "height": "550px"}),
             # Affordability map
             dcc.Graph(id='results_map', 
                       config={'displayModeBar': True,
@@ -62,17 +45,13 @@ layout = html.Div(
                               'modeBarButtonsToRemove': ['pan2d', 'select2d', 'lasso2d']},
                       style={'display': 'none', "width": "100%", "height": "550px"})
         ], className = "subcontainer"),
+    # divider
     html.Hr(className="center_text title"),
+    # Affordability calc title
     html.Span(ad.text['DD_MAIN_TITLE'], className="center_text title"),
-    # html.Div(
-    #         [
-    #             # Neighborhood dropdown
-    #             html.Div([
-    #                 df.createDropdown(hd.text['DROPDOWN_NEIGHBORHOOD'], hd.opts['DROPDOWN_NEIGHBORHOOD'],
-    #                                   hd.default['DROPDOWN_NEIGHBORHOOD'], dd_id="dropdown_neighborhood",
-    #                                   dd_style={"width": "200px"}, grid_width="1fr", clearable=False),
-    #             ], className="neighborhood_drop"),
-    #         ], className = "subcontainer"),
+    # Affordability calc subtitle
+    df.createInlineLink(ad.text['DD_SUB_TITLE'], ad.text['DD_LINK'],
+                        ad.links['METHOD']),
     html.Div(
         [
             # Personal information
@@ -89,6 +68,8 @@ layout = html.Div(
             df.createDropdown(ad.text['DD_PEOPLE'], ad.opts['DD_PEOPLE'],
                               ad.default['DD_PEOPLE'], dd_id="afford_dropdown_people",
                               desc_id="afford_dropdown_people_desc_id", 
+                              dd_style={"width": "150px", "height": "100px", 
+                                        "display": "inline-block"},
                               searchable = False, multi = True, clearable = False),
             # rent/buy
             df.createDropdown(ad.text['DD_PAY'], ad.opts['DD_PAY'],
@@ -103,14 +84,20 @@ layout = html.Div(
             df.createNumericInput(ad.text['IN_CC'], ad.default['IN_CC'], 
                                   maximum=10, ip_id="afford_input_childcare",
                                   desc_id = "afford_input_cc_desc_id"),
+            # type of childcare
+            df.createDropdown(ad.text['DD_CC'], ad.opts['DD_CC'],
+                              ad.default['DD_CC'], dd_id="afford_dropdown_childcare",
+                              desc_id="afford_dropdown_cc_desc_id",
+                              clearable=False, searchable=False),
             # transportation costs
             df.createDropdown(ad.text['DD_TRANSPORT'], ad.opts['DD_TRANSPORT'],
                               ad.default['DD_TRANSPORT'], dd_id="afford_dropdown_transport",
-                              clearable=False),
+                              clearable=False, searchable=False),
             # vehicle type
             df.createDropdown(ad.text['DD_VEHICLE'], ad.opts['DD_VEHICLE'],
                               ad.default['DD_VEHICLE'], dd_id="afford_dropdown_vehicle",
-                              desc_id="afford_dropdown_vehicle_desc_id", clearable=False),
+                              desc_id="afford_dropdown_vehicle_desc_id", clearable=False,
+                              searchable=False),
             # healthcare costs
             df.createInput(ad.text['IN_HCARE'], "number", ad.default['IN_HCARE'],
                            ip_id="afford_input_hcare"),
@@ -124,11 +111,15 @@ layout = html.Div(
             # tax info
             df.createDropdown(ad.text['DD_TAX'], ad.opts['DD_TAX'],
                               ad.default['DD_TAX'], dd_id="afford_dropdown_tax",
-                              clearable=False),
+                              clearable=False, searchable=False),
             html.Button(ad.text['CALC_BUTTON'], id="afford_button", className="right_text subtitle",
                                 style={"background-color": "#FFE133", "color": "#000000"}),
         ], className="subcontainer"),
-    html.Div(ad.text['LOADING'], id="afford_result", className="center_text subtitle"),
+    html.Div(
+        [
+            html.Div(ad.text['LOADING'], id="afford_result", 
+                     className="center_text subtitle"),
+        ], className = "subcontainer"),
     html.Br(),
     ], className = "container background")
 
@@ -146,19 +137,3 @@ def show_hide_qol_map(currentMap, currentResultsFig, n):
         return qf.plotSchoolMap()
     else:
         return currentResultsFig
-
-# Collapsable sidebar
-# @callback(Output("home_sidebar", "is_open"),
-#           [Input("home_sidebar_button", "n_clicks"), State("home_sidebar", "is_open")])
-# def home_sidebar_collapse(n, is_open):
-#     if n:
-#         return not is_open
-#     return is_open
-
-#@callback(
-#    Output('dropdown_neighborhood', 'value'),
-#    Input('qol_map', 'clickData'))
-#def printNeighborhood(clickData):
-#    if clickData is None:
-#        return hd.default['DROPDOWN_NEIGHBORHOOD']
-#    return(str(clickData['points'][len(clickData['points']) - 1]['hovertext']))

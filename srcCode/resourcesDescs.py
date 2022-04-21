@@ -1,6 +1,6 @@
 
 text = {
-    "MAIN_TITLE": "Additional Affordable Housing Resources",
+    "MAIN_TITLE": "Affordable Housing Resources",
     "LOADING": "Loading...",
 
     "SOURCES_HOOD": "Neighborhood Description Sources:",

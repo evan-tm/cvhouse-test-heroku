@@ -5,7 +5,7 @@ text = {
     "COMPARE_BUTTON": "COMPARE",
     "HIST_NEIGHBORHOOD_TITLE": 'History of Residential Sales by',
     "COMPARE_DISCLAIMER": "Detailed descriptions of each neighborhood are available \
-         on the \"Explore the Neighborhoods\" page.",
+         on the \"Explore each Neighborhood\" page.",
     "NoSelectionWarning": "Please select at least one neighborhood to compare",
     "DROPDOWN_HISTORY": ""
 }

@@ -10,14 +10,14 @@ import plotly.graph_objects as go
 
 # Rental affordability data
 rentData = pd.read_csv('data/calculator/acsRent2020.csv')
+# Mortgage affordability data
+mortgageData = pd.read_csv('data/calculator/acsMortgage2020.csv')
 # Childcare affordability data
 ccareData = pd.read_csv('data/calculator/childcareCosts.csv')
 # Food affordability data
 foodData = pd.read_csv('data/calculator/foodCosts.csv')
 # Transportation affordability data
 transportData = pd.read_csv('data/calculator/transportCosts.csv')
-# Mortgage affordability data
-mortgageData = [1612.0, (0.0095 * 399628.7) / 12.0]
 # Health care out-of-pocket affordability data
 oopHealthcareData = pd.read_csv('data/calculator/oopHealthcareAnnual.csv')
 # Health care premium affordability data
@@ -45,6 +45,30 @@ def getAgeIdx(age):
         return 19, 28
     else:
         return 23, 29
+
+## Builds an integer list of household member ages from a str or str list
+## in: str / str list
+## out: int list of ages
+def getAgeList(people):
+    ages = []
+    if isinstance(people, str):
+        if people != '':
+            ages.append(int(people))
+    else:
+        for ageStr in people:
+            if ageStr != '':
+                ages.append(int(ageStr))
+    return ages
+
+## Get the monthly childcare payment given the type and number of kids
+## in: number of childcare kids, type of care
+## out: monthly payment in $
+def get_cc_payment(ccCount, ccType, optsCC):
+
+    if ccType == optsCC[0]:
+        return ccCount * 584.0
+    else:
+        return ccCount * 1268.0
 
 ## Approximates monthly tax payment for a given income
 ## in: status, income, adultCount, kidCount, tax options
@@ -201,7 +225,7 @@ def get_hcare_placeholder(income, totalOccupants, ageList, premData, oopData):
 ##     payment options, and size options
 ## out: monthly housing payment
 def get_housing_payment(paymentType, homeSize, 
-                        dfRent, mortgageData, 
+                        dfRent, dfMortgage, 
                         hood, optsPayment, optsSize):
 
     # switch for payment type dropdown
@@ -218,7 +242,7 @@ def get_housing_payment(paymentType, homeSize,
         elif homeSize == optsSize[4]:
             return dfRent.loc[(dfRent['Neighborhood'] == hood)]['fourBR'].values[0]
     else:
-        return mortgageData[0]
+        return dfMortgage.loc[(dfMortgage['Neighborhood'] == hood)].values[0][1]
 
 ## Gets the food payment for the household
 ## in: age of user, foodData
@@ -283,6 +307,9 @@ def get_transport_payment(transportType, vehicleType, senior,
     
     return myTransport
 
+## Returns a plot of the affordability map based on afford calculator results
+## in: data from afford calculator output
+## out: figure representing the data
 def plotAffordMap(ns):
     # school zones chloropleth
     fig = px.choropleth_mapbox(ns, geojson = ns.geometry, 
@@ -306,24 +333,13 @@ def plotAffordMap(ns):
     fig.update_yaxes(scaleanchor="x", scaleratio=1)
     return fig
 
-@callback(
-    Output('afford_dropdown_people', 'style'),
-    Output('afford_dropdown_people_desc_id', 'style'),
-    Input('age_button', 'n_clicks')
-)
-def show_hide_people(n):
-    
-    if n:
-        return ({'display': 'block', "width": "150px"}, 
-                {'display': 'block', "width": "150px"})
-    else:
-        return ({'display': 'none'}, 
-                {'display': 'none'})
-
-
+# updates the style and options in the household dropdown when the
+# "add a person" button (id=age_button) is pressed
 @callback(
     Output('afford_dropdown_people', 'options'),
     Output('afford_dropdown_people', 'value'),
+    Output('afford_dropdown_people', 'style'),
+    Output('afford_dropdown_people_desc_id', 'style'),
     [Input('age_button', 'n_clicks')],
     [State('afford_input_age', 'value'),
      State('afford_dropdown_people', 'options'),
@@ -332,8 +348,9 @@ def show_hide_people(n):
 def update_dropdown_people(n_clicks, new_value, current_options, current_values):
     
     if not n_clicks:
-        return current_options, current_values
-    
+        return (current_options, current_values, 
+            {'display': 'none'}, {'display': 'none'})
+    # editing dropdown menu options based on input
     current_options.append({'label': new_value, 'value': new_value})
     return_values = []
     if isinstance(current_values, str):
@@ -341,37 +358,66 @@ def update_dropdown_people(n_clicks, new_value, current_options, current_values)
     else:
         return_values = current_values
     return_values.append(new_value)
-    return current_options, return_values
+    ## setting height of dropdown based on number of people
+    ages = getAgeList(current_values)
+    # checking size of household
+    if len(ages) < 3:
+        return (current_options, return_values,
+                ad.dd_style, ad.text_style)
+    elif len(ages) < 5:
+        return (current_options, return_values,
+                ad.dd_style_2, ad.text_style)
+    elif len(ages) < 7:
+        return (current_options, return_values,
+                ad.dd_style_3, ad.text_style)
+    else:
+        return (current_options, return_values,
+                ad.dd_style_4, ad.text_style)
 
 @callback(
    Output(component_id='afford_input_childcare', component_property='style'),
    Output(component_id='afford_input_cc_desc_id', component_property='style'),
    Output(component_id='afford_input_childcare', component_property='max'),
-   [Input(component_id='afford_dropdown_people', component_property='value')])
-def show_hide_childCare(people):
+   Output(component_id='afford_dropdown_childcare', component_property='style'),
+   Output(component_id='afford_dropdown_cc_desc_id', component_property='style'),
+   [Input(component_id='afford_dropdown_people', component_property='value'),
+    Input(component_id='afford_input_childcare', component_property='value')])
+def show_hide_childCare(people, cc_kids):
 
     # convert age list of str to list of ints
-    ages = []
-    if isinstance(people, str):
-        if people != '':
-            ages.append(int(people))
-    else:
-        for ageStr in people:
-            if ageStr != '':
-                ages.append(int(ageStr))
-    kidCount = sum([age < 18 for age in ages])
+    ages = getAgeList(people)
+    kidCount = sum([age < 13 for age in ages])
     if kidCount is None:
         return ({'display': 'none'}, 
                 {'display': 'none'},
-                0)
+                0,
+                {'display': 'none'},
+                {'display': 'none'})
     elif kidCount > 0:
-        return ({'display': 'block', "width": "150px"}, 
-                {'display': 'block', "width": "150px"},
-                kidCount)
+        if cc_kids is None:
+            return ({'display': 'block', "width": "150px"}, 
+                    {'display': 'block', "width": "150px"},
+                    kidCount,
+                    {'display': 'none'},
+                    {'display': 'none'})
+        elif cc_kids > 0:
+            return ({'display': 'block', "width": "150px"}, 
+                    {'display': 'block', "width": "150px"},
+                    kidCount,
+                    {'display': 'block', "width": "150px"}, 
+                    {'display': 'block', "width": "200px"})
+        else:
+            return ({'display': 'block', "width": "150px"}, 
+                    {'display': 'block', "width": "150px"},
+                    kidCount,
+                    {'display': 'none'},
+                    {'display': 'none'})
     else:
         return ({'display': 'none'}, 
                 {'display': 'none'},
-                0)
+                0,
+                {'display': 'none'},
+                {'display': 'none'})
 
 @callback(
    Output(component_id='afford_dropdown_vehicle', component_property='style'),
@@ -385,7 +431,7 @@ def show_hide_vehicle(currentTransport):
                 {'display': 'none'})
     else:
         return ({'display': 'block', "width": "150px"}, 
-                {'display': 'block', "width": "150px"})
+                {'display': 'block', "width": "200px"})
 
 @callback(
    Output(component_id='afford_dropdown_homeSize', component_property='style'),
@@ -409,20 +455,8 @@ def update_hcare_placeholder(incomeStr, people):
 
     if incomeStr is None or people is None:
         return ''
-    # check for hourly income
-    if int(incomeStr) <= 100:
-        incomeStr = str(int(incomeStr) * 52 * 40)
     # convert age list of str to list of ints
-    ages = []
-    if isinstance(people, str):
-        if people != '':
-            ages.append(int(people))
-        else:
-            return ''
-    else:
-        for ageStr in people:
-            if ageStr != '':
-                ages.append(int(ageStr))
+    ages = getAgeList(people)
     totalOccupants = len(ages)
     return get_hcare_placeholder(int(incomeStr), totalOccupants, 
                                  ages, premiumHealthcareData,
@@ -439,6 +473,7 @@ def update_hcare_placeholder(incomeStr, people):
           State('afford_dropdown_pay', 'value'), 
           State('afford_dropdown_homeSize', 'value'), 
           State('afford_input_childcare', 'value'),
+          State('afford_dropdown_childcare', 'value'),
           State('afford_dropdown_transport', 'value'),
           State('afford_dropdown_vehicle', 'value'),
           State('afford_input_hcare', 'value'),
@@ -447,7 +482,7 @@ def update_hcare_placeholder(incomeStr, people):
           State('afford_dropdown_tax' ,'value'),
           State('qol_dropdown', 'options'),
           State('qol_dropdown', 'value')])
-def update_expenses(n, income, people, paymentType, homeSize, ccCount, 
+def update_expenses(n, income, people, paymentType, homeSize, ccCount, ccType,
                     transportType, vehicleType, hcareStr, hcarePlace, 
                     techStr, taxStatus, qolOpts, currentQOL):
 
@@ -456,23 +491,14 @@ def update_expenses(n, income, people, paymentType, homeSize, ccCount,
     if income is None or people is None:
         return currentQOL, qolOpts, 'Enter your information to see whether \
             Charlottesville is affordable for you!', go.Figure()
-    # Convert income to annual if hourly wage entered
-    if int(income) <= 100:
-        income = str(int(income) * 52 * 40)
     # get switch options from global vars
     optsSize = ad.opts['DD_HOMESIZE']
+    optsCC = ad.opts['DD_CC']
     optsTransport = ad.opts['DD_TRANSPORT']
     optsVehicle = ad.opts['DD_VEHICLE']
     optsPayment = ad.opts['DD_PAY']
     # convert age list of str to list of ints
-    ages = []
-    if isinstance(people, str):
-        if people != '':
-            ages.append(int(people))
-    else:
-        for ageStr in people:
-            if ageStr != '':
-                ages.append(int(ageStr))
+    ages = getAgeList(people)
     if len(ages) == 0:
         return currentQOL, qolOpts, 'Please add members to your household \
             using the Add Person button!', go.Figure()
@@ -494,7 +520,8 @@ def update_expenses(n, income, people, paymentType, homeSize, ccCount,
     monthlyExpenses = [x for x in housingPayments]
     # Add childcare cost (currently using Toddler Family Child Care for all kids in cc)
     if ccCount is not None:
-        monthlyExpenses = [x+int(ccCount) * 584.0 for x in monthlyExpenses]
+        monthlyExpenses = [x+get_cc_payment(int(ccCount), ccType, optsCC)
+                            for x in monthlyExpenses]
     # Add food cost
     monthlyExpenses = [x+get_food_payment(ages, foodData) for x in monthlyExpenses]
     # Add transport cost (currently assuming 15k mileage for every vehicle type)
@@ -511,7 +538,7 @@ def update_expenses(n, income, people, paymentType, homeSize, ccCount,
                         ad.opts['DD_TAX']) for x in monthlyExpenses]
     # check whether to add real estate tax for cville
     if paymentType == optsPayment[1]:
-        monthlyExpenses = [x+mortgageData[1] for x in monthlyExpenses]
+        monthlyExpenses = [x+((0.0095 * 399628.7) / 12.0) for x in monthlyExpenses]
     # Add misc cost
     monthlyExpenses = [x*1.1 for x in monthlyExpenses]
     # Calculate pct of hhIncome spent on housing
@@ -532,12 +559,17 @@ def update_expenses(n, income, people, paymentType, homeSize, ccCount,
     if not any(d['label'] == 'Affordability' for d in qolOpts):
         qolOpts.append({'label': 'Affordability', 'value': 'Affordability'})
     # gather result message
-    if 'Affordable' in ns['afford']:
-        affordMessage = 'Affordable: About {:.2f}% of your household\'s \
-            income would be spent on gross rent. Your approximate living \
-            expenses are ${:,} annually.'.format(housingAvgPct, int(avgExpenses * 12))
+    afford_count = ns['afford'].str.contains('Affordable').sum()
+    if afford_count > 0:
+        affordMessage = '{}/19 of Charlottesville\'s neighborhoods are \
+            estimated to be affordable for you as shown on the map above. \
+            About {:.2f}% of your household\'s income would be spent on \
+            housing. Your approximate living expenses are ${:,} \
+            annually. Your affordable neighborhoods can be seen on the map \
+            above.'.format(afford_count, housingAvgPct, int(avgExpenses * 12))
     else:
-        affordMessage = 'Not affordable: About {:.2f}% of your household\'s \
-            income would be spent on gross rent. Your approximate living \
-            expenses are ${:,} annually.'.format(housingAvgPct, int(avgExpenses * 12))
+        affordMessage = 'About {:.2f}% of your household\'s income would be \
+            spent on housing. Your approximate living expenses are ${:,} \
+            annually, which exceeds the estimated cost of living in \
+            Charlottesville.'.format(housingAvgPct, int(avgExpenses * 12))
     return 'Affordability', qolOpts, affordMessage, plotAffordMap(ns)

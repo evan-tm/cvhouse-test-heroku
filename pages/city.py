@@ -40,18 +40,6 @@ layout = html.Div(
     [
         # Sidebar
         dbc.Navbar([
-            # dbc.Button("☰", id='city_sidebar_button', className="background2 left_text title", 
-            #            style={"margin-left": "0"}),
-            # dbc.Collapse(
-            #     [
-            #         dbc.NavItem(dbc.NavLink(tb.opts['TOP'], href="#", external_link=True, 
-            #                                 className="background2 left_text subtitle")),
-            #         dbc.NavItem(dbc.NavLink(tb.opts['SECTOR'], href="#ind_city_plot", external_link=True, 
-            #                                 className="background2 left_text subtitle")),
-            #         dbc.NavItem(dbc.NavLink(tb.opts['HIST'], href="#history_title", external_link=True, 
-            #                                 className="background2 left_text subtitle")),
-            #     ], id="city_sidebar", is_open=False, 
-            #     style={"width": "400px", "margin-left": "0", "position": "fixed", "top": "80px"}, className="background"),
             df.createTopBar()
         ], className="sidebar", color="#132C36"),
         #html.H3(cd.text['MAIN_TITLE'], className = "center_text title"), 
@@ -80,20 +68,29 @@ layout = html.Div(
                 ], className="grid_container", style={"grid-template-columns": "minmax(600px, 4fr) 2fr"}),
             ], className="subcontainer"),
         html.Hr(className="center_text title"),
+        html.Br(),
         # Census charts
+        html.Div([
+            df.createLeftAlignDropdown(cd.text['DROPDOWN_CENSUS'], cd.opts['DROPDOWN_CENSUS'],
+                            cd.default['DROPDOWN_CENSUS'], dd_id='dropdown_city_census',
+                            dd_style={'width': '170px'}, grid_class="grid_dd2",
+                            clearable=False, searchable=False),
+        ], className = "subcontainer"),
         html.Div(
             [
                 # dropdown for census selection
-                df.createDropdown(cd.text['DROPDOWN_CENSUS'], cd.opts['DROPDOWN_CENSUS'],
-                                  cd.default['DROPDOWN_CENSUS'], dd_id="dropdown_city_census",
-                                  dd_style={"width": "200px"}, 
-                                  clearable=False, searchable = False),
+                #df.createDropdown(cd.text['DROPDOWN_CENSUS'], cd.opts['DROPDOWN_CENSUS'],
+                #                  cd.default['DROPDOWN_CENSUS'], dd_id="dropdown_city_census",
+                #                  dd_style={"width": "200px"}, 
+                #                  clearable=False, searchable = False),
                 dcc.Graph(id='census_city_plot', 
                           figure=cf.plotIndustrySector(),
                           config={'displayModeBar': False},
                           style={'display': 'block'})
             ], className="subcontainer"),
+        html.Br(),
         html.Hr(className="center_text title"),
+        html.Br(),
         # History of price
         html.Div([
             df.createLeftAlignDropdown(HIST_NEIGHBORHOOD_TITLE, cd.opts['DROPDOWN_HISTORY'],
@@ -112,18 +109,11 @@ layout = html.Div(
                           style={"width": "100%"}, 
                           config={'displayModeBar': False}),
             ], className="subcontainer"),
+        html.Br(),
         # Disclaimers
         html.Div([dcc.Markdown(children=source)], className="subcontainer left_text bodytext"),
-        dcc.Link('Take me back up', href='#'),
+        dcc.Link('Take me back up', href='#', className = "subcontainer links_text"),
     ], className="container background")
-
-# Collapsable sidebar
-# @callback(Output("city_sidebar", "is_open"),
-#           [Input("city_sidebar_button", "n_clicks"), State("city_sidebar", "is_open")])
-# def sidebar_collapse(n, is_open):
-#     if n:
-#         return not is_open
-#     return is_open
 
 @callback(
     Output('census_city_plot', 'figure'),

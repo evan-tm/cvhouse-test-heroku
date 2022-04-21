@@ -3,9 +3,7 @@
 	width:100%;
 	min-width:800px;
 	max-width:none;
-	margin:0 auto;
-	padding:0 20px;
-	box-sizing:border-box
+	box-sizing:border-box;
 }
 .sidebar {
 	max-width:1600px;
@@ -77,6 +75,17 @@
 	font-size:25px;
 	margin:15px auto
 }
+.inline_subtitle {
+	color:rgba(255, 255, 255, 1);
+	display:inline-block;
+	font-size:21px;
+	text-align:center;
+}
+.inline_bodytext {
+	color:rgba(255, 255, 255, 1);
+	display:inline-block;
+	font-size:18px;
+}
 .neighborhood_drop {
 	position:relative;
 	display: block;
@@ -123,6 +132,17 @@
 	display:block;
 	font-size:18px;
 }
+.inline_links {
+	display:inline-block;
+	margin-left: 0.4em;
+	font-size:18px;
+}
+.inline_sublinks {
+	display:inline-block;
+	margin-right: 0.4em;
+	font-size:21px;
+	text-align: center;
+}
 .dd_elem1 {
 	grid-area: dd_elem1;
   }
@@ -148,4 +168,7 @@
 	margin:5px auto;
 	align-items:center;
 	justify-items:center;
+}
+.center_div {
+	text-align: center;
 }

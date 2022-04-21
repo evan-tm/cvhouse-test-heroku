@@ -4,7 +4,7 @@ text = {
     "MAIN_TITLE": "City page:",
     "LOADING": "Loading...",
     "VIEW_BUTTON": "Change view",
-    "DROPDOWN_CENSUS": "",
+    "DROPDOWN_CENSUS": "Describe the Population by",
     "DROPDOWN_HISTORY": ""
 }
 

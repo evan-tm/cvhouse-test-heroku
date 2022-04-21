@@ -127,3 +127,17 @@ def createLeftAlignDropdown(description, opts, default_value,
             dcc.Dropdown(id=dd_id, options=opts_dict, value=default_value, className="dd_elem2 subcontainer", 
             style=dd_style, **kwargs)
         ], className=grid_class)
+
+def createArrowLink(link_text, link):
+    return html.Div([
+        html.Span('→ ', className = "left_text inline_bodytext"),
+        html.A(link_text, href=link, 
+                target="_blank", className = "left_text inline_links"),
+    ])
+
+def createInlineLink(text, link_text, link):
+    return html.Div([
+        html.A(link_text, href=link,
+                target="_blank", className = "center_text inline_sublinks"),
+        html.Span(text, className = "center_text inline_subtitle"),
+    ], className = "center_div")
