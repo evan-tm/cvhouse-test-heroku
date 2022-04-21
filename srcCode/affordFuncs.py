@@ -226,6 +226,8 @@ def get_tax(status, income, ages, adultCount, kidCount, optsTax):
 ## in: income, totalOccupants, age, premiums data, oop data
 ## out: placeholder string for healthcare input
 def get_hcare_placeholder(income, totalOccupants, ageList, premData, oopData):
+    if totalOccupants == 0:
+        return ''
     # switch for premium
     if totalOccupants == 1:
         premium = premData.iloc[0, 1]

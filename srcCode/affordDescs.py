@@ -42,7 +42,7 @@ opts = {
 }
 
 default = {
-    "IN_INCOME": 26000,
+    "IN_INCOME": "",
     "DD_PEOPLE": "",
     "IN_AGE": "30",
     "DD_PAY": opts['DD_PAY'][0],
@@ -51,7 +51,7 @@ default = {
     "DD_CC": opts['DD_CC'][0],
     "DD_TRANSPORT": opts['DD_TRANSPORT'][0],
     "DD_VEHICLE": opts['DD_VEHICLE'][0],
-    "IN_HCARE": "Enter amount",
+    "IN_HCARE": "",
     "IN_TECH": 100,
     "DD_TAX": opts['DD_TAX'][0],
     "DD_LOD": opts['DD_LOD'][0],
