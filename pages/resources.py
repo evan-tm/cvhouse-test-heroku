@@ -8,16 +8,8 @@ import srcCode.dashFuncs as df
 
 layout = html.Div(
     [
-        # Sidebar
+        # Top bar
         dbc.Navbar([
-            # dbc.Button("☰", id='rsrc_sidebar_button', className="background2 left_text title", 
-            #            style={"margin-left": "0"}),
-            # dbc.Collapse(
-            #     [
-            #         dbc.NavItem(dbc.NavLink(tb.opts['TOP'], href="#", external_link=True, 
-            #                                 className="background2 left_text subtitle")),
-            #     ], id="rsrc_sidebar", is_open=False, 
-            #     style={"width": "400px", "margin-left": "0", "position": "fixed", "top": "80px"}, className="background"),
             df.createTopBar()
         ], className="sidebar", color="#132C36"),
         html.Div(
@@ -65,12 +57,3 @@ layout = html.Div(
                 #dcc.Link('Take me back up', href='#', className = "left_text links_text"),
         ], className = "subcontainer")
     ], className = "container background")
-
-# Collapsable sidebar
-# @callback(Output("rsrc_sidebar", "is_open"),
-#           [Input("rsrc_sidebar_button", "n_clicks"), State("rsrc_sidebar", "is_open")])
-# def hood_sidebar_collapse(n, is_open):
-#     if n:
-#         return not is_open
-#     return is_open
-

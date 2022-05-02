@@ -18,6 +18,7 @@ opts = {
     "NEIGHBORHOOD": "Explore each Neighborhood",
     "NBCOMPARE": "Compare the Neighborhoods",
     "RESOURCES": "Resources",
+    "CONTACT": "Contact",
     "TOP": "Top",
     "CENSUS": "Demographic History",
     "HIST": "Sales History",

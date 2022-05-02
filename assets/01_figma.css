@@ -226,3 +226,26 @@
 .center_div {
 	text-align: center;
 }
+.ctct_elem1 {
+	grid-area: ctct_elem1;
+}
+.ctct_elem2 {
+	grid-area: ctct_elem2;
+}
+.ctct_elem3 {
+	grid-area: ctct_elem3;
+}
+.ctct_elem4 {
+	grid-area: ctct_elem4;
+}
+.grid_contact {
+	display: grid;
+  	grid-template-areas: 
+  		". ctct_elem1 ctct_elem2 ctct_elem3 ctct_elem4 .";
+	grid-template-columns: 2fr 2fr 2fr 2fr 2fr 2fr;
+	max-width:1600px;
+	margin:5px auto;
+	align-items:center;
+	justify-items:center;
+}
+.circular--square { border-radius: 50%; }
