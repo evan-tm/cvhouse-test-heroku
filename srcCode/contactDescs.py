@@ -36,7 +36,7 @@ links = {
     "XINLUN": "https://chengxinlun.github.io/",
 
     "KROPKO": "https://www.linkedin.com/in/jonathan-kropko/",
-    "ERIN": "https://www.erinohare.com/",
+    "ERIN": "https://www.cvilletomorrow.org/people/staff/erin-ohare",
 
     "ISSUES": "https://github.com/chengxinlun/cvhouse-test-heroku/issues",
 
