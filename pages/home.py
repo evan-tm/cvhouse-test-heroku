@@ -135,5 +135,7 @@ def show_hide_qol_map(currentMap, currentResultsFig, n):
         return qf.plotResourcesMap()
     elif currentMap == optsMap[1]:
         return qf.plotSchoolMap()
+    elif currentMap == optsMap[2]:
+        return qf.plotTreeMap()
     else:
         return currentResultsFig

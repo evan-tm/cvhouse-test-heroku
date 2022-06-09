@@ -374,6 +374,7 @@ def plotAffordMap(ns):
     fig.update_yaxes(scaleanchor="x", scaleratio=1)
     return fig
 
+
 # updates the style and options in the household dropdown when the
 # "add a person" button (id=age_button) is pressed
 @callback(

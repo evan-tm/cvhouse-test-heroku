@@ -6,7 +6,7 @@ text = {
 }
 
 opts = {
-    "DD_QOL": ['Resources', 'Public Schools'],
+    "DD_QOL": ['Resources', 'Public Schools', 'Tree Coverage'],
 }
 
 default = {

@@ -35,6 +35,9 @@ eduPoints = gpd.read_file('data/lifeQuality/eduPoints.geojson')
 # school zones (elementary only)
 edu = gpd.read_file('data/lifeQuality/edu.geojson')
 edu = edu.set_index('ElemSchool')
+# tree coverage
+treeDF = gpd.read_file('data/lifeQuality/trees.geojson')
+treeDF = treeDF.set_index('NAME')
 
 #mapbox_token_public = "pk.eyJ1IjoieGlubHVuY2hlbmciLCJhIjoiY2t0c3g2eHRrMWp3MTJ3cDMwdDAyYnA2OSJ9.tCcD-LyXD1OK-T6uDd8CYA"
 #mapbox_style = "mapbox://styles/xinluncheng/cktsxjvd923p618mw4fut9gav"
@@ -320,3 +323,29 @@ def plotSchoolMap():
     fig.data = fig.data[::-1]
     
     return fig
+
+
+## Returns a plot of the tree coverage map
+## in: data from tree coverage
+## out: figure representing the data
+def plotTreeMap():
+    # tree coverage chloropleth
+    fig = px.choropleth_mapbox(treeDF, geojson = treeDF.geometry, 
+                            locations = treeDF.index,
+                            color = treeDF.coverage,
+                            center={"lat": 38.039, "lon": -78.47826},
+                            zoom=12, opacity = 0.5, 
+                            color_continuous_scale='RdYlGn',
+                            labels={'coverage': 'Canopy Coverage (%)'})
+    fig.update_layout(mapbox_accesstoken=mapbox_token_public, 
+                    mapbox_style=mapbox_style,
+                    margin=go.layout.Margin(l=0, r=0,  b=0, t=0),
+                    plot_bgcolor="rgba(0,0,0,0)",
+                    paper_bgcolor="rgba(0,0,0,0)",
+                    autosize=True,
+                    font={'size': 16, 'color': "rgb(255,255,255)"})
+    #fig.update_traces(hovertemplate=None, hoverinfo = 'skip')
+
+    fig.update_yaxes(scaleanchor="x", scaleratio=1)
+    return fig
+
