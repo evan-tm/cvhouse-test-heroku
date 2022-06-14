@@ -335,7 +335,7 @@ def plotTreeMap():
                             color = treeDF.coverage,
                             center={"lat": 38.039, "lon": -78.47826},
                             zoom=12, opacity = 0.5, 
-                            color_continuous_scale='RdYlGn',
+                            color_continuous_scale='Tropic_r',
                             labels={'coverage': 'Canopy Coverage (%)'})
     fig.update_layout(mapbox_accesstoken=mapbox_token_public, 
                     mapbox_style=mapbox_style,
