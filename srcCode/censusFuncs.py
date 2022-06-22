@@ -16,9 +16,9 @@ ageCity = pd.read_csv("data/census/ageCity.csv")
 # Neighborhood age data
 ageNeighborhood = pd.read_csv("data/census/ageNeighborhood.csv")
 # City race data
-raceCity = pd.read_csv('data/census/raceCity.csv')
+raceCity = pd.read_csv('data/census/raceEthnicityCity.csv')
 # Neighborhod race data
-raceNeighborhood = pd.read_csv('data/census/raceNeighborhood.csv')
+raceNeighborhood = pd.read_csv('data/census/raceEthnicityNeighborhood.csv')
 # City income data
 incomeCity = pd.read_csv('data/census/incomeCity.csv')
 # Neighborhood income data
@@ -149,13 +149,13 @@ def plotAgeCity():
 def plotRaceCity():
     # begin building figure
     fig = px.bar(raceCity, 
-                 y="Race", 
+                 y="Race and Ethnicity", 
                  x="Pop",
                  animation_frame='Year',
                  orientation="h",
                  title=cd.text['RACE_CITY_TITLE'], 
                  labels={'Pop':cd.text['RACE_X_TITLE'],
-                         'Race':cd.text['RACE_Y_TITLE']})
+                         'Race and Ethnicity':cd.text['RACE_Y_TITLE']})
     ## Fix bar order
     fig.update_yaxes(categoryorder="total ascending")
     # update layout
@@ -172,7 +172,7 @@ def plotRaceCity():
                       titlefont={'size': 14},
                       title_x = 0.585)
     ## Adds (count : pct) ticker at far right of chart
-    fig = addFigAnnotations(fig, raceCity, [i for i in range(7)], 'Race')
+    fig = addFigAnnotations(fig, raceCity, [i for i in range(8)], 'Race and Ethnicity')
     ## Fixed x axis size for each frame
     fig.update_xaxes(tickvals = [i*10 for i in range(8)], 
                      range = [0, 78])
@@ -180,7 +180,7 @@ def plotRaceCity():
     fig['layout']['sliders'][0]['x']=-0.04
     ## Loop through frames to edit hover and by-frame ticker annotations
     for idx, f in enumerate(fig.frames):
-        f = addFrameAnnotations(f, raceCity, [i for i in range(7)], idx, 'Race')
+        f = addFrameAnnotations(f, raceCity, [i for i in range(8)], idx, 'Race and Ethnicity')
 
     return fig
 
@@ -340,13 +340,13 @@ def plotAgeNeighborhood(n):
 def plotRaceNeighborhood(n, compare = False):
     # begin building figure
     fig = px.bar(raceNeighborhood, 
-                 y="Race", 
+                 y="Race and Ethnicity", 
                  x=n,
                  animation_frame='Year',
                  orientation="h",
                  title=cd.text['RACE_NEIGHBORHOOD_TITLE'].format(hood=n), 
                  labels={n:cd.text['RACE_X_TITLE'],
-                         'Race':cd.text['RACE_Y_TITLE']})
+                         'Race and Ethnicity':cd.text['RACE_Y_TITLE']})
     ## Fix bar order
     fig.update_yaxes(categoryorder="total ascending")
     # update layout
@@ -368,7 +368,7 @@ def plotRaceNeighborhood(n, compare = False):
     raceNeighborhood['ag'] = [f'({raceNeighborhood.iloc[i, hood_index+19]:,} : {raceNeighborhood.iloc[i, hood_index]:.2f}%)' 
                                for i in range(raceNeighborhood.shape[0])]
     ## Adds (count : pct) ticker at far right of chart
-    fig = addFigAnnotations(fig, raceNeighborhood, [i for i in range(7)], 'Race')
+    fig = addFigAnnotations(fig, raceNeighborhood, [i for i in range(8)], 'Race and Ethnicity')
     if compare:
         ## Fixed x axis size for each frame
         fig.update_xaxes(tickvals = [i*10 for i in range(10)], 
@@ -382,8 +382,8 @@ def plotRaceNeighborhood(n, compare = False):
     ## Loop through frames to edit hover and by-frame ticker annotations
     for idx, f in enumerate(fig.frames):
         f = addFrameAnnotations(f, raceNeighborhood, 
-                                [i for i in range(7)], 
-                                idx, 'Race')
+                                [i for i in range(8)], 
+                                idx, 'Race and Ethnicity')
 
     return fig
 
