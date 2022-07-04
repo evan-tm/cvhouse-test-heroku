@@ -26,7 +26,9 @@ def plotNeighborhoodHistorySales(neighs, var):
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
                       autosize=True,
-                      font=dict(size=13, color="rgb(255,255,255)"))
+                      font=dict(size=13, color="rgb(7,13,30)"))
+    fig.update_xaxes(gridcolor='Black')
+    fig.update_yaxes(gridcolor='Black')
     fig['data'][0]['showlegend'] = True
     return fig
 
@@ -40,14 +42,16 @@ def plotCityHistoryPrice():
                              name="Two Family"))
     fig.add_trace(go.Scatter(x=sales_year_multi["SaleDate"], y=sales_year_multi["SaleAmountAdjusted"]["median"], 
                              name="Multi-family and Others"))
-    fig.update_xaxes(range=["1945-01-01T00:00:00Z", "2022-12-31T23:59:59Z"])
+    fig.update_xaxes(range=["1945-01-01T00:00:00Z", "2022-12-31T23:59:59Z"],
+                     gridcolor='Black')
+    fig.update_yaxes(gridcolor='Black')
     fig.update_layout(xaxis_title="Year",
                       yaxis_title="Yearly Median Sale Price [$, inflation adjusted]",
                       margin=go.layout.Margin(l=0, r=0, b=0, t=0),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
                       autosize=True,
-                      font=dict(size=13, color="rgb(255,255,255)"))
+                      font=dict(size=13, color="rgb(7,13,30)"))
     fig['data'][0]['showlegend'] = True
     return fig
 
@@ -60,14 +64,16 @@ def plotCityHistoryQuantity():
                              name="Two Family"))
     fig.add_trace(go.Scatter(x=sales_year_multi["SaleDate"], y=sales_year_multi["SaleAmountAdjusted"]["count"], 
                              name="Multi-family and Others"))
-    fig.update_xaxes(range=["1945-01-01T00:00:00Z", "2022-12-31T23:59:59Z"])
+    fig.update_xaxes(range=["1945-01-01T00:00:00Z", "2022-12-31T23:59:59Z"],
+                     gridcolor='Black')
+    fig.update_yaxes(gridcolor='Black')
     fig.update_layout(xaxis_title="Year",
                       yaxis_title="Yearly Number of Sales",
                       margin=go.layout.Margin(l=0, r=0, b=0, t=0),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
                       autosize=True,
-                      font=dict(size=13, color="rgb(255,255,255)"))
+                      font=dict(size=13, color="rgb(7,13,30)"))
     fig['data'][0]['showlegend'] = True
     return fig\
 
@@ -90,6 +96,8 @@ def plotCompareHistorySales(n, var, neighs):
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
                       autosize=True,
-                      font=dict(size=13, color="rgb(255,255,255)"))
+                      font=dict(size=13, color="rgb(7,13,30)"))
+    fig.update_xaxes(gridcolor='Black')
+    fig.update_yaxes(gridcolor='Black')
     fig['data'][0]['showlegend'] = True
     return fig

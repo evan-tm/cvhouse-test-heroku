@@ -11,7 +11,7 @@ layout = html.Div(
         # Top bar
         dbc.Navbar([
             df.createTopBar()
-        ], className="sidebar", color="#132C36"),
+        ], className="sidebar", color="#FFFFFF"),
         html.Div(
         [
                 html.H3(rd.text['MAIN_TITLE'], className = "center_text title"),

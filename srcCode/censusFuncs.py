@@ -30,7 +30,7 @@ incomeNeighborhood = pd.read_csv('data/census/incomeNeighborhood.csv')
 def addFigAnnotations(fig, data, num, column):
     
     for idx in num:
-        fig.add_annotation(dict(font=dict(color = 'white', size = 11),
+        fig.add_annotation(dict(font=dict(color = "rgb(7,13,30)", size = 11),
                                x = 1.004,
                                y = data[column][idx],
                                showarrow=False,
@@ -48,7 +48,7 @@ def addFrameAnnotations(frame, data, num, frameIndex, column):
     ## build list of annotations
     annotations = [
         go.layout.Annotation(
-            dict(font=dict(color = 'white', size = 11), 
+            dict(font=dict(color = "rgb(7,13,30)", size = 11), 
                  x = 1.004, 
                  y = data[column][idx + frameIndex * len(num)], 
                  showarrow=False, 
@@ -81,7 +81,7 @@ def plotIndustrySector():
                     plot_bgcolor="rgba(0,0,0,0)",
                     paper_bgcolor="rgba(0,0,0,0)",
                     autosize=True,
-                    font=dict(size=13, color="rgb(255,255,255)"),
+                    font=dict(size=13, color="rgb(7,13,30)"),
                     legend_title_text=cd.text['IND_CITY_LEGEND_TITLE'],
                     legend=dict(yanchor="bottom", 
                                 x=0.83, 
@@ -97,7 +97,8 @@ def plotIndustrySector():
     fig.update_xaxes(ticktext = ["0", "5", "10", "15", "20", 
                                  "25", "30", "35", "40"], 
                     tickvals = [i*5 for i in range(9)], 
-                    range = [0, 45])
+                    range = [0, 45],
+                    gridcolor='Black')
     #fig['layout']['updatemenus'][0]['pad']=dict(r= 0, t= 70)
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
@@ -128,7 +129,7 @@ def plotAgeCity():
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
-                      font=dict(size=13, color="rgb(255,255,255)"),
+                      font=dict(size=13, color="rgb(7,13,30)"),
                       legend=dict(yanchor="bottom", 
                                   x=0.90, 
                                   y=0.85, 
@@ -138,7 +139,8 @@ def plotAgeCity():
                       title_x = 0.555)
     ## Fixed x axis size for each frame
     fig.update_xaxes(tickvals = [i*2 for i in range(8)], 
-                     range = [0, 16])
+                     range = [0, 16],
+                     gridcolor='Black')
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
   
@@ -163,7 +165,7 @@ def plotRaceCity():
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
                       autosize=True,
-                      font=dict(size=13, color="rgb(255,255,255)"),
+                      font=dict(size=13, color="rgb(7,13,30)"),
                       legend=dict(yanchor="bottom", 
                                   x=0.90, 
                                   y=0.85, 
@@ -175,7 +177,8 @@ def plotRaceCity():
     fig = addFigAnnotations(fig, raceCity, [i for i in range(8)], 'Race and Ethnicity')
     ## Fixed x axis size for each frame
     fig.update_xaxes(tickvals = [i*10 for i in range(8)], 
-                     range = [0, 78])
+                     range = [0, 78],
+                     gridcolor='Black')
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
     ## Loop through frames to edit hover and by-frame ticker annotations
@@ -200,7 +203,7 @@ def plotIncomeCity():
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
-                      font=dict(size=13, color="rgb(255,255,255)"),
+                      font=dict(size=13, color="rgb(7,13,30)"),
                       legend=dict(yanchor="bottom", 
                                   x=0.90, 
                                   y=0.85, 
@@ -212,7 +215,8 @@ def plotIncomeCity():
     fig = addFigAnnotations(fig, incomeCity, [i for i in range(16)], 'Bracket')
     ## Fixed x axis size for each frame
     fig.update_xaxes(tickvals = [i*2 for i in range(9)], 
-                     range = [0, 18])
+                     range = [0, 18],
+                     gridcolor='Black')
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
     ## Loop through frames to edit hover and by-frame ticker annotations
@@ -243,7 +247,7 @@ def plotIndustryByNeighborhood(n, compare = False):
                       plot_bgcolor="rgba(0,0,0,0)", 
                       paper_bgcolor="rgba(0,0,0,0)", 
                       autosize=True, 
-                      font=dict(size=13, color="rgb(255,255,255)"),
+                      font=dict(size=13, color="rgb(7,13,30)"),
                       legend=dict(yanchor="bottom", 
                                   x=0.85, 
                                   y=0, 
@@ -265,14 +269,16 @@ def plotIndustryByNeighborhood(n, compare = False):
                                     "25", "30", "35", "40", "45", 
                                     "50", "55", "60"], 
                         tickvals = [i*5 for i in range(13)], 
-                        range = [0, 76])
+                        range = [0, 76],
+                        gridcolor='Black')
     else:
         ## Fixed x axis size for each frame
         fig.update_xaxes(ticktext = ["0", "5", "10", "15", "20", 
                                     "25", "30", "35", "40", "45", 
                                     "50", "55", "60"], 
                         tickvals = [i*5 for i in range(13)], 
-                        range = [0, 65])
+                        range = [0, 65],
+                        gridcolor='Black')
     ## move slider's and buttons' positions slightly left
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
@@ -307,7 +313,7 @@ def plotAgeNeighborhood(n):
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
-                      font=dict(size=13, color="rgb(255,255,255)"),
+                      font=dict(size=13, color="rgb(7,13,30)"),
                       legend=dict(yanchor="bottom", 
                                   x=0.90, 
                                   y=0.85, 
@@ -317,7 +323,8 @@ def plotAgeNeighborhood(n):
                       title_x = 0.56)
     ## Fixed x axis size for each frame
     fig.update_xaxes(tickvals = [i*5 for i in range(8)], 
-                     range = [0, 40])
+                     range = [0, 40],
+                     gridcolor='Black')
     # update legend and hovers
     newnames = {n + "_M":'Male', n + "_F":'Female'}
     fig.for_each_trace(lambda t: t.update(name = newnames[t.name],
@@ -354,7 +361,7 @@ def plotRaceNeighborhood(n, compare = False):
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
                       autosize=True,
-                      font=dict(size=13, color="rgb(255,255,255)"),
+                      font=dict(size=13, color="rgb(7,13,30)"),
                       legend=dict(yanchor="bottom", 
                                   x=0.90, 
                                   y=0.85, 
@@ -372,11 +379,13 @@ def plotRaceNeighborhood(n, compare = False):
     if compare:
         ## Fixed x axis size for each frame
         fig.update_xaxes(tickvals = [i*10 for i in range(10)], 
-                        range = [0, 122])
+                        range = [0, 122],
+                        gridcolor='Black')
     else:
         ## Fixed x axis size for each frame
         fig.update_xaxes(tickvals = [i*10 for i in range(11)], 
-                        range = [0, 109])
+                        range = [0, 109],
+                        gridcolor='Black')
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
     ## Loop through frames to edit hover and by-frame ticker annotations
@@ -405,7 +414,7 @@ def plotIncomeNeighborhood(n, compare = False):
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
-                      font=dict(size=13, color="rgb(255,255,255)"),
+                      font=dict(size=13, color="rgb(7,13,30)"),
                       legend=dict(yanchor="bottom", 
                                   x=0.90, 
                                   y=0.85, 
@@ -423,11 +432,13 @@ def plotIncomeNeighborhood(n, compare = False):
     if compare:
         ## Fixed x axis size for each frame
         fig.update_xaxes(tickvals = [i*5 for i in range(8)], 
-                        range = [0, 43])
+                        range = [0, 43],
+                        gridcolor='Black')
     else:
         ## Fixed x axis size for each frame
         fig.update_xaxes(tickvals = [i*5 for i in range(8)], 
-                        range = [0, 40])
+                        range = [0, 40],
+                        gridcolor='Black')
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
     ## Loop through frames to edit hover and by-frame ticker annotations
