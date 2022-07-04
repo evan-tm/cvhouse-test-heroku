@@ -11,7 +11,7 @@ layout = html.Div(
         # Sidebar
         dbc.Navbar([
             df.createTopBar()
-        ], className="sidebar", color="#132C36"),
+        ], className="sidebar", color="#FFFFFF"),
         html.Div(
         [
                 html.H3(cd.text['MAIN_TITLE'], className = "center_text title"),
@@ -73,7 +73,7 @@ layout = html.Div(
                 html.H3(cd.text['SUPPORT'], className = "center_text title"),
                 html.Br(),
                 html.A(cd.text['ISSUES'], href=cd.links['ISSUES'], target="_blank",
-                       className = "center_text links_text"),
+                       className = "center_text inline_sublinks"),
                 html.Br(),
                 html.Br(),
                 #dcc.Link('Take me back up', href='#', className = "left_text links_text"),

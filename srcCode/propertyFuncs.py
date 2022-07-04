@@ -66,7 +66,7 @@ def plotAffordMap(lod, y):
                         plot_bgcolor="rgba(0,0,0,0)",
                         paper_bgcolor="rgba(0,0,0,0)",
                         autosize=True,
-                        font=dict(size=16, color="rgb(255,255,255)"))
+                        font=dict(size=16, color="rgb(7,13,30)"))
         fig.update_yaxes(scaleanchor="x", scaleratio=1)
     else:
         # Individual property map
@@ -96,6 +96,6 @@ def plotAffordMap(lod, y):
                         plot_bgcolor="rgba(0,0,0,0)",
                         paper_bgcolor="rgba(0,0,0,0)",
                         autosize=True,
-                        font=dict(size=16, color="rgb(255,255,255)"))
+                        font=dict(size=16, color="rgb(7,13,30)"))
         fig.update_yaxes(scaleanchor="x", scaleratio=1)
     return fig

@@ -15,7 +15,7 @@ layout = html.Div(
     # Sidebar
     dbc.Navbar([
         df.createTopBar()
-    ], className="sidebar", color="#132C36"),
+    ], className="sidebar", color="#FFFFFF"),
     #html.H3(hd.text['MAIN_TITLE'], className = "center_text title"),
     html.Div(
         [
@@ -112,8 +112,8 @@ layout = html.Div(
             df.createDropdown(ad.text['DD_TAX'], ad.opts['DD_TAX'],
                               ad.default['DD_TAX'], dd_id="afford_dropdown_tax",
                               clearable=False, searchable=False),
-            html.Button(ad.text['CALC_BUTTON'], id="afford_button", className="right_text subtitle",
-                                style={"background-color": "#FFE133", "color": "#000000"}),
+            html.Button(ad.text['CALC_BUTTON'], id="afford_button", className="center_text subtitle",
+                                style={"background-color": "#e96a26", "color": "#FFFFFF"}),
         ], className="subcontainer"),
     html.Div(
         [

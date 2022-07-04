@@ -85,7 +85,7 @@ def plotResourcesMap():
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
                       autosize=True,
-                      font={'size': 16, 'color': "rgb(255,255,255)"})
+                      font={'size': 16, 'color': "rgb(7,13,30)"})
     fig1.update_traces(hovertemplate="<br>".join([
                                     "%{hovertext}",
                                     "",
@@ -105,7 +105,7 @@ def plotResourcesMap():
                        plot_bgcolor="rgba(0,0,0,0)",
                        paper_bgcolor="rgba(0,0,0,0)",
                        autosize=True,
-                       font={'size': 16, 'color': "rgb(255,255,255)"})
+                       font={'size': 16, 'color': "rgb(7,13,30)"})
     fig2.update_traces(hovertemplate="<br>".join([
                                      "%{hovertext}",
                                      "",
@@ -125,7 +125,7 @@ def plotResourcesMap():
                        plot_bgcolor="rgba(0,0,0,0)",
                        paper_bgcolor="rgba(0,0,0,0)",
                        autosize=True,
-                       font={'size': 16, 'color': "rgb(255,255,255)"})
+                       font={'size': 16, 'color': "rgb(7,13,30)"})
     fig3.update_traces(hovertemplate="<br>".join([
                                      "%{hovertext}",
                                      "",
@@ -145,7 +145,7 @@ def plotResourcesMap():
                        plot_bgcolor="rgba(0,0,0,0)",
                        paper_bgcolor="rgba(0,0,0,0)",
                        autosize=True,
-                       font={'size': 16, 'color': "rgb(255,255,255)"})
+                       font={'size': 16, 'color': "rgb(7,13,30)"})
     fig4.update_traces(hovertemplate="<br>".join([
                                      "%{hovertext}",
                                      "",
@@ -164,7 +164,7 @@ def plotResourcesMap():
                         plot_bgcolor="rgba(0,0,0,0)",
                         paper_bgcolor="rgba(0,0,0,0)",
                         autosize=True,
-                        font={'size': 16, 'color': "rgb(255,255,255)"})
+                        font={'size': 16, 'color': "rgb(7,13,30)"})
     fig5.update_traces(hovertemplate="<br>".join([
                                     "%{hovertext}",
                                     "",
@@ -183,7 +183,7 @@ def plotResourcesMap():
                     plot_bgcolor="rgba(0,0,0,0)",
                     paper_bgcolor="rgba(0,0,0,0)",
                     autosize=True,
-                    font={'size': 16, 'color': "rgb(255,255,255)"})
+                    font={'size': 16, 'color': "rgb(7,13,30)"})
     fig6.update_traces(hovertemplate="<br>".join([
                                     "Name: %{customdata[0]}",
                                     "Code: %{hovertext}"]), 
@@ -201,7 +201,7 @@ def plotResourcesMap():
                     plot_bgcolor="rgba(0,0,0,0)",
                     paper_bgcolor="rgba(0,0,0,0)",
                     autosize=True,
-                    font={'size': 16, 'color': "rgb(255,255,255)"})
+                    font={'size': 16, 'color': "rgb(7,13,30)"})
     fig7.update_traces(hovertemplate="<br>".join([
                                     "Type: %{hovertext}",
                                     "Capacity: %{customdata[0]}"]), 
@@ -219,7 +219,7 @@ def plotResourcesMap():
                     plot_bgcolor="rgba(0,0,0,0)",
                     paper_bgcolor="rgba(0,0,0,0)",
                     autosize=True,
-                    font={'size': 16, 'color': "rgb(255,255,255)"})
+                    font={'size': 16, 'color': "rgb(7,13,30)"})
     fig8.update_traces(hovertemplate="<br>".join([
                                     "Type: %{hovertext}"]),
                     line={'width': 1.5})
@@ -237,7 +237,7 @@ def plotResourcesMap():
                     plot_bgcolor="rgba(0,0,0,0)",
                     paper_bgcolor="rgba(0,0,0,0)",
                     autosize=True,
-                    font={'size': 16, 'color': "rgb(255,255,255)"})
+                    font={'size': 16, 'color': "rgb(7,13,30)"})
     fig9.update_traces(hovertemplate="<br>".join([
                                     "Type: %{hovertext}",
                                     "Location: %{customdata[0]}",
@@ -290,7 +290,7 @@ def plotSchoolMap():
                     plot_bgcolor="rgba(0,0,0,0)",
                     paper_bgcolor="rgba(0,0,0,0)",
                     autosize=True,
-                    font={'size': 16, 'color': "rgb(255,255,255)"})
+                    font={'size': 16, 'color': "rgb(7,13,30)"})
     fig.update_traces(hovertemplate=None, hoverinfo = 'skip')
     #fig.update_traces(hovertemplate="<br>".join([
     #                                "Elementary: %{hovertext}",
@@ -311,7 +311,7 @@ def plotSchoolMap():
                     plot_bgcolor="rgba(0,0,0,0)",
                     paper_bgcolor="rgba(0,0,0,0)",
                     autosize=True,
-                    font={'size': 16, 'color': "rgb(255,255,255)"})
+                    font={'size': 16, 'color': "rgb(7,13,30)"})
     fig2.update_traces(hovertemplate="<br>".join([
                                     "%{hovertext}",
                                     "",
@@ -343,7 +343,7 @@ def plotTreeMap():
                     plot_bgcolor="rgba(0,0,0,0)",
                     paper_bgcolor="rgba(0,0,0,0)",
                     autosize=True,
-                    font={'size': 16, 'color': "rgb(255,255,255)"})
+                    font={'size': 16, 'color': "rgb(7,13,30)"})
     #fig.update_traces(hovertemplate=None, hoverinfo = 'skip')
 
     fig.update_yaxes(scaleanchor="x", scaleratio=1)

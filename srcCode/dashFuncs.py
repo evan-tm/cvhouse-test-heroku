@@ -77,7 +77,7 @@ def createTagInput(description, default_value, maximum, minimum=0,
                              max=maximum, className="elem2", style=ip_style, 
                              size=size, **kwargs),
             html.Button(button_desc, id=button_id, className="elem3 center_text subtitle",
-                        style={"background-color": "#0088CE", "color": "#000000", 'width': '150px'}),
+                        style={"background-color": "#009192", "color": "#FFFFFF", 'width': '150px'}),
             ], className="grid_ages")
     else:
         return html.Div([
@@ -86,7 +86,7 @@ def createTagInput(description, default_value, maximum, minimum=0,
                              max=maximum, className="elem2", style=ip_style, 
                              size=size, **kwargs),
             html.Button(button_desc, id=button_id, className="elem3 center_text subtitle",
-                        style={"background-color": "#0088CE", "color": "#000000", 'width': '150px'}),
+                        style={"background-color": "#009192", "color": "#FFFFFF", 'width': '150px'}),
             ], className="grid_ages")
 
     

@@ -17,7 +17,7 @@ layout = html.Div(
         # Sidebar
         dbc.Navbar([
             df.createTopBar()
-        ], className="sidebar", color="#132C36"),
+        ], className="sidebar", color="#FFFFFF"),
         html.H3(nbcd.text['MAIN_TITLE'], className = "center_text title"),
         # Neighborhood selector
         html.Div(
@@ -26,7 +26,7 @@ layout = html.Div(
                               value=[], id="nbc_checklist", className="center_text bodytext", style={'width':'50%'},
                               inputStyle={"margin-left": "20px", "margin-right": "5px"}),
                 html.Button(nbcd.text['COMPARE_BUTTON'], id="compare_button", className="center_text bodytext",
-                            style={"background-color": "#FFE133", "color": "#000000"}),
+                            style={"background-color": "#e96a26", "color": "#FFFFFF"}),
                 html.Span(id="compare_warning", className="center_text subtitle"),
             ], className="subcontainer"),
         html.Div(
@@ -73,7 +73,7 @@ layout = html.Div(
                                                         'zoomIn2d', 'zoomOut2d',
                                                         'autoScale2d']}),
             ], className="subcontainer"),
-        dcc.Link('Take me back up', href='#', className = "subcontainer links_text"),
+        dcc.Link('Take me back up', href='#', className = "subcontainer inline_sublinks"),
     ], className = "container background")
 
 # Limit comparison
