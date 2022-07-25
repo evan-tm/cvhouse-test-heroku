@@ -172,15 +172,14 @@
 }
 .header_links_text {
 	position:relative;
-	margin:5px auto;
+	margin:0px auto;
 	font-family: "franklin-gothic-condensed","Helvetica","sans-serif";
 	font-weight: 700;
 	font-size: 16px;
 	line-height: 1.25;
 	text-transform: uppercase;
-	text-align:center;
+	text-align:left;
 	vertical-align: middle;
-	color:#46494B;
 }
 .links_text {
 	display:block;

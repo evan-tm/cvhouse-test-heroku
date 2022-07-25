@@ -30,9 +30,8 @@ def getCvillepedia(n):
 layout = html.Div(
     [
         # Sidebar
-        dbc.Navbar([
-            df.createTopBar()
-        ], className="sidebar", color="#FFFFFF"),
+        df.createTopBar(),
+        html.Br(),
         html.H3(nd.text['MAIN_TITLE'], className = "center_text title"),
         html.Div(
             [
@@ -97,6 +96,7 @@ layout = html.Div(
                                                         'autoScale2d']})
             ], className="subcontainer"),
         dcc.Link('Take me back up', href='#', className = "subcontainer links_text"),
+        html.Br(),
     ], className = "container background")
 
 @callback(

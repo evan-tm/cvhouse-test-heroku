@@ -91,23 +91,63 @@ def createTagInput(description, default_value, maximum, minimum=0,
 
     
 def createTopBar():
-    return html.A(dbc.Row(
-        [
-            dbc.Col(dbc.NavItem(dbc.NavLink(tb.opts['HOME'], href="/home", external_link=True, 
-                                            className="background2 header_links_text", style={'height':'70px'}))),
-            dbc.Col(dbc.NavItem(dbc.NavLink(tb.opts['CITY'], href="/city", external_link=True, 
-                                            className="background2 header_links_text", style={'height':'70px'}))),
-            dbc.Col(dbc.NavItem(dbc.NavLink(tb.opts['NEIGHBORHOOD'], href="/neighborhood", external_link=True, 
-                                            className="background2 header_links_text", style={'height':'70px'}))),
-            dbc.Col(dbc.NavItem(dbc.NavLink(tb.opts['NBCOMPARE'], href="/nbcompare", external_link=True, 
-                                            className="background2 header_links_text", style={'height':'70px'}))),
-            dbc.Col(dbc.NavItem(dbc.NavLink(tb.opts['RESOURCES'], href="/resources", external_link=True, 
-                                            className="background2 header_links_text", style={'height':'70px'}))),
-            dbc.Col(dbc.NavItem(dbc.NavLink(tb.opts['CONTACT'], href="/contact", external_link=True, 
-                                            className="background2 header_links_text", style={'height':'70px'}))),
-            dbc.Col(html.Img(src = 'assets/title.png', style={'height':'70px'}), className="ml-5"),
-        ], 
-        align="center", className="g-0"))
+    return dbc.NavbarSimple(children=[
+                dbc.NavItem(dbc.NavLink(tb.opts['HOME'], href="/home",
+                                        className="header_links_text")),
+                dbc.DropdownMenu(
+                    children=[
+                        dbc.DropdownMenuItem("City data pages", header=True,
+                                             className="header_links_text"),
+                        dbc.DropdownMenuItem(tb.opts['CITY'], href="/city",
+                                             className="header_links_text"),
+                        dbc.DropdownMenuItem("Home Test", href="/home",
+                                             className="header_links_text"),
+                    ],
+                    nav=True,
+                    in_navbar=True,
+                    label="City",
+                ),
+                dbc.DropdownMenu(
+                    children=[
+                        dbc.DropdownMenuItem("Neighborhood data pages", header=True,
+                                             className="header_links_text"),
+                        dbc.DropdownMenuItem(tb.opts['NEIGHBORHOOD'], href="/neighborhood",
+                                             className="header_links_text"),
+                        dbc.DropdownMenuItem(tb.opts['NBCOMPARE'], href="/nbcompare",
+                                             className="header_links_text"),
+                    ],
+                    nav=True,
+                    in_navbar=True,
+                    label="Neighborhood",
+                ),
+                dbc.NavItem(dbc.NavLink(tb.opts['RESOURCES'], href="/resources",
+                                        className="header_links_text")),
+                dbc.NavItem(dbc.NavLink(tb.opts['CONTACT'], href="/contact",
+                                        className="header_links_text")),
+            ],
+            brand="CVille Home Affordability Dashboard",
+            brand_href="#",
+            color="#5B1453",
+            dark=True,
+            class_name = "header_links_text"
+        )
+    #html.A(dbc.Row(
+    #    [
+    #        dbc.Col(dbc.NavItem(dbc.NavLink(tb.opts['HOME'], href="/home", external_link=True, 
+    #                                        className="background2 header_links_text", style={'height':'70px'}))),
+    #        dbc.Col(dbc.NavItem(dbc.NavLink(tb.opts['CITY'], href="/city", external_link=True, 
+    #                                        className="background2 header_links_text", style={'height':'70px'}))),
+    #        dbc.Col(dbc.NavItem(dbc.NavLink(tb.opts['NEIGHBORHOOD'], href="/neighborhood", external_link=True, 
+    #                                        className="background2 header_links_text", style={'height':'70px'}))),
+    #        dbc.Col(dbc.NavItem(dbc.NavLink(tb.opts['NBCOMPARE'], href="/nbcompare", external_link=True, 
+    #                                        className="background2 header_links_text", style={'height':'70px'}))),
+    #        dbc.Col(dbc.NavItem(dbc.NavLink(tb.opts['RESOURCES'], href="/resources", external_link=True, 
+    #                                        className="background2 header_links_text", style={'height':'70px'}))),
+    #        dbc.Col(dbc.NavItem(dbc.NavLink(tb.opts['CONTACT'], href="/contact", external_link=True, 
+    #                                        className="background2 header_links_text", style={'height':'70px'}))),
+    #        dbc.Col(html.Img(src = 'assets/title.png', style={'height':'70px'}), className="ml-5"),
+    #    ], 
+    #    align="center", className="g-0"))
 
 def createLeftAlignDropdown(description, opts, default_value, 
                    dd_style={"width": "150px"}, dd_id=None, desc_id=None,

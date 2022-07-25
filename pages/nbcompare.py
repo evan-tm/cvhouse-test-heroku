@@ -15,9 +15,8 @@ max_selected_checklist = 2
 layout = html.Div(
     [
         # Sidebar
-        dbc.Navbar([
-            df.createTopBar()
-        ], className="sidebar", color="#FFFFFF"),
+        df.createTopBar(),
+        html.Br(),
         html.H3(nbcd.text['MAIN_TITLE'], className = "center_text title"),
         # Neighborhood selector
         html.Div(
@@ -74,6 +73,8 @@ layout = html.Div(
                                                         'autoScale2d']}),
             ], className="subcontainer"),
         dcc.Link('Take me back up', href='#', className = "subcontainer inline_sublinks"),
+        html.Br(),
+        html.Br(),
     ], className = "container background")
 
 # Limit comparison

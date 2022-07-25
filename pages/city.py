@@ -39,10 +39,8 @@ year = np.arange(1945, 2021, 1, dtype=int)
 layout = html.Div(
     [
         # Sidebar
-        dbc.Navbar([
-            df.createTopBar()
-        ], className="sidebar", color="#FFFFFF"),
-        #html.H3(cd.text['MAIN_TITLE'], className = "center_text title"), 
+        df.createTopBar(),
+        html.Br(),
         # Affordability
         html.Div(
             [
@@ -50,7 +48,8 @@ layout = html.Div(
                           figure=pf.plotAffordMap("Neighborhood", 2020),
                           config={'displayModeBar': True,
                                   "displaylogo": False,
-                                  'modeBarButtonsToRemove': ['pan2d', 'select2d', 'lasso2d']},
+                                  'modeBarButtonsToRemove': ['pan2d', 'select2d', 
+                                                             'lasso2d', 'toImage']},
                           style={"width": "100%", "height": "550px"}),
                 html.Div([
                     html.Div([

@@ -9,9 +9,8 @@ import srcCode.dashFuncs as df
 layout = html.Div(
     [
         # Top bar
-        dbc.Navbar([
-            df.createTopBar()
-        ], className="sidebar", color="#FFFFFF"),
+        df.createTopBar(),
+        html.Br(),
         html.Div(
         [
                 html.H3(rd.text['MAIN_TITLE'], className = "center_text title"),

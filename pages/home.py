@@ -13,10 +13,8 @@ import srcCode.qolDescs as qd
 layout = html.Div(
     [
     # Sidebar
-    dbc.Navbar([
-        df.createTopBar()
-    ], className="sidebar", color="#FFFFFF"),
-    #html.H3(hd.text['MAIN_TITLE'], className = "center_text title"),
+    df.createTopBar(),
+    html.Br(),
     html.Div(
         [
             html.Div(hd.text['COPY'], id="copy_text", className="left_text bodytext"),
@@ -36,13 +34,15 @@ layout = html.Div(
                       figure=qf.plotResourcesMap(), 
                       config={'displayModeBar': True,
                               "displaylogo": False,
-                              'modeBarButtonsToRemove': ['pan2d', 'select2d', 'lasso2d']},
+                              'modeBarButtonsToRemove': ['pan2d', 'select2d', 
+                                                         'lasso2d', 'toImage']},
                       style={"width": "100%", "height": "550px"}),
             # Affordability map
             dcc.Graph(id='results_map', 
                       config={'displayModeBar': True,
                               "displaylogo": False,
-                              'modeBarButtonsToRemove': ['pan2d', 'select2d', 'lasso2d']},
+                              'modeBarButtonsToRemove': ['pan2d', 'select2d', 
+                                                         'lasso2d', 'toImage']},
                       style={'display': 'none', "width": "100%", "height": "550px"})
         ], className = "subcontainer"),
     # divider
