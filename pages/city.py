@@ -68,7 +68,7 @@ layout = html.Div(
             ], className="subcontainer"),
         html.Hr(className="center_text title"),
         html.Br(),
-        # Census charts
+        # Census resident charts
         html.Div([
             df.createLeftAlignDropdown(cd.text['DROPDOWN_CENSUS'], cd.opts['DROPDOWN_CENSUS'],
                             cd.default['DROPDOWN_CENSUS'], dd_id='dropdown_city_census',
@@ -77,13 +77,30 @@ layout = html.Div(
         ], className = "subcontainer"),
         html.Div(
             [
-                # dropdown for census selection
-                #df.createDropdown(cd.text['DROPDOWN_CENSUS'], cd.opts['DROPDOWN_CENSUS'],
-                #                  cd.default['DROPDOWN_CENSUS'], dd_id="dropdown_city_census",
-                #                  dd_style={"width": "200px"}, 
-                #                  clearable=False, searchable = False),
                 dcc.Graph(id='census_city_plot', 
                           figure=cf.plotIndustrySector(),
+                          config={'displayModeBar': True,
+                            "displaylogo": False,
+                            'modeBarButtonsToRemove': ['pan2d', 'select2d', 
+                                                        'lasso2d', 'zoom2d',
+                                                        'zoomIn2d', 'zoomOut2d',
+                                                        'autoScale2d']},
+                          style={'display': 'block'})
+            ], className="subcontainer"),
+        html.Br(),
+        html.Hr(className="center_text title"),
+        html.Br(),
+        # Census household charts
+        html.Div([
+            df.createLeftAlignDropdown(cd.text['DROPDOWN_CENSUS_HH'], cd.opts['DROPDOWN_CENSUS_HH'],
+                            cd.default['DROPDOWN_CENSUS_HH'], dd_id='dropdown_city_census_hh',
+                            dd_style={'width': '170px'}, grid_class="grid_dd2",
+                            clearable=False, searchable=False),
+        ], className = "subcontainer"),
+        html.Div(
+            [
+                dcc.Graph(id='census_hh_city_plot', 
+                          figure=cf.plotIncomeCity(),
                           config={'displayModeBar': True,
                             "displaylogo": False,
                             'modeBarButtonsToRemove': ['pan2d', 'select2d', 
@@ -136,11 +153,20 @@ def update_census_city_plot(censusSelection):
     if censusSelection == cd.opts['DROPDOWN_CENSUS'][0]:
         return cf.plotAgeCity()
     elif censusSelection == cd.opts['DROPDOWN_CENSUS'][1]:
-        return cf.plotIncomeCity()
-    elif censusSelection == cd.opts['DROPDOWN_CENSUS'][2]:
         return cf.plotIndustrySector()
     else:
         return cf.plotRaceCity()
+
+@callback(
+    Output('census_hh_city_plot', 'figure'),
+    Input('dropdown_city_census_hh', 'value'))
+def update_census_hh_city_plot(censusSelection):
+    if censusSelection == cd.opts['DROPDOWN_CENSUS_HH'][0]:
+        return cf.plotIncomeCity()
+    elif censusSelection == cd.opts['DROPDOWN_CENSUS_HH'][1]:
+        return cf.plotOccupancyCity()
+    else:
+        return cf.plotTenureCity()
 
 @callback(
     Output('history_price_city_plot', 'style'),

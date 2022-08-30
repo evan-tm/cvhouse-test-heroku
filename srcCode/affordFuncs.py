@@ -368,7 +368,11 @@ def plotAffordMap(ns):
                     plot_bgcolor="rgba(0,0,0,0)",
                     paper_bgcolor="rgba(0,0,0,0)",
                     autosize=True,
-                    font={'size': 16, 'color': "rgb(255,255,255)"})
+                    font={'size': 16},
+                    font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                    font_color="#070D1E",
+                    title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                    title_font_color="#1C1D1E")
     fig.update_traces(hovertemplate=None, hoverinfo = 'skip')
 
     fig.update_yaxes(scaleanchor="x", scaleratio=1)

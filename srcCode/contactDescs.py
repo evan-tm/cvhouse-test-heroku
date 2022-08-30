@@ -28,7 +28,7 @@ opts = {
 }
 
 links = {
-    "THANKS": "https://www.cvilletomorrow.org/author/erin-ohare",
+    "THANKS": "https://www.cvilletomorrow.org/author/erin-ohare/",
 
     "EVAN": "https://www.linkedin.com/in/evanmitchell234/",
     "SPENCER": "https://www.linkedin.com/in/spencerbozsik/",
@@ -36,7 +36,7 @@ links = {
     "XINLUN": "https://chengxinlun.github.io/",
 
     "KROPKO": "https://www.linkedin.com/in/jonathan-kropko/",
-    "ERIN": "https://www.cvilletomorrow.org/people/staff/erin-ohare",
+    "ERIN": "https://www.cvilletomorrow.org/author/erin-ohare/",
 
     "ISSUES": "https://github.com/chengxinlun/cvhouse-test-heroku/issues",
 

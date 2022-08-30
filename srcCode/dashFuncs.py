@@ -100,7 +100,7 @@ def createTopBar():
                                              className="header_links_text"),
                         dbc.DropdownMenuItem(tb.opts['CITY'], href="/city",
                                              className="header_links_text"),
-                        dbc.DropdownMenuItem("Home Test", href="/home",
+                        dbc.DropdownMenuItem(tb.opts['AIRBNB'], href="/airbnb",
                                              className="header_links_text"),
                     ],
                     nav=True,

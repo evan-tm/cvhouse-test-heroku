@@ -15,8 +15,9 @@ text = {
 opts = {
     "HOME": "Home",
     "CITY": "Explore the City",
+    "AIRBNB": "Airbnb & VRBO",
     "NEIGHBORHOOD": "Explore each Neighborhood",
-    "NBCOMPARE": "Compare the Neighborhoods",
+    "NBCOMPARE": "Compare Neighborhoods",
     "RESOURCES": "Resources",
     "CONTACT": "Contact",
     "TOP": "Top",

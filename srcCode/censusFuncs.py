@@ -23,6 +23,14 @@ raceNeighborhood = pd.read_csv('data/census/raceEthnicityNeighborhood.csv')
 incomeCity = pd.read_csv('data/census/incomeCity.csv')
 # Neighborhood income data
 incomeNeighborhood = pd.read_csv('data/census/incomeNeighborhood.csv')
+# City occupancy data
+occupancyCity = pd.read_csv('data/census/occupancyCity.csv')
+# Neighborhood occupancy data
+occupancyNeighborhood = pd.read_csv('data/census/occupancyNeighborhood.csv')
+# City tenure data
+tenureCity = pd.read_csv('data/census/tenureCity.csv')
+# Neighborhood tenure data
+tenureNeighborhood = pd.read_csv('data/census/tenureNeighborhood.csv')
 
 ## Adds ticker annotations to figures
 ## in: figure, dataset, list of indices, column
@@ -90,7 +98,11 @@ def plotIndustrySector():
                                 bgcolor="DimGray"),
                     hoverlabel_align = 'left',
                     titlefont={'size': 14},
-                    title_x = 0.56)
+                    title_x = 0.56,
+                    font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                    font_color="#070D1E",
+                    title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                    title_font_color="#1C1D1E")
     ## Adds (count : pct) ticker at far right of chart
     fig = addFigAnnotations(fig, industryCity, [i for i in range(13)], 'Industry')
     ## Fixed x axis size for each frame
@@ -136,7 +148,11 @@ def plotAgeCity():
                                   xanchor="right",
                                   bgcolor="DimGray"),
                       titlefont={'size': 14},
-                      title_x = 0.555)
+                      title_x = 0.555,
+                      font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                      font_color="#070D1E",
+                      title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                      title_font_color="#1C1D1E")
     ## Fixed x axis size for each frame
     fig.update_xaxes(tickvals = [i*2 for i in range(8)], 
                      range = [0, 16],
@@ -172,7 +188,11 @@ def plotRaceCity():
                                   xanchor="right",
                                   bgcolor="DimGray"), 
                       titlefont={'size': 14},
-                      title_x = 0.585)
+                      title_x = 0.585,
+                      font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                      font_color="#070D1E",
+                      title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                      title_font_color="#1C1D1E")
     ## Adds (count : pct) ticker at far right of chart
     fig = addFigAnnotations(fig, raceCity, [i for i in range(8)], 'Race and Ethnicity')
     ## Fixed x axis size for each frame
@@ -210,7 +230,11 @@ def plotIncomeCity():
                                   xanchor="right",
                                   bgcolor="DimGray"),
                       titlefont={'size': 14},
-                      title_x = 0.55)
+                      title_x = 0.55,
+                      font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                      font_color="#070D1E",
+                      title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                      title_font_color="#1C1D1E")
     ## Adds (count : pct) ticker at far right of chart
     fig = addFigAnnotations(fig, incomeCity, [i for i in range(16)], 'Bracket')
     ## Fixed x axis size for each frame
@@ -227,6 +251,84 @@ def plotIncomeCity():
 
     return fig
 
+## Function for creating plot of occupancy status for the city overall
+## out: figure
+def plotOccupancyCity():
+    occupancyCity['x'] = 0
+
+    fig = px.bar(occupancyCity, x='Units', y='x',color='OccupancyStatus', 
+                animation_frame = "Year",
+                color_discrete_map={'Occupied': 'blue',
+                                    'Vacant': 'red'},
+                orientation = 'h',
+                custom_data=["Unitsct"],
+                labels={"OccupancyStatus": "Occupancy Status",
+                        "Units": ""},
+                title = cd.text['OCC_CITY_TITLE'])
+    ## Change text displayed when mouse hovering over bar
+    fig.update_traces(hovertemplate = cd.text['OCC_CITY_HOVER'],
+                      texttemplate = cd.text['OCC_ANNOTATE'])
+    fig.update_layout(margin=go.layout.Margin(l=50, r=10, b=0, t=30, pad=15),
+                        autosize=True,
+                        plot_bgcolor="rgba(0,0,0,0)",
+                        paper_bgcolor="rgba(0,0,0,0)",
+                        font=dict(size=13, color="rgb(7,13,30)"),
+                        titlefont={'size': 14},
+                        title_x = 0.55,
+                        font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                        font_color="#070D1E",
+                        title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                        title_font_color="#1C1D1E")
+
+    fig.update_xaxes(showticklabels=False, range=[0,100])
+    fig.update_yaxes(showticklabels=False, title=None)
+    fig['layout']['updatemenus'][0]['x']=0.1
+    fig['layout']['sliders'][0]['x']=0.1
+    ## Loop through frames to edit hover and by-frame ticker annotations
+    for idx, f in enumerate(fig.frames):
+        for dat in f.data:
+            dat.hovertemplate = cd.text['OCC_CITY_HOVER']
+
+    return fig
+
+## Function for creating plot of tenure for the city overall
+## out: figure
+def plotTenureCity():
+    tenureCity['x'] = 0
+
+    fig = px.bar(tenureCity, x='Units', y='x',color='Tenure', 
+                animation_frame = "Year",
+                color_discrete_map={'Occupied': '#009192',
+                                    'Vacant': '#7c4375'},
+                orientation = 'h',
+                custom_data=["Unitsct"],
+                labels={"Units": ""},
+                title = cd.text['TENURE_CITY_TITLE'])
+    ## Change text displayed when mouse hovering over bar
+    fig.update_traces(hovertemplate = cd.text['OCC_CITY_HOVER'], 
+                      texttemplate=cd.text['OCC_ANNOTATE'])
+    fig.update_layout(margin=go.layout.Margin(l=50, r=10, b=0, t=30, pad=15),
+                        autosize=True,
+                        plot_bgcolor="rgba(0,0,0,0)",
+                        paper_bgcolor="rgba(0,0,0,0)",
+                        font=dict(size=13, color="rgb(7,13,30)"),
+                        titlefont={'size': 14},
+                        title_x = 0.55,
+                        font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                        font_color="#070D1E",
+                        title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                        title_font_color="#1C1D1E")
+
+    fig.update_xaxes(showticklabels=False, range=[0,100])
+    fig.update_yaxes(showticklabels=False, title=None)
+    fig['layout']['updatemenus'][0]['x']=0.1
+    fig['layout']['sliders'][0]['x']=0.1
+    ## Loop through frames to edit hover and by-frame ticker annotations
+    for idx, f in enumerate(fig.frames):
+        for dat in f.data:
+            dat.hovertemplate = cd.text['OCC_CITY_HOVER']
+
+    return fig
 
 ## Function for creating plot of industry employment populations by neighborhood
 ## out: figure
@@ -255,7 +357,11 @@ def plotIndustryByNeighborhood(n, compare = False):
                                   bgcolor="DimGray"), 
                       hoverlabel_align = 'left', 
                       titlefont={'size': 14}, 
-                      title_x = 0.55)
+                      title_x = 0.55,
+                      font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                      font_color="#070D1E",
+                      title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                      title_font_color="#1C1D1E")
     ## get index of neighborhood selection
     hood_index = industryNeighborhood.columns.get_loc(n)
     ## update dataset with correct ticker for neighborhood selection
@@ -320,7 +426,11 @@ def plotAgeNeighborhood(n):
                                   xanchor="right",
                                   bgcolor="DimGray"),
                       titlefont={'size': 14},
-                      title_x = 0.56)
+                      title_x = 0.56,
+                      font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                      font_color="#070D1E",
+                      title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                      title_font_color="#1C1D1E")
     ## Fixed x axis size for each frame
     fig.update_xaxes(tickvals = [i*5 for i in range(8)], 
                      range = [0, 40],
@@ -368,7 +478,11 @@ def plotRaceNeighborhood(n, compare = False):
                                   xanchor="right",
                                   bgcolor="DimGray"),
                       titlefont={'size': 14},
-                      title_x = 0.59)
+                      title_x = 0.59,
+                      font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                      font_color="#070D1E",
+                      title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                      title_font_color="#1C1D1E")
     ## get index of neighborhood selection
     hood_index = raceNeighborhood.columns.get_loc(n)
     ## update dataset with correct ticker for neighborhood selection
@@ -421,7 +535,11 @@ def plotIncomeNeighborhood(n, compare = False):
                                   xanchor="right",
                                   bgcolor="DimGray"),
                       titlefont={'size': 14},
-                      title_x = 0.555)
+                      title_x = 0.555,
+                      font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                      font_color="#070D1E",
+                      title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                      title_font_color="#1C1D1E")
     ## get index of neighborhood selection
     hood_index = incomeNeighborhood.columns.get_loc(n)
     ## update dataset with correct ticker for neighborhood selection
@@ -447,4 +565,85 @@ def plotIncomeNeighborhood(n, compare = False):
                                 [i for i in range(16)], 
                                 idx, 'Bracket')
     
+    return fig
+
+## Function for creating plot of occupancy status by neighborhood
+## out: figure
+def plotOccupancyNeighborhood(n):
+    occupancyNeighborhood['x'] = 0
+
+    fig = px.bar(occupancyNeighborhood, x=n, y='x',
+                color='OccupancyStatus', 
+                animation_frame = "Year",
+                color_discrete_map={'Occupied': 'blue',
+                                    'Vacant': 'red'},
+                orientation = 'h',
+                custom_data=[n + "ct"],
+                labels={"OccupancyStatus": "Occupancy Status",
+                        n: ""},
+                title = cd.text['OCC_NEIGHBORHOOD_TITLE'].format(hood=n))
+    ## Change text displayed when mouse hovering over bar
+    fig.update_traces(hovertemplate = cd.text['OCC_NEIGHBORHOOD_HOVER'],
+                      texttemplate = cd.text['OCC_ANNOTATE'])
+    fig.update_layout(margin=go.layout.Margin(l=50, r=10, b=0, t=30, pad=15),
+                        autosize=True,
+                        plot_bgcolor="rgba(0,0,0,0)",
+                        paper_bgcolor="rgba(0,0,0,0)",
+                        font=dict(size=13, color="rgb(7,13,30)"),
+                        titlefont={'size': 14},
+                        title_x = 0.55,
+                        font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                        font_color="#070D1E",
+                        title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                        title_font_color="#1C1D1E")
+
+    fig.update_xaxes(showticklabels=False, range=[0,100])
+    fig.update_yaxes(showticklabels=False, title=None)
+    fig['layout']['updatemenus'][0]['x']=0.08
+    fig['layout']['sliders'][0]['x']=0.08
+    ## Loop through frames to edit hover and by-frame ticker annotations
+    for idx, f in enumerate(fig.frames):
+        for dat in f.data:
+            dat.hovertemplate = cd.text['OCC_NEIGHBORHOOD_HOVER']
+
+    return fig
+
+## Function for creating plot of tenure by neighborhood
+## out: figure
+def plotTenureNeighborhood(n):
+    tenureNeighborhood['x'] = 0
+
+    fig = px.bar(tenureNeighborhood, x=n, y='x',
+                color='Tenure', 
+                animation_frame = "Year",
+                color_discrete_map={'Occupied': '#009192',
+                                    'Vacant': '#7c4375'},
+                orientation = 'h',
+                custom_data=[n + "ct"],
+                labels={n: ""},
+                title = cd.text['TENURE_NEIGHBORHOOD_TITLE'].format(hood=n))
+    ## Change text displayed when mouse hovering over bar
+    fig.update_traces(hovertemplate = cd.text['OCC_NEIGHBORHOOD_HOVER'],
+                      texttemplate = cd.text['OCC_ANNOTATE'])
+    fig.update_layout(margin=go.layout.Margin(l=50, r=10, b=0, t=30, pad=15),
+                        autosize=True,
+                        plot_bgcolor="rgba(0,0,0,0)",
+                        paper_bgcolor="rgba(0,0,0,0)",
+                        font=dict(size=13, color="rgb(7,13,30)"),
+                        titlefont={'size': 14},
+                        title_x = 0.55,
+                        font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                        font_color="#070D1E",
+                        title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                        title_font_color="#1C1D1E")
+
+    fig.update_xaxes(showticklabels=False, range=[0,100])
+    fig.update_yaxes(showticklabels=False, title=None)
+    fig['layout']['updatemenus'][0]['x']=0.08
+    fig['layout']['sliders'][0]['x']=0.08
+    ## Loop through frames to edit hover and by-frame ticker annotations
+    for idx, f in enumerate(fig.frames):
+        for dat in f.data:
+            dat.hovertemplate = cd.text['OCC_NEIGHBORHOOD_HOVER']
+
     return fig

@@ -46,17 +46,40 @@ layout = html.Div(
             ], className = "subcontainer"),
         html.Br(),
         html.Br(),
-        # Census charts
+        # Population census charts
         html.Div([
             df.createLeftAlignDropdown(nd.text['DROPDOWN_CENSUS'], nd.opts['DROPDOWN_CENSUS'],
                             nd.default['DROPDOWN_CENSUS'], dd_id='dropdown_neighborhood_census',
                             dd_style={'width': '170px'}, grid_class="grid_dd2",
+                            desc_id='dd_neighborhood_census_text',
                             clearable=False, searchable=False),
         ], className = "subcontainer"),
         html.Div(
             [
                 dcc.Graph(id='census_neighborhood_plot', 
                           figure=cf.plotIndustryByNeighborhood(nd.default['DROPDOWN_NEIGHBORHOOD']),
+                          config={'displayModeBar': True,
+                            "displaylogo": False,
+                            'modeBarButtonsToRemove': ['pan2d', 'select2d', 
+                                                        'lasso2d', 'zoom2d',
+                                                        'zoomIn2d', 'zoomOut2d',
+                                                        'autoScale2d']},
+                          style={'display': 'block'})
+            ], className="subcontainer"),
+        html.Br(),
+        html.Br(),
+        # Household census charts
+        html.Div([
+            df.createLeftAlignDropdown(nd.text['DROPDOWN_CENSUS_HH'], nd.opts['DROPDOWN_CENSUS_HH'],
+                            nd.default['DROPDOWN_CENSUS_HH'], dd_id='dropdown_neighborhood_census_hh',
+                            dd_style={'width': '170px'}, grid_class="grid_dd2",
+                            desc_id='dd_neighborhood_census_hh_text',
+                            clearable=False, searchable=False),
+        ], className = "subcontainer"),
+        html.Div(
+            [
+                dcc.Graph(id='census_hh_neighborhood_plot', 
+                          figure=cf.plotIncomeNeighborhood(nd.default['DROPDOWN_NEIGHBORHOOD']),
                           config={'displayModeBar': True,
                             "displaylogo": False,
                             'modeBarButtonsToRemove': ['pan2d', 'select2d', 
@@ -106,6 +129,14 @@ def printCvillepedia(n):
     return getCvillepedia(n)
 
 @callback(
+    Output('dd_neighborhood_census_text', 'children'),
+    Output('dd_neighborhood_census_hh_text', 'children'),
+    Input('dropdown_neighborhood', 'value'))
+def update_neighborhood_texts(n):
+    return nd.text['DROPDOWN_CENSUS'].format(n), \
+        nd.text['DROPDOWN_CENSUS_HH'].format(n)
+
+@callback(
     Output('census_neighborhood_plot', 'figure'),
     Input('dropdown_neighborhood_census', 'value'), 
     Input('dropdown_neighborhood', 'value'))
@@ -115,11 +146,23 @@ def update_census_neighborhood_plot(censusSelection, n):
     if censusSelection == nd.opts['DROPDOWN_CENSUS'][0]:
         return cf.plotAgeNeighborhood(n)
     elif censusSelection == nd.opts['DROPDOWN_CENSUS'][1]:
-        return cf.plotIncomeNeighborhood(n)
-    elif censusSelection == nd.opts['DROPDOWN_CENSUS'][2]:
         return cf.plotIndustryByNeighborhood(n)
     else:
         return cf.plotRaceNeighborhood(n)
+
+@callback(
+    Output('census_hh_neighborhood_plot', 'figure'),
+    Input('dropdown_neighborhood_census_hh', 'value'), 
+    Input('dropdown_neighborhood', 'value'))
+def update_census_hh_neighborhood_plot(censusSelection, n):
+    if n is None:
+        return cf.plotIncomeNeighborhood(nd.default['DROPDOWN_NEIGHBORHOOD'])
+    if censusSelection == nd.opts['DROPDOWN_CENSUS_HH'][0]:
+        return cf.plotIncomeNeighborhood(n)
+    elif censusSelection == nd.opts['DROPDOWN_CENSUS_HH'][1]:
+        return cf.plotOccupancyNeighborhood(n)
+    else:
+        return cf.plotTenureNeighborhood(n)
 
 #@callback(
 #    Output('dropdown_neighborhood', 'value'),
