@@ -55,6 +55,8 @@ def getAgeList(people):
         if people != '':
             ages.append(int(people))
     else:
+        if people is None:
+            return ages
         for ageStr in people:
             if ageStr != '':
                 ages.append(int(ageStr))
@@ -401,7 +403,7 @@ def update_dropdown_people(n_clicks, new_value, current_options, current_values)
     return_values = []
     if isinstance(current_values, str):
         return_values.append(current_values)
-    else:
+    elif current_values is not None:
         return_values = current_values
     return_values.append(new_value)
     ## setting height of dropdown based on number of people
