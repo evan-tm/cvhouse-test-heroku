@@ -154,8 +154,10 @@ def update_census_city_plot(censusSelection):
         return cf.plotAgeCity()
     elif censusSelection == cd.opts['DROPDOWN_CENSUS'][1]:
         return cf.plotIndustrySector()
-    else:
+    elif censusSelection == cd.opts['DROPDOWN_CENSUS'][2]:
         return cf.plotRaceCity()
+    else:
+        return cf.plotSizeCity()
 
 @callback(
     Output('census_hh_city_plot', 'figure'),

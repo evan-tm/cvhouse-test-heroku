@@ -2,7 +2,7 @@
 text = {
     "MAIN_TITLE": "Learn About Charlottesville's Neighborhoods",
     "LOADING": "Loading...",
-    "DROPDOWN_CENSUS": "Describe {} Residents by",
+    "DROPDOWN_CENSUS": "Describe {} Population by",
     "DROPDOWN_CENSUS_HH": "Describe {} Households by",
     "DROPDOWN_HISTORY": "",
     "DROPDOWN_NEIGHBORHOOD": "",
@@ -10,7 +10,7 @@ text = {
 }
 
 opts = {
-    "DROPDOWN_CENSUS": ['Age', 'Industry', 'Race and Ethnicity'],
+    "DROPDOWN_CENSUS": ['Age', 'Industry', 'Race and Ethnicity', 'Size'],
     "DROPDOWN_CENSUS_HH": ['Income', 'Occupancy', 'Tenure'],
     "DROPDOWN_HISTORY": ['Median Price', 'Sales Quantity'],
     "DROPDOWN_NEIGHBORHOOD": ['10th & Page', 'Barracks / Rugby', 'Barracks Road',

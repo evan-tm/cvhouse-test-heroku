@@ -118,7 +118,7 @@ layout = html.Div(
                                                         'zoomIn2d', 'zoomOut2d',
                                                         'autoScale2d']})
             ], className="subcontainer"),
-        dcc.Link('Take me back up', href='#', className = "subcontainer links_text"),
+        dcc.Link('Take me back up', href='#', className = "subcontainer inline_sublinks"),
         html.Br(),
     ], className = "container background")
 
@@ -147,8 +147,10 @@ def update_census_neighborhood_plot(censusSelection, n):
         return cf.plotAgeNeighborhood(n)
     elif censusSelection == nd.opts['DROPDOWN_CENSUS'][1]:
         return cf.plotIndustryByNeighborhood(n)
-    else:
+    elif censusSelection == nd.opts['DROPDOWN_CENSUS'][2]:
         return cf.plotRaceNeighborhood(n)
+    else:
+        return cf.plotSizeNeighborhood(n)
 
 @callback(
     Output('census_hh_neighborhood_plot', 'figure'),

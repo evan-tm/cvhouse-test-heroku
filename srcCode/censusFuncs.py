@@ -31,6 +31,10 @@ occupancyNeighborhood = pd.read_csv('data/census/occupancyNeighborhood.csv')
 tenureCity = pd.read_csv('data/census/tenureCity.csv')
 # Neighborhood tenure data
 tenureNeighborhood = pd.read_csv('data/census/tenureNeighborhood.csv')
+# City population size data
+popCity = pd.read_csv('data/census/populationCity.csv')
+# Neighborhood population size data
+popNeighborhood = pd.read_csv('data/census/populationNeighborhood.csv')
 
 ## Adds ticker annotations to figures
 ## in: figure, dataset, list of indices, column
@@ -327,6 +331,27 @@ def plotTenureCity():
     for idx, f in enumerate(fig.frames):
         for dat in f.data:
             dat.hovertemplate = cd.text['OCC_CITY_HOVER']
+
+    return fig
+
+## Function for creating plot of population size by neighborhood
+## out: figure
+def plotSizeCity():
+    fig = px.line(popCity, x="Year", y="Population",
+                    title="Population by Year for Charlottesville, VA",
+                    markers=True)
+    fig.update_xaxes(gridcolor='Black')
+    fig.update_yaxes(gridcolor='Black')
+    fig.update_layout(margin=go.layout.Margin(l=0, r=0, b=0, t=50, pad=15),
+                    plot_bgcolor="rgba(0,0,0,0)",
+                    paper_bgcolor="rgba(0,0,0,0)",
+                    autosize=True,
+                    font=dict(size=13),
+                    font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                    font_color="#070D1E",
+                    title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                    title_font_color="#1C1D1E",
+                    title_x=0.515)
 
     return fig
 
@@ -646,4 +671,39 @@ def plotTenureNeighborhood(n):
         for dat in f.data:
             dat.hovertemplate = cd.text['OCC_NEIGHBORHOOD_HOVER']
 
+    return fig
+
+
+## Function for creating plot of population size by neighborhood
+## in: neighborhood (string or list if comparing)
+## out: figure
+def plotSizeNeighborhood(n):
+    if isinstance(n, list):
+        dfPopHood = popNeighborhood[popNeighborhood['NAME'].isin(n)]
+        dfPopHood = dfPopHood.reset_index(drop=True)
+        fig = px.line(dfPopHood, x="Year", y="Population", color='NAME',
+                        title="Population by Year for " + dfPopHood['NAME'][0] + \
+                            " and " + dfPopHood['NAME'][1],
+                        labels={"NAME": "Neighborhood"},
+                        markers = True)
+        fig.update_layout(title_x=0.46)
+    else:
+        dfPopHood = popNeighborhood[popNeighborhood['NAME'] == n]
+        dfPopHood = dfPopHood.reset_index(drop=True)
+        fig = px.line(dfPopHood, x="Year", y="Population",
+                        title="Population by Year for " + dfPopHood['NAME'][0],
+                        markers = True)
+        fig.update_layout(title_x=0.517)
+
+    fig.update_xaxes(gridcolor='Black')
+    fig.update_yaxes(gridcolor='Black')
+    fig.update_layout(margin=go.layout.Margin(l=0, r=0, b=0, t=50, pad=15),
+                    plot_bgcolor="rgba(0,0,0,0)",
+                    paper_bgcolor="rgba(0,0,0,0)",
+                    autosize=True,
+                    font=dict(size=13),
+                    font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                    font_color="#070D1E",
+                    title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                    title_font_color="#1C1D1E")
     return fig
