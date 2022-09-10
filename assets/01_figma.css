@@ -1,7 +1,7 @@
 .container {
 	position:relative;
 	width:100%;
-	min-width:800px;
+	min-width:none;
 	max-width:none;
 	box-sizing:border-box;
 }

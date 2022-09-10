@@ -19,7 +19,15 @@ text = {
     "AGE_LEGEND_TITLE": 'Sex',
     "AGE_X_TITLE": 'Population (%)',
     "AGE_Y_TITLE": 'Age Group',
+    "AGE_CITY_HOVER": 'Age Group: <b>%{data.name}</b>' + \
+                 '<br>%{value:.2f}% of Total Population<br>' + \
+                 '<b>%{customdata}</b> People' + \
+                 '<extra></extra>',
     "AGE_NEIGHBORHOOD_TITLE": 'Population Chart for {hood} (% of Total)',
+    "AGE_NEIGHBORHOOD_HOVER":  'Age Group: <b>%{data.name}</b>' + \
+                            '<br>%{value:.2f}% of Neighborhood\'s Population<br>' + \
+                            '<b>%{customdata}</b> People<br>' + \
+                            '<extra></extra>',
     "RACE_CITY_TITLE": 'Population by Race and Ethnicity for Charlottesville, VA (% of Total)',
     "RACE_X_TITLE": 'Population (%)',
     "RACE_Y_TITLE": 'Race and Ethnicity',

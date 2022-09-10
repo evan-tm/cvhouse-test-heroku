@@ -98,7 +98,7 @@ layout = html.Div(
                                                         'zoomIn2d', 'zoomOut2d',
                                                         'autoScale2d']}),
             ], className="subcontainer"),
-        dcc.Link('Take me back up', href='#', className = "subcontainer inline_sublinks"),
+        #dcc.Link('Take me back up', href='#', className = "subcontainer inline_sublinks"),
         html.Br(),
         html.Br(),
     ], className = "container background")

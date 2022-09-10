@@ -118,7 +118,8 @@ layout = html.Div(
                                                         'zoomIn2d', 'zoomOut2d',
                                                         'autoScale2d']})
             ], className="subcontainer"),
-        dcc.Link('Take me back up', href='#', className = "subcontainer inline_sublinks"),
+        #dcc.Link('Take me back up', href='#', className = "subcontainer inline_sublinks"),
+        html.Br(),
         html.Br(),
     ], className = "container background")
 
@@ -133,6 +134,9 @@ def printCvillepedia(n):
     Output('dd_neighborhood_census_hh_text', 'children'),
     Input('dropdown_neighborhood', 'value'))
 def update_neighborhood_texts(n):
+    if n == 'Jefferson Park Avenue':
+        return nd.text['DROPDOWN_CENSUS'].format('Jefferson Park Ave'), \
+            nd.text['DROPDOWN_CENSUS_HH'].format('Jefferson Park Ave')
     return nd.text['DROPDOWN_CENSUS'].format(n), \
         nd.text['DROPDOWN_CENSUS_HH'].format(n)
 

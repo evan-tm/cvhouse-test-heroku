@@ -132,7 +132,7 @@ def plotAgeCity():
     # begin building figure
     fig = px.bar(ageCity, 
                  y="Age", 
-                 x=["Male","Female"],
+                 x="Total",
                  animation_frame='Year', 
                  barmode='group',
                  orientation="h",
@@ -140,8 +140,10 @@ def plotAgeCity():
                  height = 600,
                  labels={'variable':cd.text['AGE_LEGEND_TITLE'], 
                          'value':cd.text['AGE_X_TITLE'],
-                         'Age':cd.text['AGE_Y_TITLE']}, 
-                 color_discrete_map={'Male': '#5886a5','Female': '#58a577'})
+                         'Age':cd.text['AGE_Y_TITLE']},
+                 custom_data=["Totalct"])
+    ## Change text displayed when mouse hovering over bar
+    fig.update_traces(hovertemplate = cd.text['AGE_CITY_HOVER'])
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
@@ -157,12 +159,19 @@ def plotAgeCity():
                       font_color="#070D1E",
                       title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
                       title_font_color="#1C1D1E")
+    ## Adds (count : pct) ticker at far right of chart
+    fig = addFigAnnotations(fig, ageCity, [i for i in range(18)], 'Age')
     ## Fixed x axis size for each frame
-    fig.update_xaxes(tickvals = [i*2 for i in range(8)], 
-                     range = [0, 16],
+    fig.update_xaxes(tickvals = [i*2 for i in range(12)], 
+                     range = [0, 24],
                      gridcolor='Black')
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
+    ## Loop through frames to edit hover and by-frame ticker annotations
+    for idx, f in enumerate(fig.frames):
+        for dat in f.data:
+            dat.hovertemplate = cd.text['AGE_CITY_HOVER']
+        f = addFrameAnnotations(f, ageCity, [i for i in range(18)], idx, 'Age')
   
     return fig
 
@@ -361,7 +370,7 @@ def plotIndustryByNeighborhood(n, compare = False):
     fig = px.bar(industryNeighborhood, 
                  x=n,
                  y='Industry', 
-                 labels={'value':cd.text['IND_X_TITLE'],
+                 labels={n:cd.text['IND_X_TITLE'],
                          'Industry':cd.text['IND_Y_TITLE']}, 
                  animation_frame = "Year",
                  orientation="h", custom_data = ["Desc"], 
@@ -430,16 +439,17 @@ def plotAgeNeighborhood(n):
     # begin building figure
     fig = px.bar(ageNeighborhood, 
                  y="Age", 
-                 x=[n + "_M", n + "_F"],
+                 x=n + "_T",
                  animation_frame='Year', 
                  barmode='group',
                  orientation="h",
                  height = 600,
                  title=cd.text['AGE_NEIGHBORHOOD_TITLE'].format(hood=n), 
                  labels={'variable':cd.text['AGE_LEGEND_TITLE'], 
-                         'value':cd.text['AGE_X_TITLE'],
-                         'Age':cd.text['AGE_Y_TITLE']}, 
-                 color_discrete_map={'Male': '#5886a5','Female': '#58a577'})
+                         n+"_T":cd.text['AGE_X_TITLE'],
+                         'Age':cd.text['AGE_Y_TITLE']})
+    ## Change text displayed when mouse hovering over bar
+    fig.update_traces(hovertemplate = cd.text['AGE_NEIGHBORHOOD_HOVER'])
     # update layout
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
                       plot_bgcolor="rgba(0,0,0,0)",
@@ -456,21 +466,24 @@ def plotAgeNeighborhood(n):
                       font_color="#070D1E",
                       title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
                       title_font_color="#1C1D1E")
+    ## get index of neighborhood selection
+    hood_index = ageNeighborhood.columns.get_loc(n + "_T")
+    ## update dataset with correct ticker for neighborhood selection
+    ageNeighborhood['ag'] = [f'({ageNeighborhood.iloc[i, hood_index+1]:,} : {ageNeighborhood.iloc[i, hood_index]:.2f}%)' 
+                               for i in range(ageNeighborhood.shape[0])]
+    ## Adds (count : pct) ticker at far right of chart
+    fig = addFigAnnotations(fig, ageNeighborhood, [i for i in range(18)], 'Age')
     ## Fixed x axis size for each frame
     fig.update_xaxes(tickvals = [i*5 for i in range(8)], 
                      range = [0, 40],
                      gridcolor='Black')
-    # update legend and hovers
-    newnames = {n + "_M":'Male', n + "_F":'Female'}
-    fig.for_each_trace(lambda t: t.update(name = newnames[t.name],
-                                          legendgroup = newnames[t.name],
-                                          hovertemplate = t.hovertemplate.replace(t.name, newnames[t.name])))
     # update legend and hovers for animated frames
     for idx, f in enumerate(fig.frames):
         for dat in f.data:
-            dat.update(name = newnames[dat.name], 
-                       legendgroup = newnames[dat.name], 
-                       hovertemplate = dat.hovertemplate.replace(dat.name, newnames[dat.name]))
+            dat.hovertemplate = cd.text['AGE_NEIGHBORHOOD_HOVER']
+        f = addFrameAnnotations(f, ageNeighborhood, 
+                                [i for i in range(18)], 
+                                idx, 'Age')
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
 

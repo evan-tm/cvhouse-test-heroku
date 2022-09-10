@@ -125,7 +125,7 @@ def createTopBar():
                 dbc.NavItem(dbc.NavLink(tb.opts['CONTACT'], href="/contact",
                                         className="header_links_text")),
             ],
-            brand="CVille Home Affordability Dashboard",
+            brand="Changing Charlottesville",
             brand_href="#",
             color="#5B1453",
             dark=True,
