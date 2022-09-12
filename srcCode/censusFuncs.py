@@ -39,37 +39,63 @@ popNeighborhood = pd.read_csv('data/census/populationNeighborhood.csv')
 ## Adds ticker annotations to figures
 ## in: figure, dataset, list of indices, column
 ## out: figure with annotations added
-def addFigAnnotations(fig, data, num, column):
-    
-    for idx in num:
-        fig.add_annotation(dict(font=dict(color = "rgb(7,13,30)", size = 11),
-                               x = 1.004,
-                               y = data[column][idx],
-                               showarrow=False,
-                               text=data['ag'][idx],
-                               textangle=0,
-                               xanchor='right',
-                               xref='paper',
-                               yref='y'))
+def addFigAnnotations(fig, data, num, column, compare = False):
+    if compare:
+        for idx in num:
+            fig.add_annotation(dict(font=dict(color = "rgb(7,13,30)", size = 12),
+                                x = 1.004,
+                                y = data[column][idx],
+                                showarrow=False,
+                                text=data['ag'][idx],
+                                textangle=0,
+                                xanchor='right',
+                                xref='paper',
+                                yref='y'))
+    else:
+        for idx in num:
+            fig.add_annotation(dict(font=dict(color = "rgb(7,13,30)", size = 14),
+                                x = 1.004,
+                                y = data[column][idx],
+                                showarrow=False,
+                                text=data['ag'][idx],
+                                textangle=0,
+                                xanchor='right',
+                                xref='paper',
+                                yref='y'))
     return fig
 
 ## Adds ticker annotations to figure frames
 ## in: frame, dataset, list of indices, index of frame in frame list, column
 ## out: frame with annotations added to layout
-def addFrameAnnotations(frame, data, num, frameIndex, column):
-    ## build list of annotations
-    annotations = [
-        go.layout.Annotation(
-            dict(font=dict(color = "rgb(7,13,30)", size = 11), 
-                 x = 1.004, 
-                 y = data[column][idx + frameIndex * len(num)], 
-                 showarrow=False, 
-                 text=data['ag'][idx + frameIndex * len(num)], 
-                 textangle=0, 
-                 xanchor='right',
-                 xref='paper',
-                 yref='y')
-        ) for idx in num]
+def addFrameAnnotations(frame, data, num, frameIndex, column, compare = False):
+    if compare:
+        ## build list of annotations
+        annotations = [
+            go.layout.Annotation(
+                dict(font=dict(color = "rgb(7,13,30)", size = 12), 
+                    x = 1.004, 
+                    y = data[column][idx + frameIndex * len(num)], 
+                    showarrow=False, 
+                    text=data['ag'][idx + frameIndex * len(num)], 
+                    textangle=0, 
+                    xanchor='right',
+                    xref='paper',
+                    yref='y')
+            ) for idx in num]
+    else:
+        ## build list of annotations
+        annotations = [
+            go.layout.Annotation(
+                dict(font=dict(color = "rgb(7,13,30)", size = 14), 
+                    x = 1.004, 
+                    y = data[column][idx + frameIndex * len(num)], 
+                    showarrow=False, 
+                    text=data['ag'][idx + frameIndex * len(num)], 
+                    textangle=0, 
+                    xanchor='right',
+                    xref='paper',
+                    yref='y')
+            ) for idx in num]
     ## Add annotations list to frame layout
     frame.layout = go.Layout(annotations = annotations)
     return frame
@@ -88,20 +114,21 @@ def plotIndustrySector():
                 orientation="h", custom_data=["Desc"],
                 title = cd.text['IND_CITY_TITLE'])
     ## Change text displayed when mouse hovering over bar
-    fig.update_traces(hovertemplate = cd.text['IND_CITY_HOVER'])
+    fig.update_traces(hovertemplate = cd.text['IND_CITY_HOVER'],
+                      opacity=0.8)
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
                     plot_bgcolor="rgba(0,0,0,0)",
                     paper_bgcolor="rgba(0,0,0,0)",
                     autosize=True,
-                    font=dict(size=13, color="rgb(7,13,30)"),
+                    font=dict(size=17, color="rgb(7,13,30)"),
                     legend_title_text=cd.text['IND_CITY_LEGEND_TITLE'],
                     legend=dict(yanchor="bottom", 
                                 x=0.83, 
                                 y=0, 
                                 xanchor="right",
-                                bgcolor="DimGray"),
+                                bgcolor="Gainsboro"),
                     hoverlabel_align = 'left',
-                    titlefont={'size': 14},
+                    titlefont={'size': 19},
                     title_x = 0.56,
                     font_family="franklin-gothic-atf,Helvetica,sans-serif",
                     font_color="#070D1E",
@@ -118,6 +145,7 @@ def plotIndustrySector():
     #fig['layout']['updatemenus'][0]['pad']=dict(r= 0, t= 70)
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000
     ## Loop through frames to edit hover and by-frame ticker annotations
     for idx, f in enumerate(fig.frames):
         for dat in f.data:
@@ -143,17 +171,19 @@ def plotAgeCity():
                          'Age':cd.text['AGE_Y_TITLE']},
                  custom_data=["Totalct"])
     ## Change text displayed when mouse hovering over bar
-    fig.update_traces(hovertemplate = cd.text['AGE_CITY_HOVER'])
+    fig.update_traces(hovertemplate = cd.text['AGE_CITY_HOVER'],
+                      marker_color='rgb(158,202,225)', marker_line_color='rgb(8,48,107)',
+                      marker_line_width=1.5, opacity=0.6)
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
-                      font=dict(size=13, color="rgb(7,13,30)"),
+                      font=dict(size=17, color="rgb(7,13,30)"),
                       legend=dict(yanchor="bottom", 
                                   x=0.90, 
                                   y=0.85, 
                                   xanchor="right",
                                   bgcolor="DimGray"),
-                      titlefont={'size': 14},
+                      titlefont={'size': 19},
                       title_x = 0.555,
                       font_family="franklin-gothic-atf,Helvetica,sans-serif",
                       font_color="#070D1E",
@@ -167,6 +197,7 @@ def plotAgeCity():
                      gridcolor='Black')
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000
     ## Loop through frames to edit hover and by-frame ticker annotations
     for idx, f in enumerate(fig.frames):
         for dat in f.data:
@@ -194,13 +225,13 @@ def plotRaceCity():
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
                       autosize=True,
-                      font=dict(size=13, color="rgb(7,13,30)"),
+                      font=dict(size=17, color="rgb(7,13,30)"),
                       legend=dict(yanchor="bottom", 
                                   x=0.90, 
                                   y=0.85, 
                                   xanchor="right",
                                   bgcolor="DimGray"), 
-                      titlefont={'size': 14},
+                      titlefont={'size': 19},
                       title_x = 0.585,
                       font_family="franklin-gothic-atf,Helvetica,sans-serif",
                       font_color="#070D1E",
@@ -214,9 +245,13 @@ def plotRaceCity():
                      gridcolor='Black')
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000
     ## Loop through frames to edit hover and by-frame ticker annotations
     for idx, f in enumerate(fig.frames):
         f = addFrameAnnotations(f, raceCity, [i for i in range(8)], idx, 'Race and Ethnicity')
+    ## Set bar color
+    fig.update_traces(marker_color='#00d6a4', marker_line_color='#00523f',
+                      marker_line_width=1.5, opacity=0.6)
 
     return fig
 
@@ -236,13 +271,13 @@ def plotIncomeCity():
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
-                      font=dict(size=13, color="rgb(7,13,30)"),
+                      font=dict(size=17, color="rgb(7,13,30)"),
                       legend=dict(yanchor="bottom", 
                                   x=0.90, 
                                   y=0.85, 
                                   xanchor="right",
                                   bgcolor="DimGray"),
-                      titlefont={'size': 14},
+                      titlefont={'size': 19},
                       title_x = 0.55,
                       font_family="franklin-gothic-atf,Helvetica,sans-serif",
                       font_color="#070D1E",
@@ -256,6 +291,7 @@ def plotIncomeCity():
                      gridcolor='Black')
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000
     ## Loop through frames to edit hover and by-frame ticker annotations
     for idx, f in enumerate(fig.frames):
         f = addFrameAnnotations(f, incomeCity, 
@@ -271,8 +307,8 @@ def plotOccupancyCity():
 
     fig = px.bar(occupancyCity, x='Units', y='x',color='OccupancyStatus', 
                 animation_frame = "Year",
-                color_discrete_map={'Occupied': 'blue',
-                                    'Vacant': 'red'},
+                color_discrete_map={'Occupied': 'MidnightBlue',
+                                    'Vacant': 'Crimson'},
                 orientation = 'h',
                 custom_data=["Unitsct"],
                 labels={"OccupancyStatus": "Occupancy Status",
@@ -285,8 +321,8 @@ def plotOccupancyCity():
                         autosize=True,
                         plot_bgcolor="rgba(0,0,0,0)",
                         paper_bgcolor="rgba(0,0,0,0)",
-                        font=dict(size=13, color="rgb(7,13,30)"),
-                        titlefont={'size': 14},
+                        font=dict(size=17, color="rgb(7,13,30)"),
+                        titlefont={'size': 19},
                         title_x = 0.55,
                         font_family="franklin-gothic-atf,Helvetica,sans-serif",
                         font_color="#070D1E",
@@ -297,6 +333,7 @@ def plotOccupancyCity():
     fig.update_yaxes(showticklabels=False, title=None)
     fig['layout']['updatemenus'][0]['x']=0.1
     fig['layout']['sliders'][0]['x']=0.1
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 500
     ## Loop through frames to edit hover and by-frame ticker annotations
     for idx, f in enumerate(fig.frames):
         for dat in f.data:
@@ -324,8 +361,8 @@ def plotTenureCity():
                         autosize=True,
                         plot_bgcolor="rgba(0,0,0,0)",
                         paper_bgcolor="rgba(0,0,0,0)",
-                        font=dict(size=13, color="rgb(7,13,30)"),
-                        titlefont={'size': 14},
+                        font=dict(size=17, color="rgb(7,13,30)"),
+                        titlefont={'size': 19},
                         title_x = 0.55,
                         font_family="franklin-gothic-atf,Helvetica,sans-serif",
                         font_color="#070D1E",
@@ -336,6 +373,7 @@ def plotTenureCity():
     fig.update_yaxes(showticklabels=False, title=None)
     fig['layout']['updatemenus'][0]['x']=0.1
     fig['layout']['sliders'][0]['x']=0.1
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 500
     ## Loop through frames to edit hover and by-frame ticker annotations
     for idx, f in enumerate(fig.frames):
         for dat in f.data:
@@ -355,12 +393,15 @@ def plotSizeCity():
                     plot_bgcolor="rgba(0,0,0,0)",
                     paper_bgcolor="rgba(0,0,0,0)",
                     autosize=True,
-                    font=dict(size=13),
+                    font=dict(size=17),
                     font_family="franklin-gothic-atf,Helvetica,sans-serif",
                     font_color="#070D1E",
+                    titlefont={'size': 19},
                     title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
                     title_font_color="#1C1D1E",
                     title_x=0.515)
+    fig.update_traces(line_color='#7c4375', line_width=5, 
+                      marker_size = 10, marker_symbol='diamond')
 
     return fig
 
@@ -383,14 +424,14 @@ def plotIndustryByNeighborhood(n, compare = False):
                       plot_bgcolor="rgba(0,0,0,0)", 
                       paper_bgcolor="rgba(0,0,0,0)", 
                       autosize=True, 
-                      font=dict(size=13, color="rgb(7,13,30)"),
+                      font=dict(size=17, color="rgb(7,13,30)"),
                       legend=dict(yanchor="bottom", 
                                   x=0.85, 
                                   y=0, 
                                   xanchor="right", 
                                   bgcolor="DimGray"), 
                       hoverlabel_align = 'left', 
-                      titlefont={'size': 14}, 
+                      titlefont={'size': 19}, 
                       title_x = 0.55,
                       font_family="franklin-gothic-atf,Helvetica,sans-serif",
                       font_color="#070D1E",
@@ -402,7 +443,9 @@ def plotIndustryByNeighborhood(n, compare = False):
     industryNeighborhood['ag'] = [f'({industryNeighborhood.iloc[i, hood_index+19]:,} : {industryNeighborhood.iloc[i, hood_index]:.2f}%)' 
                                for i in range(industryNeighborhood.shape[0])]
     ## Adds (count : pct) ticker at far right of chart
-    fig = addFigAnnotations(fig, industryNeighborhood, [i for i in range(13)], 'Industry')
+    fig = addFigAnnotations(fig, industryNeighborhood, 
+                            [i for i in range(13)], 'Industry',
+                            compare)
     if compare:
         ## Fixed x axis size for each frame
         fig.update_xaxes(ticktext = ["0", "5", "10", "15", "20", 
@@ -411,6 +454,7 @@ def plotIndustryByNeighborhood(n, compare = False):
                         tickvals = [i*5 for i in range(13)], 
                         range = [0, 76],
                         gridcolor='Black')
+        fig.update_layout(titlefont={'size': 16})
     else:
         ## Fixed x axis size for each frame
         fig.update_xaxes(ticktext = ["0", "5", "10", "15", "20", 
@@ -422,20 +466,21 @@ def plotIndustryByNeighborhood(n, compare = False):
     ## move slider's and buttons' positions slightly left
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000
     ## Loop through frames to edit hover and by-frame ticker annotations
     for idx, f in enumerate(fig.frames):
         for dat in f.data:
             dat.hovertemplate = cd.text['IND_NEIGHBORHOOD_HOVER']
         f = addFrameAnnotations(f, industryNeighborhood, 
                                 [i for i in range(13)], 
-                                idx, 'Industry')
+                                idx, 'Industry', compare)
 
     return fig
 
 
 ## Function for creating plot of age by sex by neighborhood
 ## out: figure
-def plotAgeNeighborhood(n):
+def plotAgeNeighborhood(n, compare = False):
     # begin building figure
     fig = px.bar(ageNeighborhood, 
                  y="Age", 
@@ -449,18 +494,20 @@ def plotAgeNeighborhood(n):
                          n+"_T":cd.text['AGE_X_TITLE'],
                          'Age':cd.text['AGE_Y_TITLE']})
     ## Change text displayed when mouse hovering over bar
-    fig.update_traces(hovertemplate = cd.text['AGE_NEIGHBORHOOD_HOVER'])
+    fig.update_traces(hovertemplate = cd.text['AGE_NEIGHBORHOOD_HOVER'],
+                      marker_color='rgb(158,202,225)', marker_line_color='rgb(8,48,107)',
+                      marker_line_width=1.5, opacity=0.6)
     # update layout
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
-                      font=dict(size=13, color="rgb(7,13,30)"),
+                      font=dict(size=17, color="rgb(7,13,30)"),
                       legend=dict(yanchor="bottom", 
                                   x=0.90, 
                                   y=0.85, 
                                   xanchor="right",
                                   bgcolor="DimGray"),
-                      titlefont={'size': 14},
+                      titlefont={'size': 19},
                       title_x = 0.56,
                       font_family="franklin-gothic-atf,Helvetica,sans-serif",
                       font_color="#070D1E",
@@ -472,20 +519,29 @@ def plotAgeNeighborhood(n):
     ageNeighborhood['ag'] = [f'({ageNeighborhood.iloc[i, hood_index+1]:,} : {ageNeighborhood.iloc[i, hood_index]:.2f}%)' 
                                for i in range(ageNeighborhood.shape[0])]
     ## Adds (count : pct) ticker at far right of chart
-    fig = addFigAnnotations(fig, ageNeighborhood, [i for i in range(18)], 'Age')
-    ## Fixed x axis size for each frame
-    fig.update_xaxes(tickvals = [i*5 for i in range(8)], 
-                     range = [0, 40],
-                     gridcolor='Black')
+    fig = addFigAnnotations(fig, ageNeighborhood, 
+                            [i for i in range(18)], 'Age',
+                            compare)
+    if compare:
+        ## Fixed x axis size for each frame
+        fig.update_xaxes(tickvals = [i*5 for i in range(11)], 
+                        range = [0, 62],
+                        gridcolor='Black')
+    else:
+        ## Fixed x axis size for each frame
+        fig.update_xaxes(tickvals = [i*5 for i in range(11)], 
+                        range = [0, 55],
+                        gridcolor='Black')
     # update legend and hovers for animated frames
     for idx, f in enumerate(fig.frames):
         for dat in f.data:
             dat.hovertemplate = cd.text['AGE_NEIGHBORHOOD_HOVER']
         f = addFrameAnnotations(f, ageNeighborhood, 
                                 [i for i in range(18)], 
-                                idx, 'Age')
+                                idx, 'Age', compare)
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000
 
     return fig
 
@@ -509,13 +565,13 @@ def plotRaceNeighborhood(n, compare = False):
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
                       autosize=True,
-                      font=dict(size=13, color="rgb(7,13,30)"),
+                      font=dict(size=17, color="rgb(7,13,30)"),
                       legend=dict(yanchor="bottom", 
                                   x=0.90, 
                                   y=0.85, 
                                   xanchor="right",
                                   bgcolor="DimGray"),
-                      titlefont={'size': 14},
+                      titlefont={'size': 19},
                       title_x = 0.59,
                       font_family="franklin-gothic-atf,Helvetica,sans-serif",
                       font_color="#070D1E",
@@ -527,12 +583,15 @@ def plotRaceNeighborhood(n, compare = False):
     raceNeighborhood['ag'] = [f'({raceNeighborhood.iloc[i, hood_index+19]:,} : {raceNeighborhood.iloc[i, hood_index]:.2f}%)' 
                                for i in range(raceNeighborhood.shape[0])]
     ## Adds (count : pct) ticker at far right of chart
-    fig = addFigAnnotations(fig, raceNeighborhood, [i for i in range(8)], 'Race and Ethnicity')
+    fig = addFigAnnotations(fig, raceNeighborhood, 
+                            [i for i in range(8)], 'Race and Ethnicity',
+                            compare)
     if compare:
         ## Fixed x axis size for each frame
         fig.update_xaxes(tickvals = [i*10 for i in range(10)], 
                         range = [0, 122],
                         gridcolor='Black')
+        fig.update_layout(titlefont={'size': 17})
     else:
         ## Fixed x axis size for each frame
         fig.update_xaxes(tickvals = [i*10 for i in range(11)], 
@@ -540,11 +599,15 @@ def plotRaceNeighborhood(n, compare = False):
                         gridcolor='Black')
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000
     ## Loop through frames to edit hover and by-frame ticker annotations
     for idx, f in enumerate(fig.frames):
         f = addFrameAnnotations(f, raceNeighborhood, 
                                 [i for i in range(8)], 
-                                idx, 'Race and Ethnicity')
+                                idx, 'Race and Ethnicity', compare)
+    ## Set bar color
+    fig.update_traces(marker_color='#00d6a4', marker_line_color='#00523f',
+                      marker_line_width=1.5, opacity=0.6)
 
     return fig
 
@@ -566,13 +629,13 @@ def plotIncomeNeighborhood(n, compare = False):
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
-                      font=dict(size=13, color="rgb(7,13,30)"),
+                      font=dict(size=17, color="rgb(7,13,30)"),
                       legend=dict(yanchor="bottom", 
                                   x=0.90, 
                                   y=0.85, 
                                   xanchor="right",
                                   bgcolor="DimGray"),
-                      titlefont={'size': 14},
+                      titlefont={'size': 19},
                       title_x = 0.555,
                       font_family="franklin-gothic-atf,Helvetica,sans-serif",
                       font_color="#070D1E",
@@ -584,7 +647,9 @@ def plotIncomeNeighborhood(n, compare = False):
     incomeNeighborhood['ag'] = [f'({incomeNeighborhood.iloc[i, hood_index+19]:,} : {incomeNeighborhood.iloc[i, hood_index]:.2f}%)' 
                                for i in range(incomeNeighborhood.shape[0])]
     ## Adds (count : pct) ticker at far right of chart
-    fig = addFigAnnotations(fig, incomeNeighborhood, [i for i in range(16)], 'Bracket')
+    fig = addFigAnnotations(fig, incomeNeighborhood, 
+                            [i for i in range(16)], 'Bracket',
+                            compare)
     if compare:
         ## Fixed x axis size for each frame
         fig.update_xaxes(tickvals = [i*5 for i in range(8)], 
@@ -597,11 +662,12 @@ def plotIncomeNeighborhood(n, compare = False):
                         gridcolor='Black')
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000
     ## Loop through frames to edit hover and by-frame ticker annotations
     for idx, f in enumerate(fig.frames):
         f = addFrameAnnotations(f, incomeNeighborhood, 
                                 [i for i in range(16)], 
-                                idx, 'Bracket')
+                                idx, 'Bracket', compare)
     
     return fig
 
@@ -613,8 +679,8 @@ def plotOccupancyNeighborhood(n):
     fig = px.bar(occupancyNeighborhood, x=n, y='x',
                 color='OccupancyStatus', 
                 animation_frame = "Year",
-                color_discrete_map={'Occupied': 'blue',
-                                    'Vacant': 'red'},
+                color_discrete_map={'Occupied': 'MidnightBlue',
+                                    'Vacant': 'Crimson'},
                 orientation = 'h',
                 custom_data=[n + "ct"],
                 labels={"OccupancyStatus": "Occupancy Status",
@@ -627,8 +693,8 @@ def plotOccupancyNeighborhood(n):
                         autosize=True,
                         plot_bgcolor="rgba(0,0,0,0)",
                         paper_bgcolor="rgba(0,0,0,0)",
-                        font=dict(size=13, color="rgb(7,13,30)"),
-                        titlefont={'size': 14},
+                        font=dict(size=17, color="rgb(7,13,30)"),
+                        titlefont={'size': 17},
                         title_x = 0.55,
                         font_family="franklin-gothic-atf,Helvetica,sans-serif",
                         font_color="#070D1E",
@@ -639,6 +705,7 @@ def plotOccupancyNeighborhood(n):
     fig.update_yaxes(showticklabels=False, title=None)
     fig['layout']['updatemenus'][0]['x']=0.08
     fig['layout']['sliders'][0]['x']=0.08
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 500
     ## Loop through frames to edit hover and by-frame ticker annotations
     for idx, f in enumerate(fig.frames):
         for dat in f.data:
@@ -667,8 +734,8 @@ def plotTenureNeighborhood(n):
                         autosize=True,
                         plot_bgcolor="rgba(0,0,0,0)",
                         paper_bgcolor="rgba(0,0,0,0)",
-                        font=dict(size=13, color="rgb(7,13,30)"),
-                        titlefont={'size': 14},
+                        font=dict(size=17, color="rgb(7,13,30)"),
+                        titlefont={'size': 19},
                         title_x = 0.55,
                         font_family="franklin-gothic-atf,Helvetica,sans-serif",
                         font_color="#070D1E",
@@ -679,6 +746,7 @@ def plotTenureNeighborhood(n):
     fig.update_yaxes(showticklabels=False, title=None)
     fig['layout']['updatemenus'][0]['x']=0.08
     fig['layout']['sliders'][0]['x']=0.08
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 500
     ## Loop through frames to edit hover and by-frame ticker annotations
     for idx, f in enumerate(fig.frames):
         for dat in f.data:
@@ -714,9 +782,13 @@ def plotSizeNeighborhood(n):
                     plot_bgcolor="rgba(0,0,0,0)",
                     paper_bgcolor="rgba(0,0,0,0)",
                     autosize=True,
-                    font=dict(size=13),
+                    font=dict(size=17),
                     font_family="franklin-gothic-atf,Helvetica,sans-serif",
                     font_color="#070D1E",
+                    titlefont={'size': 19},
                     title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
                     title_font_color="#1C1D1E")
+    fig.update_traces(line_color='#7c4375', line_width=5, 
+                      marker_size = 10, marker_symbol='diamond')
+                      
     return fig

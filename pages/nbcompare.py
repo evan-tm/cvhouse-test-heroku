@@ -168,7 +168,7 @@ def nbc_age_plots(n, value):
     if n:
         for ind, each in enumerate(value):
             age_plots.append(dcc.Graph(id=('nbc_' + str(ind) + '_age'),
-                            figure=cf.plotAgeNeighborhood(each), 
+                            figure=cf.plotAgeNeighborhood(each, True), 
                             config={'displayModeBar': True,
                             "displaylogo": False,
                             'modeBarButtonsToRemove': ['pan2d', 'select2d', 

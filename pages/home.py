@@ -17,7 +17,9 @@ layout = html.Div(
     html.Br(),
     html.Div(
         [
-            html.Div(hd.text['COPY'], id="copy_text", className="left_text bodytext"),
+            html.Span([html.B(hd.text['MOBILE_DISCLAIMER']), 
+                       html.Br(), hd.text['COPY']], 
+                      id="copy_text", className="left_text bodytext"),
         ], className = "subcontainer"),
     html.Hr(className="center_text title"),
     html.Div([
