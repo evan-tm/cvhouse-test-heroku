@@ -14,14 +14,14 @@ layout = html.Div(
     [
     # Sidebar
     df.createTopBar(),
-    html.Br(),
-    html.Div(
-        [
-            html.Span([html.B(hd.text['MOBILE_DISCLAIMER']), 
-                       html.Br(), hd.text['COPY']], 
-                      id="copy_text", className="left_text bodytext"),
-        ], className = "subcontainer"),
-    html.Hr(className="center_text title"),
+    #html.Br(),
+    #html.Div(
+    #    [
+    #        html.Span([html.B(hd.text['MOBILE_DISCLAIMER']), 
+    #                   html.Br(), hd.text['COPY']], 
+    #                  id="copy_text", className="left_text bodytext"),
+    #    ], className = "subcontainer"),
+    #html.Hr(className="center_text title"),
     html.Div([
         df.createLeftAlignDropdown(qd.text['DD_QOL'], qd.opts['DD_QOL'],
                           qd.default['DD_QOL'], dd_id='qol_dropdown',
@@ -37,14 +37,16 @@ layout = html.Div(
                       config={'displayModeBar': True,
                               "displaylogo": False,
                               'modeBarButtonsToRemove': ['pan2d', 'select2d', 
-                                                         'lasso2d', 'toImage']},
+                                                         'lasso2d', 'toImage'],
+                              'scrollZoom': False},
                       style={"width": "100%", "height": "550px"}),
             # Affordability map
             dcc.Graph(id='results_map', 
                       config={'displayModeBar': True,
                               "displaylogo": False,
                               'modeBarButtonsToRemove': ['pan2d', 'select2d', 
-                                                         'lasso2d', 'toImage']},
+                                                         'lasso2d', 'toImage'],
+                              'scrollZoom': False},
                       style={'display': 'none', "width": "100%", "height": "550px"})
         ], className = "subcontainer"),
     # divider

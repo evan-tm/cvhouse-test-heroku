@@ -31,8 +31,8 @@ layout = html.Div(
     [
         # Sidebar
         df.createTopBar(),
-        html.Br(),
-        html.H3(nd.text['MAIN_TITLE'], className = "center_text title"),
+        #html.Br(),
+        #html.H3(nd.text['MAIN_TITLE'], className = "center_text title"),
         html.Div(
             [
                 # Neighborhood dropdown
@@ -42,7 +42,7 @@ layout = html.Div(
                                       dd_style={"width": "200px"}, grid_width="1fr", clearable=False),
                 ], className="neighborhood_drop"),
                 # Neighborhood CVillepedia description
-                html.Div(getCvillepedia(nd.default['DROPDOWN_NEIGHBORHOOD']), id="neighborhood_cvillepedia", className="left_text bodytext"),
+                #html.Div(getCvillepedia(nd.default['DROPDOWN_NEIGHBORHOOD']), id="neighborhood_cvillepedia", className="left_text bodytext"),
             ], className = "subcontainer"),
         html.Br(),
         html.Br(),

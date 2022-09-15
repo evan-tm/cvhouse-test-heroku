@@ -89,7 +89,8 @@ def plotResourcesMap():
                       font_family="franklin-gothic-atf,Helvetica,sans-serif",
                       font_color="#070D1E",
                       title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
-                      title_font_color="#1C1D1E")
+                      title_font_color="#1C1D1E",
+                      dragmode=False)
     fig1.update_traces(hovertemplate="<br>".join([
                                     "%{hovertext}",
                                     "",
@@ -113,7 +114,8 @@ def plotResourcesMap():
                        font_family="franklin-gothic-atf,Helvetica,sans-serif",
                        font_color="#070D1E",
                        title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
-                       title_font_color="#1C1D1E")
+                       title_font_color="#1C1D1E",
+                       dragmode=False)
     fig2.update_traces(hovertemplate="<br>".join([
                                      "%{hovertext}",
                                      "",
@@ -137,7 +139,8 @@ def plotResourcesMap():
                        font_family="franklin-gothic-atf,Helvetica,sans-serif",
                        font_color="#070D1E",
                        title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
-                       title_font_color="#1C1D1E")
+                       title_font_color="#1C1D1E",
+                       dragmode=False)
     fig3.update_traces(hovertemplate="<br>".join([
                                      "%{hovertext}",
                                      "",
@@ -161,7 +164,8 @@ def plotResourcesMap():
                        font_family="franklin-gothic-atf,Helvetica,sans-serif",
                        font_color="#070D1E",
                        title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
-                       title_font_color="#1C1D1E")
+                       title_font_color="#1C1D1E",
+                       dragmode=False)
     fig4.update_traces(hovertemplate="<br>".join([
                                      "%{hovertext}",
                                      "",
@@ -184,7 +188,8 @@ def plotResourcesMap():
                         font_family="franklin-gothic-atf,Helvetica,sans-serif",
                         font_color="#070D1E",
                         title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
-                        title_font_color="#1C1D1E")
+                        title_font_color="#1C1D1E",
+                        dragmode=False)
     fig5.update_traces(hovertemplate="<br>".join([
                                     "%{hovertext}",
                                     "",
@@ -207,7 +212,8 @@ def plotResourcesMap():
                     font_family="franklin-gothic-atf,Helvetica,sans-serif",
                     font_color="#070D1E",
                     title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
-                    title_font_color="#1C1D1E")
+                    title_font_color="#1C1D1E",
+                    dragmode=False)
     fig6.update_traces(hovertemplate="<br>".join([
                                     "Name: %{customdata[0]}",
                                     "Code: %{hovertext}"]), 
@@ -229,7 +235,8 @@ def plotResourcesMap():
                     font_family="franklin-gothic-atf,Helvetica,sans-serif",
                     font_color="#070D1E",
                     title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
-                    title_font_color="#1C1D1E")
+                    title_font_color="#1C1D1E",
+                    dragmode=False)
     fig7.update_traces(hovertemplate="<br>".join([
                                     "Type: %{hovertext}",
                                     "Capacity: %{customdata[0]}"]), 
@@ -251,7 +258,8 @@ def plotResourcesMap():
                     font_family="franklin-gothic-atf,Helvetica,sans-serif",
                     font_color="#070D1E",
                     title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
-                    title_font_color="#1C1D1E")
+                    title_font_color="#1C1D1E",
+                    dragmode=False)
     fig8.update_traces(hovertemplate="<br>".join([
                                     "Type: %{hovertext}"]),
                     line={'width': 1.5})
@@ -273,7 +281,8 @@ def plotResourcesMap():
                     font_family="franklin-gothic-atf,Helvetica,sans-serif",
                     font_color="#070D1E",
                     title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
-                    title_font_color="#1C1D1E")
+                    title_font_color="#1C1D1E",
+                    dragmode=False)
     fig9.update_traces(hovertemplate="<br>".join([
                                     "Type: %{hovertext}",
                                     "Location: %{customdata[0]}",
@@ -291,6 +300,9 @@ def plotResourcesMap():
     fig.add_trace(fig8.data[0])
     fig.add_trace(fig9.data[0])
     fig.update_yaxes(scaleanchor="x", scaleratio=1)
+    fig.update_xaxes(fixedrange=True)
+    fig.update_yaxes(fixedrange=True)
+    fig.update_layout(dragmode=False)
 
     for i in range(9):
         fig['data'][i]['showlegend']=True

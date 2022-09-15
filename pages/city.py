@@ -49,7 +49,8 @@ layout = html.Div(
                           config={'displayModeBar': True,
                                   "displaylogo": False,
                                   'modeBarButtonsToRemove': ['pan2d', 'select2d', 
-                                                             'lasso2d', 'toImage']},
+                                                             'lasso2d', 'toImage'],
+                                  'scrollZoom': False},
                           style={"width": "100%", "height": "550px"}),
                 html.Div([
                     html.Div([
