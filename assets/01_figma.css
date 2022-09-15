@@ -1,3 +1,11 @@
+@font-face {
+	font-family: "FranklinGothicPro";
+	src: url(fonts/FRADM.TTF);
+	}
+@font-face {
+	font-family: "FranklinGothic";
+	src: url(fonts/franklin-gothic-book.ttf);
+	}
 .container {
 	position:relative;
 	width:100%;
@@ -39,7 +47,7 @@
 .left_text{	
 	position:relative;
 	margin:5px auto;
-	font-family:"franklin-gothic-atf","Helvetica","sans-serif";
+	font-family:"FranklinGothic";
 	text-align:left;
 	line-height: 1.5;
 	letter-spacing:0;
@@ -47,7 +55,7 @@
 .center_text{	
 	position:relative;
 	margin:5px auto;
-	font-family:"franklin-gothic-atf","Helvetica","sans-serif";
+	font-family:"FranklinGothic";
 	text-align:center;
 	line-height: 1.5;
 	letter-spacing:0;
@@ -55,14 +63,14 @@
 .right_text{
 	position:relative;
 	margin:5px auto;
-	font-family:"franklin-gothic-atf","Helvetica","sans-serif";
+	font-family:"FranklinGothic";
 	text-align:right;
 	line-height: 1.5;
 	letter-spacing:0;
 }
 .title {
 	color:#1C1D1E;
-	font-family: "franklin-gothic-condensed","Helvetica","sans-serif";
+	font-family: "FranklinGothicPro";
 	font-size: 1.8em;
 	font-weight: 700;
     line-height: 1.2;
@@ -126,7 +134,7 @@
     text-transform: capitalize;
     top: 0;
     width: 100%;
-	font-family:"franklin-gothic-atf","Helvetica","sans-serif";
+	font-family:"FranklinGothic";
 }
 .hover_property_row_header>span {
     align-items: center;
@@ -141,7 +149,7 @@
     display: flex;
     margin-top: 5px;
     position: relative;
-	font-family:"franklin-gothic-atf","Helvetica","sans-serif";
+	font-family:"FranklinGothic";
 }
 .hover_window_statistics_timeframe {
     align-items: center;
@@ -184,12 +192,12 @@
     height: 20px;
     line-height: 20px;
     margin: 0 auto;
-	font-family:"franklin-gothic-atf","Helvetica","sans-serif";
+	font-family:"FranklinGothic";
 }
 .hover_window_statistics_title {
     font-size: 12px;
     font-weight: 400;
-	font-family:"franklin-gothic-atf","Helvetica","sans-serif";
+	font-family:"FranklinGothic";
     margin: 0;
     padding: 0;
     white-space: nowrap;
@@ -273,7 +281,7 @@
 .header_links_text {
 	position:relative;
 	margin:0px auto;
-	font-family: "franklin-gothic-condensed","Helvetica","sans-serif";
+	font-family: "FranklinGothicPro";
 	font-weight: 700;
 	font-size: 16px;
 	line-height: 1.25;

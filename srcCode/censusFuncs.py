@@ -130,9 +130,9 @@ def plotIndustrySector():
                     hoverlabel_align = 'left',
                     titlefont={'size': 19},
                     title_x = 0.56,
-                    font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                    font_family="FranklinGothic",
                     font_color="#070D1E",
-                    title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                    title_font_family="FranklinGothicPro",
                     title_font_color="#1C1D1E")
     ## Adds (count : pct) ticker at far right of chart
     fig = addFigAnnotations(fig, industryCity, [i for i in range(13)], 'Industry')
@@ -185,9 +185,9 @@ def plotAgeCity():
                                   bgcolor="DimGray"),
                       titlefont={'size': 19},
                       title_x = 0.555,
-                      font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                      font_family="FranklinGothic",
                       font_color="#070D1E",
-                      title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                      title_font_family="FranklinGothicPro",
                       title_font_color="#1C1D1E")
     ## Adds (count : pct) ticker at far right of chart
     fig = addFigAnnotations(fig, ageCity, [i for i in range(18)], 'Age')
@@ -233,9 +233,9 @@ def plotRaceCity():
                                   bgcolor="DimGray"), 
                       titlefont={'size': 19},
                       title_x = 0.585,
-                      font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                      font_family="FranklinGothic",
                       font_color="#070D1E",
-                      title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                      title_font_family="FranklinGothicPro",
                       title_font_color="#1C1D1E")
     ## Adds (count : pct) ticker at far right of chart
     fig = addFigAnnotations(fig, raceCity, [i for i in range(8)], 'Race and Ethnicity')
@@ -279,9 +279,9 @@ def plotIncomeCity():
                                   bgcolor="DimGray"),
                       titlefont={'size': 19},
                       title_x = 0.55,
-                      font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                      font_family="FranklinGothic",
                       font_color="#070D1E",
-                      title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                      title_font_family="FranklinGothicPro",
                       title_font_color="#1C1D1E")
     ## Adds (count : pct) ticker at far right of chart
     fig = addFigAnnotations(fig, incomeCity, [i for i in range(16)], 'Bracket')
@@ -324,9 +324,9 @@ def plotOccupancyCity():
                         font=dict(size=17, color="rgb(7,13,30)"),
                         titlefont={'size': 19},
                         title_x = 0.55,
-                        font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                        font_family="FranklinGothic",
                         font_color="#070D1E",
-                        title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                        title_font_family="FranklinGothicPro",
                         title_font_color="#1C1D1E")
 
     fig.update_xaxes(showticklabels=False, range=[0,100])
@@ -364,9 +364,9 @@ def plotTenureCity():
                         font=dict(size=17, color="rgb(7,13,30)"),
                         titlefont={'size': 19},
                         title_x = 0.55,
-                        font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                        font_family="FranklinGothic",
                         font_color="#070D1E",
-                        title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                        title_font_family="FranklinGothicPro",
                         title_font_color="#1C1D1E")
 
     fig.update_xaxes(showticklabels=False, range=[0,100])
@@ -394,10 +394,10 @@ def plotSizeCity():
                     paper_bgcolor="rgba(0,0,0,0)",
                     autosize=True,
                     font=dict(size=17),
-                    font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                    font_family="FranklinGothic",
                     font_color="#070D1E",
                     titlefont={'size': 19},
-                    title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                    title_font_family="FranklinGothicPro",
                     title_font_color="#1C1D1E",
                     title_x=0.515)
     fig.update_traces(line_color='#7c4375', line_width=5, 
@@ -433,9 +433,9 @@ def plotIndustryByNeighborhood(n, compare = False):
                       hoverlabel_align = 'left', 
                       titlefont={'size': 19}, 
                       title_x = 0.55,
-                      font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                      font_family="FranklinGothic",
                       font_color="#070D1E",
-                      title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                      title_font_family="FranklinGothicPro",
                       title_font_color="#1C1D1E")
     ## get index of neighborhood selection
     hood_index = industryNeighborhood.columns.get_loc(n)
@@ -509,9 +509,9 @@ def plotAgeNeighborhood(n, compare = False):
                                   bgcolor="DimGray"),
                       titlefont={'size': 19},
                       title_x = 0.56,
-                      font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                      font_family="FranklinGothic",
                       font_color="#070D1E",
-                      title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                      title_font_family="FranklinGothicPro",
                       title_font_color="#1C1D1E")
     ## get index of neighborhood selection
     hood_index = ageNeighborhood.columns.get_loc(n + "_T")
@@ -573,9 +573,9 @@ def plotRaceNeighborhood(n, compare = False):
                                   bgcolor="DimGray"),
                       titlefont={'size': 19},
                       title_x = 0.59,
-                      font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                      font_family="FranklinGothic",
                       font_color="#070D1E",
-                      title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                      title_font_family="FranklinGothicPro",
                       title_font_color="#1C1D1E")
     ## get index of neighborhood selection
     hood_index = raceNeighborhood.columns.get_loc(n)
@@ -637,9 +637,9 @@ def plotIncomeNeighborhood(n, compare = False):
                                   bgcolor="DimGray"),
                       titlefont={'size': 19},
                       title_x = 0.555,
-                      font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                      font_family="FranklinGothic",
                       font_color="#070D1E",
-                      title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                      title_font_family="FranklinGothicPro",
                       title_font_color="#1C1D1E")
     ## get index of neighborhood selection
     hood_index = incomeNeighborhood.columns.get_loc(n)
@@ -696,9 +696,9 @@ def plotOccupancyNeighborhood(n):
                         font=dict(size=17, color="rgb(7,13,30)"),
                         titlefont={'size': 17},
                         title_x = 0.55,
-                        font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                        font_family="FranklinGothic",
                         font_color="#070D1E",
-                        title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                        title_font_family="FranklinGothicPro",
                         title_font_color="#1C1D1E")
 
     fig.update_xaxes(showticklabels=False, range=[0,100])
@@ -737,9 +737,9 @@ def plotTenureNeighborhood(n):
                         font=dict(size=17, color="rgb(7,13,30)"),
                         titlefont={'size': 19},
                         title_x = 0.55,
-                        font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                        font_family="FranklinGothic",
                         font_color="#070D1E",
-                        title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                        title_font_family="FranklinGothicPro",
                         title_font_color="#1C1D1E")
 
     fig.update_xaxes(showticklabels=False, range=[0,100])
@@ -783,10 +783,10 @@ def plotSizeNeighborhood(n):
                     paper_bgcolor="rgba(0,0,0,0)",
                     autosize=True,
                     font=dict(size=17),
-                    font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                    font_family="FranklinGothic",
                     font_color="#070D1E",
                     titlefont={'size': 19},
-                    title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                    title_font_family="FranklinGothicPro",
                     title_font_color="#1C1D1E")
     fig.update_traces(line_color='#7c4375', line_width=5, 
                       marker_size = 10, marker_symbol='diamond')
