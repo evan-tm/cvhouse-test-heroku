@@ -10,6 +10,8 @@ import srcCode.dashFuncs as df
 import srcCode.cityDescs as cd
 import srcCode.censusFuncs as cf
 import srcCode.historyFuncs as hf
+
+dash.register_page(__name__)
 # ----------------------------------------------------------------------------
 # Helper functions
 def nanformat(n, strcode):

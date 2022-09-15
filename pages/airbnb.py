@@ -1,4 +1,5 @@
 # ------------------AirBNB page----------------------#
+import dash
 from dash import dcc, html, Input, Output, State, callback, no_update
 import dash_bootstrap_components as dbc
 import srcCode.toolbarDescs as tb
@@ -6,6 +7,7 @@ import srcCode.contactDescs as cd
 import srcCode.dashFuncs as df
 import srcCode.airbnbFuncs as af
 
+dash.register_page(__name__)
 
 layout = html.Div(
     [

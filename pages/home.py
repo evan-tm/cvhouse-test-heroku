@@ -1,3 +1,4 @@
+import dash
 from dash import dcc, html, Input, Output, State, callback
 import dash_bootstrap_components as dbc
 import srcCode.homeDescs as hd
@@ -7,6 +8,8 @@ import srcCode.affordDescs as ad
 import srcCode.dashFuncs as df
 import srcCode.qolFuncs as qf
 import srcCode.qolDescs as qd
+
+dash.register_page(__name__, path='/')
 
 # Neighborhood dropdown texts
 

@@ -1,4 +1,5 @@
 # ------------------Neighborhood page------------------#
+import dash
 from dash import dcc, html, Input, Output, State, callback
 import dash_bootstrap_components as dbc
 import srcCode.toolbarDescs as tb
@@ -7,6 +8,8 @@ import srcCode.dashFuncs as df
 import srcCode.cvillepedia as cv
 import srcCode.censusFuncs as cf
 import srcCode.historyFuncs as hf
+
+dash.register_page(__name__)
 #------------------------------------------------------------------------------
 # Neighborhood dropdown texts
 checklist_nbc_opts = [{"value": each, "label": each} for each in nbcd.opts['DROPDOWN_NEIGHBORHOOD']]

@@ -1,4 +1,5 @@
 # ------------------Neighborhood page------------------#
+import dash
 from dash import dcc, html, Input, Output, State, callback
 import dash_bootstrap_components as dbc
 import pandas as pd
@@ -8,6 +9,8 @@ import srcCode.dashFuncs as df
 import srcCode.cvillepedia as cv
 import srcCode.censusFuncs as cf
 import srcCode.historyFuncs as hf
+
+dash.register_page(__name__)
 
 ## Gets the correct description from the cvillepedia file (written by Erin)
 ## in: neighborhood
@@ -27,7 +30,95 @@ def getCvillepedia(n):
         retParas.append(cv.dictionary[n][nLen - 1])
         return(html.P(retParas))
 
-layout = html.Div(
+def layout(id=None):
+    if id is not None:
+        id = id.replace('_', ' ')
+        if id in nd.opts['DROPDOWN_NEIGHBORHOOD']:
+            return html.Div(
+            [
+                html.Div(
+                    [
+                        # Neighborhood dropdown
+                        html.Div([
+                            df.createDropdown(nd.text['DROPDOWN_NEIGHBORHOOD'], nd.opts['DROPDOWN_NEIGHBORHOOD'],
+                                            id, dd_id="dropdown_neighborhood",
+                                            dd_style={"display": "none"}, grid_width="1fr", clearable=False),
+                        ], className="neighborhood_drop"),
+                    ], className = "subcontainer"),
+                # Population census charts
+                html.Div([
+                    df.createLeftAlignDropdown(nd.text['DROPDOWN_CENSUS'], nd.opts['DROPDOWN_CENSUS'],
+                                    nd.default['DROPDOWN_CENSUS'], dd_id='dropdown_neighborhood_census',
+                                    dd_style={'width': '170px'}, grid_class="grid_dd2",
+                                    desc_id='dd_neighborhood_census_text',
+                                    clearable=False, searchable=False),
+                ], className = "subcontainer"),
+                html.Div(
+                    [
+                        dcc.Graph(id='census_neighborhood_plot', 
+                                figure=cf.plotIndustryByNeighborhood(id),
+                                config={'displayModeBar': True,
+                                    "displaylogo": False,
+                                    'modeBarButtonsToRemove': ['pan2d', 'select2d', 
+                                                                'lasso2d', 'zoom2d',
+                                                                'zoomIn2d', 'zoomOut2d',
+                                                                'autoScale2d']},
+                                style={'display': 'block'})
+                    ], className="subcontainer"),
+                html.Br(),
+                html.Br(),
+                # Household census charts
+                html.Div([
+                    df.createLeftAlignDropdown(nd.text['DROPDOWN_CENSUS_HH'], nd.opts['DROPDOWN_CENSUS_HH'],
+                                    nd.default['DROPDOWN_CENSUS_HH'], dd_id='dropdown_neighborhood_census_hh',
+                                    dd_style={'width': '170px'}, grid_class="grid_dd2",
+                                    desc_id='dd_neighborhood_census_hh_text',
+                                    clearable=False, searchable=False),
+                ], className = "subcontainer"),
+                html.Div(
+                    [
+                        dcc.Graph(id='census_hh_neighborhood_plot', 
+                                figure=cf.plotIncomeNeighborhood(id),
+                                config={'displayModeBar': True,
+                                    "displaylogo": False,
+                                    'modeBarButtonsToRemove': ['pan2d', 'select2d', 
+                                                                'lasso2d', 'zoom2d',
+                                                                'zoomIn2d', 'zoomOut2d',
+                                                                'autoScale2d']},
+                                style={'display': 'block'})
+                    ], className="subcontainer"),
+                html.Br(),
+                html.Br(),
+                # History of price
+                html.Div([
+                    df.createLeftAlignDropdown(nd.text['HISTORY_TITLE'], nd.opts['DROPDOWN_HISTORY'],
+                                    nd.default['DROPDOWN_HISTORY'], dd_id='dropdown_neighborhood_history',
+                                    dd_style={'width': '150px'}, grid_class="grid_dd2",
+                                    clearable=False, searchable=False),
+                ], className = "subcontainer"),
+                html.Div(
+                    [
+                        dcc.Graph(id='neighborhood_price_history_plot', 
+                                figure=hf.plotNeighborhoodHistorySales(id, nd.default['DROPDOWN_HISTORY']),
+                                style={"width": "100%"}, 
+                                config={'displayModeBar': True,
+                                    "displaylogo": False,
+                                    'modeBarButtonsToRemove': ['pan2d', 'select2d', 
+                                                                'lasso2d', 'zoom2d',
+                                                                'zoomIn2d', 'zoomOut2d',
+                                                                'autoScale2d']}),
+                        dcc.Graph(id='neighborhood_quant_history_plot', 
+                                figure=hf.plotNeighborhoodHistorySales(id, nd.opts['DROPDOWN_HISTORY'][1]),
+                                style={"width": "100%"}, 
+                                config={'displayModeBar': True,
+                                    "displaylogo": False,
+                                    'modeBarButtonsToRemove': ['pan2d', 'select2d', 
+                                                                'lasso2d', 'zoom2d',
+                                                                'zoomIn2d', 'zoomOut2d',
+                                                                'autoScale2d']})
+                    ], className="subcontainer"),
+            ], className = "container background")
+    return html.Div(
     [
         # Sidebar
         df.createTopBar(),
@@ -38,8 +129,8 @@ layout = html.Div(
                 # Neighborhood dropdown
                 html.Div([
                     df.createDropdown(nd.text['DROPDOWN_NEIGHBORHOOD'], nd.opts['DROPDOWN_NEIGHBORHOOD'],
-                                      nd.default['DROPDOWN_NEIGHBORHOOD'], dd_id="dropdown_neighborhood",
-                                      dd_style={"width": "200px"}, grid_width="1fr", clearable=False),
+                                    nd.default['DROPDOWN_NEIGHBORHOOD'], dd_id="dropdown_neighborhood",
+                                    dd_style={"width": "200px"}, grid_width="1fr", clearable=False),
                 ], className="neighborhood_drop"),
                 # Neighborhood CVillepedia description
                 #html.Div(getCvillepedia(nd.default['DROPDOWN_NEIGHBORHOOD']), id="neighborhood_cvillepedia", className="left_text bodytext"),
@@ -57,14 +148,14 @@ layout = html.Div(
         html.Div(
             [
                 dcc.Graph(id='census_neighborhood_plot', 
-                          figure=cf.plotIndustryByNeighborhood(nd.default['DROPDOWN_NEIGHBORHOOD']),
-                          config={'displayModeBar': True,
+                        figure=cf.plotIndustryByNeighborhood(nd.default['DROPDOWN_NEIGHBORHOOD']),
+                        config={'displayModeBar': True,
                             "displaylogo": False,
                             'modeBarButtonsToRemove': ['pan2d', 'select2d', 
                                                         'lasso2d', 'zoom2d',
                                                         'zoomIn2d', 'zoomOut2d',
                                                         'autoScale2d']},
-                          style={'display': 'block'})
+                        style={'display': 'block'})
             ], className="subcontainer"),
         html.Br(),
         html.Br(),
@@ -79,14 +170,14 @@ layout = html.Div(
         html.Div(
             [
                 dcc.Graph(id='census_hh_neighborhood_plot', 
-                          figure=cf.plotIncomeNeighborhood(nd.default['DROPDOWN_NEIGHBORHOOD']),
-                          config={'displayModeBar': True,
+                        figure=cf.plotIncomeNeighborhood(nd.default['DROPDOWN_NEIGHBORHOOD']),
+                        config={'displayModeBar': True,
                             "displaylogo": False,
                             'modeBarButtonsToRemove': ['pan2d', 'select2d', 
                                                         'lasso2d', 'zoom2d',
                                                         'zoomIn2d', 'zoomOut2d',
                                                         'autoScale2d']},
-                          style={'display': 'block'})
+                        style={'display': 'block'})
             ], className="subcontainer"),
         html.Br(),
         html.Br(),
@@ -100,18 +191,18 @@ layout = html.Div(
         html.Div(
             [
                 dcc.Graph(id='neighborhood_price_history_plot', 
-                          figure=hf.plotNeighborhoodHistorySales(nd.default['DROPDOWN_NEIGHBORHOOD'], nd.default['DROPDOWN_HISTORY']),
-                          style={"width": "100%"}, 
-                          config={'displayModeBar': True,
+                        figure=hf.plotNeighborhoodHistorySales(nd.default['DROPDOWN_NEIGHBORHOOD'], nd.default['DROPDOWN_HISTORY']),
+                        style={"width": "100%"}, 
+                        config={'displayModeBar': True,
                             "displaylogo": False,
                             'modeBarButtonsToRemove': ['pan2d', 'select2d', 
                                                         'lasso2d', 'zoom2d',
                                                         'zoomIn2d', 'zoomOut2d',
                                                         'autoScale2d']}),
                 dcc.Graph(id='neighborhood_quant_history_plot', 
-                          figure=hf.plotNeighborhoodHistorySales(nd.default['DROPDOWN_NEIGHBORHOOD'], nd.opts['DROPDOWN_HISTORY'][1]),
-                          style={"width": "100%"}, 
-                          config={'displayModeBar': True,
+                        figure=hf.plotNeighborhoodHistorySales(nd.default['DROPDOWN_NEIGHBORHOOD'], nd.opts['DROPDOWN_HISTORY'][1]),
+                        style={"width": "100%"}, 
+                        config={'displayModeBar': True,
                             "displaylogo": False,
                             'modeBarButtonsToRemove': ['pan2d', 'select2d', 
                                                         'lasso2d', 'zoom2d',
@@ -169,14 +260,6 @@ def update_census_hh_neighborhood_plot(censusSelection, n):
         return cf.plotOccupancyNeighborhood(n)
     else:
         return cf.plotTenureNeighborhood(n)
-
-#@callback(
-#    Output('dropdown_neighborhood', 'value'),
-#    Input('afford_map', 'clickData'))
-#def printNeighborhood(clickData):
-#    if clickData is None:
-#        return dropdown_neighborhood_lod_opts[11]
-#    return(str(clickData['points'][len(clickData['points']) - 1]['hovertext']))
 
 @callback(Output("neighborhood_price_history_plot", "figure"),
           Output("neighborhood_quant_history_plot", "figure"),
