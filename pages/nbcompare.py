@@ -52,14 +52,6 @@ layout = html.Div(
         html.Div(className="grid_container", id="nbc_race_plots",
                  style={"grid-template-columns": "minmax(600px, 1fr) minmax(600px, 1fr)"}),
         html.Hr(className="center_text title"),
-        # Size plot
-        html.Div(className="grid_container", id="nbc_size_plots",
-                 style={"grid-template-columns": "minmax(600px, 1fr) minmax(600px, 1fr)"}),
-        html.Hr(className="center_text title"),
-        # Income plot
-        html.Div(className="grid_container", id="nbc_income_plots",
-                 style={"grid-template-columns": "minmax(600px, 1fr) minmax(600px, 1fr)"}),
-        html.Hr(className="center_text title"),
         # Occupancy plot
         html.Div(className="grid_container", id="nbc_occ_plots",
                  style={"grid-template-columns": "minmax(600px, 1fr) minmax(600px, 1fr)"}),
@@ -73,6 +65,20 @@ layout = html.Div(
             [
                 dcc.Graph(id='nbc_size_plot', 
                           figure=cf.plotSizeCity(),
+                          style={"width": "100%"}, 
+                          config={'displayModeBar': True,
+                            "displaylogo": False,
+                            'modeBarButtonsToRemove': ['pan2d', 'select2d', 
+                                                        'lasso2d', 'zoom2d',
+                                                        'zoomIn2d', 'zoomOut2d',
+                                                        'autoScale2d']}),
+            ], className="subcontainer"),
+        html.Hr(className="center_text title"),
+        # Income plot
+        html.Div(
+            [
+                dcc.Graph(id='nbc_income_plot', 
+                          figure=cf.plotIncomeCity(),
                           style={"width": "100%"}, 
                           config={'displayModeBar': True,
                             "displaylogo": False,
@@ -200,24 +206,6 @@ def nbc_race_plots(n, value):
     return race_plots
 
 
-@callback(Output("nbc_income_plots", "children"),
-          [Input("compare_button", "n_clicks"), State("nbc_checklist", "value")])
-def nbc_income_plots(n, value):
-    income_plots = []
-    if n:
-        for ind, each in enumerate(value):
-            income_plots.append(dcc.Graph(id=('nbc_' + str(ind) + '_income'),
-                                figure=cf.plotIncomeNeighborhood(each, True), 
-                                config={'displayModeBar': True,
-                            "displaylogo": False,
-                            'modeBarButtonsToRemove': ['pan2d', 'select2d', 
-                                                        'lasso2d', 'zoom2d',
-                                                        'zoomIn2d', 'zoomOut2d',
-                                                        'autoScale2d']},
-                                style={'display': 'block'}))
-    return income_plots
-
-
 @callback(Output("nbc_occ_plots", "children"),
           [Input("compare_button", "n_clicks"), State("nbc_checklist", "value")])
 def nbc_occ_plots(n, value):
@@ -261,6 +249,14 @@ def update_size_plot(n, neighs):
         return cf.plotSizeNeighborhood(neighs)
     else:
         return cf.plotSizeCity()
+
+@callback(Output("nbc_income_plot", "figure"),
+          [Input("compare_button", "n_clicks"), State("nbc_checklist", "value")])
+def update_income_plot(n, neighs):
+    if n:
+        return cf.plotIncomeNeighborhood(neighs)
+    else:
+        return cf.plotIncomeCity()
 
 
 @callback(Output("nbc_history_plot", "figure"),

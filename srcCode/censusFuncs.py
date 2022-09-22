@@ -611,64 +611,47 @@ def plotRaceNeighborhood(n, compare = False):
 
     return fig
 
-## Function for creating income plot for the individual neighborhoods
-## in: neighborhood, t/f whether the plot is for the comparison page
+## Function for creating plot of median income by neighborhood
+## in: neighborhood (string or list if comparing)
 ## out: figure
-def plotIncomeNeighborhood(n, compare = False):
-    # begin building figure
-    fig = px.bar(incomeNeighborhood, 
-                 y="Bracket", 
-                 x=n,
-                 animation_frame='Year',
-                 orientation="h",
-                 title=cd.text['INCOME_NEIGHBORHOOD_TITLE'].format(hood=n), 
-                 height=600,
-                 labels={n:cd.text['INCOME_X_TITLE'],
-                         'Race':cd.text['INCOME_Y_TITLE']})
-    # update layout
-    fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
-                      plot_bgcolor="rgba(0,0,0,0)",
-                      paper_bgcolor="rgba(0,0,0,0)",
-                      font=dict(size=17, color="rgb(7,13,30)"),
-                      legend=dict(yanchor="bottom", 
-                                  x=0.90, 
-                                  y=0.85, 
-                                  xanchor="right",
-                                  bgcolor="DimGray"),
-                      titlefont={'size': 19},
-                      title_x = 0.555,
-                      font_family="FranklinGothic",
-                      font_color="#070D1E",
-                      title_font_family="FranklinGothicPro",
-                      title_font_color="#1C1D1E")
-    ## get index of neighborhood selection
-    hood_index = incomeNeighborhood.columns.get_loc(n)
-    ## update dataset with correct ticker for neighborhood selection
-    incomeNeighborhood['ag'] = [f'({incomeNeighborhood.iloc[i, hood_index+19]:,} : {incomeNeighborhood.iloc[i, hood_index]:.2f}%)' 
-                               for i in range(incomeNeighborhood.shape[0])]
-    ## Adds (count : pct) ticker at far right of chart
-    fig = addFigAnnotations(fig, incomeNeighborhood, 
-                            [i for i in range(16)], 'Bracket',
-                            compare)
-    if compare:
-        ## Fixed x axis size for each frame
-        fig.update_xaxes(tickvals = [i*5 for i in range(8)], 
-                        range = [0, 43],
-                        gridcolor='Black')
+def plotIncomeNeighborhood(n):
+    if isinstance(n, list):
+        n.append('Year')
+        dfIncomeHood = incomeNeighborhood[n]
+        fig = px.line(dfIncomeHood, x="Year", y=n, 
+                        title="Median Household Income by Year for " + n[0] + \
+                            " and " + n[1] + ' ($)',
+                        labels={"variable": "Neighborhood",
+                                "value": "Median Household Income ($)"},
+                        markers = True,
+                        color_discrete_sequence=["#7c4375", "#009192"])
+        fig.update_layout(title_x=0.46)
     else:
-        ## Fixed x axis size for each frame
-        fig.update_xaxes(tickvals = [i*5 for i in range(8)], 
-                        range = [0, 40],
-                        gridcolor='Black')
-    fig['layout']['updatemenus'][0]['x']=-0.04
-    fig['layout']['sliders'][0]['x']=-0.04
-    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000
-    ## Loop through frames to edit hover and by-frame ticker annotations
-    for idx, f in enumerate(fig.frames):
-        f = addFrameAnnotations(f, incomeNeighborhood, 
-                                [i for i in range(16)], 
-                                idx, 'Bracket', compare)
-    
+        n = [n]
+        n.append('Year')
+        dfIncomeHood = incomeNeighborhood[n]
+        fig = px.line(dfIncomeHood, x="Year", y=n[0],
+                        title="Median Household Income by Year for " + n[0] + ' ($)',
+                        labels={n[0]: "Median Household Income ($)"},
+                        markers = True,
+                        color_discrete_sequence=["#7c4375"])
+        fig.update_layout(title_x=0.517)
+
+    fig.update_xaxes(gridcolor='Black')
+    fig.update_yaxes(gridcolor='Black')
+    fig.update_layout(margin=go.layout.Margin(l=0, r=0, b=0, t=50, pad=15),
+                    plot_bgcolor="rgba(0,0,0,0)",
+                    paper_bgcolor="rgba(0,0,0,0)",
+                    autosize=True,
+                    font=dict(size=17),
+                    font_family="FranklinGothic",
+                    font_color="#070D1E",
+                    titlefont={'size': 19},
+                    title_font_family="FranklinGothicPro",
+                    title_font_color="#1C1D1E")
+    fig.update_traces(line_width=5, 
+                      marker_size = 10, marker_symbol='diamond')
+                      
     return fig
 
 ## Function for creating plot of occupancy status by neighborhood
@@ -766,14 +749,16 @@ def plotSizeNeighborhood(n):
                         title="Population by Year for " + dfPopHood['NAME'][0] + \
                             " and " + dfPopHood['NAME'][1],
                         labels={"NAME": "Neighborhood"},
-                        markers = True)
+                        markers = True,
+                        color_discrete_sequence=["#7c4375", "#009192"])
         fig.update_layout(title_x=0.46)
     else:
         dfPopHood = popNeighborhood[popNeighborhood['NAME'] == n]
         dfPopHood = dfPopHood.reset_index(drop=True)
         fig = px.line(dfPopHood, x="Year", y="Population",
                         title="Population by Year for " + dfPopHood['NAME'][0],
-                        markers = True)
+                        markers = True,
+                        color_discrete_sequence=["#7c4375"])
         fig.update_layout(title_x=0.517)
 
     fig.update_xaxes(gridcolor='Black')
@@ -788,7 +773,7 @@ def plotSizeNeighborhood(n):
                     titlefont={'size': 19},
                     title_font_family="FranklinGothicPro",
                     title_font_color="#1C1D1E")
-    fig.update_traces(line_color='#7c4375', line_width=5, 
+    fig.update_traces(line_width=5, 
                       marker_size = 10, marker_symbol='diamond')
                       
     return fig
