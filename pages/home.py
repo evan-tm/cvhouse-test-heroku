@@ -128,6 +128,8 @@ layout = html.Div(
                      className="center_text subtitle"),
         ], className = "subcontainer"),
     html.Br(),
+    html.Span('Testing changes', className="center_text title"),
+    html.Br(),
     ], className = "container background")
 
 @callback(
