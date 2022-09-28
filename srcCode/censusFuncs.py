@@ -172,8 +172,8 @@ def plotAgeCity():
                  custom_data=["Totalct"])
     ## Change text displayed when mouse hovering over bar
     fig.update_traces(hovertemplate = cd.text['AGE_CITY_HOVER'],
-                      marker_color='rgb(158,202,225)', marker_line_color='rgb(8,48,107)',
-                      marker_line_width=1.5, opacity=0.6)
+                      marker_color='#7c4375', marker_line_color='#5b1453',
+                      marker_line_width=1.5, opacity=0.8)
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
@@ -202,6 +202,9 @@ def plotAgeCity():
     for idx, f in enumerate(fig.frames):
         for dat in f.data:
             dat.hovertemplate = cd.text['AGE_CITY_HOVER']
+            dat.marker = dict(color='#7c4375',
+                              line=dict(color='#5b1453',
+                                        width=1.5))
         f = addFrameAnnotations(f, ageCity, [i for i in range(18)], idx, 'Age')
   
     return fig
@@ -248,10 +251,14 @@ def plotRaceCity():
     fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000
     ## Loop through frames to edit hover and by-frame ticker annotations
     for idx, f in enumerate(fig.frames):
+        for dat in f.data:
+            dat.marker = dict(color='#33a7a8',
+                              line=dict(color='#009192',
+                                        width=1.5))
         f = addFrameAnnotations(f, raceCity, [i for i in range(8)], idx, 'Race and Ethnicity')
     ## Set bar color
-    fig.update_traces(marker_color='#00d6a4', marker_line_color='#00523f',
-                      marker_line_width=1.5, opacity=0.6)
+    fig.update_traces(marker_color='#33a7a8', marker_line_color='#009192',
+                      marker_line_width=1.5, opacity=0.8)
 
     return fig
 
@@ -419,7 +426,9 @@ def plotIndustryByNeighborhood(n, compare = False):
     ## Fix bar order
     fig.update_yaxes(categoryorder="total ascending")
     ## Change text displayed when mouse hovering over bar
-    fig.update_traces(hovertemplate = cd.text['IND_NEIGHBORHOOD_HOVER'])
+    fig.update_traces(hovertemplate = cd.text['IND_NEIGHBORHOOD_HOVER'],
+                      marker_color='#ed8851', marker_line_color='#e96a26',
+                      marker_line_width=1.5, opacity=0.8)
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15), 
                       plot_bgcolor="rgba(0,0,0,0)", 
                       paper_bgcolor="rgba(0,0,0,0)", 
@@ -471,6 +480,9 @@ def plotIndustryByNeighborhood(n, compare = False):
     for idx, f in enumerate(fig.frames):
         for dat in f.data:
             dat.hovertemplate = cd.text['IND_NEIGHBORHOOD_HOVER']
+            dat.marker = dict(color='#ed8851',
+                              line=dict(color='#e96a26',
+                                        width=1.5))
         f = addFrameAnnotations(f, industryNeighborhood, 
                                 [i for i in range(13)], 
                                 idx, 'Industry', compare)
@@ -488,15 +500,11 @@ def plotAgeNeighborhood(n, compare = False):
                  animation_frame='Year', 
                  barmode='group',
                  orientation="h",
-                 height = 600,
+                 height = 540,
                  title=cd.text['AGE_NEIGHBORHOOD_TITLE'].format(hood=n), 
                  labels={'variable':cd.text['AGE_LEGEND_TITLE'], 
                          n+"_T":cd.text['AGE_X_TITLE'],
                          'Age':cd.text['AGE_Y_TITLE']})
-    ## Change text displayed when mouse hovering over bar
-    fig.update_traces(hovertemplate = cd.text['AGE_NEIGHBORHOOD_HOVER'],
-                      marker_color='rgb(158,202,225)', marker_line_color='rgb(8,48,107)',
-                      marker_line_width=1.5, opacity=0.6)
     # update layout
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
                       plot_bgcolor="rgba(0,0,0,0)",
@@ -536,12 +544,19 @@ def plotAgeNeighborhood(n, compare = False):
     for idx, f in enumerate(fig.frames):
         for dat in f.data:
             dat.hovertemplate = cd.text['AGE_NEIGHBORHOOD_HOVER']
+            dat.marker = dict(color='#7c4375',
+                              line=dict(color='#5b1453',
+                                        width=1.5))
         f = addFrameAnnotations(f, ageNeighborhood, 
                                 [i for i in range(18)], 
                                 idx, 'Age', compare)
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
     fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000
+    ## Change text displayed when mouse hovering over bar
+    fig.update_traces(hovertemplate = cd.text['AGE_NEIGHBORHOOD_HOVER'],
+                      marker_color='#7c4375', marker_line_color='#5b1453',
+                      marker_line_width=1.5, opacity=0.8)
 
     return fig
 
@@ -555,6 +570,7 @@ def plotRaceNeighborhood(n, compare = False):
                  x=n,
                  animation_frame='Year',
                  orientation="h",
+                 height = 500,
                  title=cd.text['RACE_NEIGHBORHOOD_TITLE'].format(hood=n), 
                  labels={n:cd.text['RACE_X_TITLE'],
                          'Race and Ethnicity':cd.text['RACE_Y_TITLE']})
@@ -564,7 +580,6 @@ def plotRaceNeighborhood(n, compare = False):
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
-                      autosize=True,
                       font=dict(size=17, color="rgb(7,13,30)"),
                       legend=dict(yanchor="bottom", 
                                   x=0.90, 
@@ -602,12 +617,16 @@ def plotRaceNeighborhood(n, compare = False):
     fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000
     ## Loop through frames to edit hover and by-frame ticker annotations
     for idx, f in enumerate(fig.frames):
+        for dat in f.data:
+            dat.marker = dict(color='#33a7a8',
+                              line=dict(color='#009192',
+                                        width=1.5))
         f = addFrameAnnotations(f, raceNeighborhood, 
                                 [i for i in range(8)], 
                                 idx, 'Race and Ethnicity', compare)
     ## Set bar color
-    fig.update_traces(marker_color='#00d6a4', marker_line_color='#00523f',
-                      marker_line_width=1.5, opacity=0.6)
+    fig.update_traces(marker_color='#33a7a8', marker_line_color='#009192',
+                      marker_line_width=1.5, opacity=0.8)
 
     return fig
 
