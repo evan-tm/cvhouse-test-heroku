@@ -49,7 +49,7 @@ def layout(id=None):
                 html.Div([
                     df.createLeftAlignDropdown(nd.text['DROPDOWN_CENSUS'], nd.opts['DROPDOWN_CENSUS'],
                                     nd.default['DROPDOWN_CENSUS'], dd_id='dropdown_neighborhood_census',
-                                    dd_style={'width': '170px'}, grid_class="grid_dd2",
+                                    dd_style={'width': '175px'}, grid_class="grid_dd2",
                                     desc_id='dd_neighborhood_census_text',
                                     clearable=False, searchable=False),
                 ], className = "subcontainer"),
@@ -71,7 +71,7 @@ def layout(id=None):
                 html.Div([
                     df.createLeftAlignDropdown(nd.text['DROPDOWN_CENSUS_HH'], nd.opts['DROPDOWN_CENSUS_HH'],
                                     nd.default['DROPDOWN_CENSUS_HH'], dd_id='dropdown_neighborhood_census_hh',
-                                    dd_style={'width': '170px'}, grid_class="grid_dd2",
+                                    dd_style={'width': '175px'}, grid_class="grid_dd2",
                                     desc_id='dd_neighborhood_census_hh_text',
                                     clearable=False, searchable=False),
                 ], className = "subcontainer"),
@@ -141,7 +141,7 @@ def layout(id=None):
         html.Div([
             df.createLeftAlignDropdown(nd.text['DROPDOWN_CENSUS'], nd.opts['DROPDOWN_CENSUS'],
                             nd.default['DROPDOWN_CENSUS'], dd_id='dropdown_neighborhood_census',
-                            dd_style={'width': '170px'}, grid_class="grid_dd2",
+                            dd_style={'width': '175px'}, grid_class="grid_dd2",
                             desc_id='dd_neighborhood_census_text',
                             clearable=False, searchable=False),
         ], className = "subcontainer"),
@@ -163,7 +163,7 @@ def layout(id=None):
         html.Div([
             df.createLeftAlignDropdown(nd.text['DROPDOWN_CENSUS_HH'], nd.opts['DROPDOWN_CENSUS_HH'],
                             nd.default['DROPDOWN_CENSUS_HH'], dd_id='dropdown_neighborhood_census_hh',
-                            dd_style={'width': '170px'}, grid_class="grid_dd2",
+                            dd_style={'width': '175px'}, grid_class="grid_dd2",
                             desc_id='dd_neighborhood_census_hh_text',
                             clearable=False, searchable=False),
         ], className = "subcontainer"),
@@ -257,6 +257,8 @@ def update_census_hh_neighborhood_plot(censusSelection, n):
     if censusSelection == nd.opts['DROPDOWN_CENSUS_HH'][0]:
         return cf.plotIncomeNeighborhood(n)
     elif censusSelection == nd.opts['DROPDOWN_CENSUS_HH'][1]:
+        return cf.plotIncomeDistNeighborhood(n)
+    elif censusSelection == nd.opts['DROPDOWN_CENSUS_HH'][2]:
         return cf.plotOccupancyNeighborhood(n)
     else:
         return cf.plotTenureNeighborhood(n)

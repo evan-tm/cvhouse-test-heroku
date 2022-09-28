@@ -75,7 +75,7 @@ layout = html.Div(
         html.Div([
             df.createLeftAlignDropdown(cd.text['DROPDOWN_CENSUS'], cd.opts['DROPDOWN_CENSUS'],
                             cd.default['DROPDOWN_CENSUS'], dd_id='dropdown_city_census',
-                            dd_style={'width': '170px'}, grid_class="grid_dd2",
+                            dd_style={'width': '175px'}, grid_class="grid_dd2",
                             clearable=False, searchable=False),
         ], className = "subcontainer"),
         html.Div(
@@ -97,7 +97,7 @@ layout = html.Div(
         html.Div([
             df.createLeftAlignDropdown(cd.text['DROPDOWN_CENSUS_HH'], cd.opts['DROPDOWN_CENSUS_HH'],
                             cd.default['DROPDOWN_CENSUS_HH'], dd_id='dropdown_city_census_hh',
-                            dd_style={'width': '170px'}, grid_class="grid_dd2",
+                            dd_style={'width': '175px'}, grid_class="grid_dd2",
                             clearable=False, searchable=False),
         ], className = "subcontainer"),
         html.Div(
@@ -169,6 +169,8 @@ def update_census_hh_city_plot(censusSelection):
     if censusSelection == cd.opts['DROPDOWN_CENSUS_HH'][0]:
         return cf.plotIncomeCity()
     elif censusSelection == cd.opts['DROPDOWN_CENSUS_HH'][1]:
+        return cf.plotIncomeDistCity()
+    elif censusSelection == cd.opts['DROPDOWN_CENSUS_HH'][2]:
         return cf.plotOccupancyCity()
     else:
         return cf.plotTenureCity()

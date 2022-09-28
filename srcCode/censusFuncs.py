@@ -19,10 +19,14 @@ ageNeighborhood = pd.read_csv("data/census/ageNeighborhood.csv")
 raceCity = pd.read_csv('data/census/raceEthnicityCity.csv')
 # Neighborhod race data
 raceNeighborhood = pd.read_csv('data/census/raceEthnicityNeighborhood.csv')
-# City income data
+# City median income data
 incomeCity = pd.read_csv('data/census/incomeCity.csv')
-# Neighborhood income data
+# Neighborhood median income data
 incomeNeighborhood = pd.read_csv('data/census/incomeNeighborhood.csv')
+# City income distribution data
+incomeCityDist = pd.read_csv('data/census/incomeCityDist.csv')
+# Neighborhood income distribution data
+incomeNeighborhoodDist = pd.read_csv('data/census/incomeNeighborhoodDist.csv')
 # City occupancy data
 occupancyCity = pd.read_csv('data/census/occupancyCity.csv')
 # Neighborhood occupancy data
@@ -266,13 +270,41 @@ def plotRaceCity():
 ## out: figure
 def plotIncomeCity():
     # begin building figure
-    fig = px.bar(incomeCity, 
+    fig = px.line(incomeCity, x="Year", y="Real_Income",
+                    title=cd.text['INCOME_CITY_TITLE'],
+                    labels={"Real_Income": "Median Household Income ($)"},
+                    markers = True,
+                    color_discrete_sequence=["#7c4375"])
+    fig.update_layout(title_x=0.517)
+
+    fig.update_xaxes(tickvals = [year for year in range(2009, 2021)], 
+                     range = [2008.5, 2020.5], gridcolor='Black')
+    fig.update_yaxes(gridcolor='Black')
+    fig.update_layout(margin=go.layout.Margin(l=0, r=0, b=0, t=50, pad=15),
+                    plot_bgcolor="rgba(0,0,0,0)",
+                    paper_bgcolor="rgba(0,0,0,0)",
+                    autosize=True,
+                    font=dict(size=17),
+                    font_family="FranklinGothic",
+                    font_color="#070D1E",
+                    titlefont={'size': 19},
+                    title_font_family="FranklinGothicPro",
+                    title_font_color="#1C1D1E")
+    fig.update_traces(line_width=5, 
+                      marker_size = 10, marker_symbol='diamond')
+                      
+    return fig
+
+## Function for creating income distribution plot for the city overall
+## out: figure
+def plotIncomeDistCity():
+    # begin building figure
+    fig = px.bar(incomeCityDist, 
                  y="Bracket", 
                  x="Income",
-                 animation_frame='Year',
                  orientation="h",
-                 title=cd.text['INCOME_CITY_TITLE'], 
-                 height=600,
+                 title=cd.text['INCOME_DIST_CITY_TITLE'], 
+                 height=550,
                  labels={'Income':cd.text['INCOME_X_TITLE'],
                          'Bracket':cd.text['INCOME_Y_TITLE']})
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
@@ -285,25 +317,17 @@ def plotIncomeCity():
                                   xanchor="right",
                                   bgcolor="DimGray"),
                       titlefont={'size': 19},
-                      title_x = 0.55,
+                      title_x = 0.565,
                       font_family="FranklinGothic",
                       font_color="#070D1E",
                       title_font_family="FranklinGothicPro",
                       title_font_color="#1C1D1E")
     ## Adds (count : pct) ticker at far right of chart
-    fig = addFigAnnotations(fig, incomeCity, [i for i in range(16)], 'Bracket')
+    fig = addFigAnnotations(fig, incomeCityDist, [i for i in range(16)], 'Bracket')
     ## Fixed x axis size for each frame
     fig.update_xaxes(tickvals = [i*2 for i in range(9)], 
                      range = [0, 18],
                      gridcolor='Black')
-    fig['layout']['updatemenus'][0]['x']=-0.04
-    fig['layout']['sliders'][0]['x']=-0.04
-    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000
-    ## Loop through frames to edit hover and by-frame ticker annotations
-    for idx, f in enumerate(fig.frames):
-        f = addFrameAnnotations(f, incomeCity, 
-                                [i for i in range(16)], 
-                                idx, 'Bracket')
 
     return fig
 
@@ -671,6 +695,58 @@ def plotIncomeNeighborhood(n):
     fig.update_traces(line_width=5, 
                       marker_size = 10, marker_symbol='diamond')
                       
+    return fig
+
+## Function for creating income distribution plot for the neighborhoods
+## in: neighborhood, t/f whether the plot is for the comparison page
+## out: figure
+def plotIncomeDistNeighborhood(n, compare = False):
+    # begin building figure
+    fig = px.bar(incomeNeighborhoodDist, 
+                 y="Bracket", 
+                 x=n,
+                 animation_frame='Year',
+                 orientation="h",
+                 title=cd.text['INCOME_NEIGHBORHOOD_TITLE'].format(hood=n), 
+                 height=600,
+                 labels={n:cd.text['INCOME_X_TITLE'],
+                         'Race':cd.text['INCOME_Y_TITLE']})
+    # update layout
+    fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
+                      plot_bgcolor="rgba(0,0,0,0)",
+                      paper_bgcolor="rgba(0,0,0,0)",
+                      font=dict(size=17, color="rgb(7,13,30)"),
+                      legend=dict(yanchor="bottom", 
+                                  x=0.90, 
+                                  y=0.85, 
+                                  xanchor="right",
+                                  bgcolor="DimGray"),
+                      titlefont={'size': 19},
+                      title_x = 0.56,
+                      font_family="FranklinGothic",
+                      font_color="#070D1E",
+                      title_font_family="FranklinGothicPro",
+                      title_font_color="#1C1D1E")
+    ## get index of neighborhood selection
+    hood_index = incomeNeighborhoodDist.columns.get_loc(n)
+    ## update dataset with correct ticker for neighborhood selection
+    incomeNeighborhoodDist['ag'] = [f'({incomeNeighborhoodDist.iloc[i, hood_index+19]:,} : {incomeNeighborhoodDist.iloc[i, hood_index]:.2f}%)' 
+                                    for i in range(incomeNeighborhoodDist.shape[0])]
+    ## Adds (count : pct) ticker at far right of chart
+    fig = addFigAnnotations(fig, incomeNeighborhoodDist, 
+                            [i for i in range(16)], 'Bracket',
+                            compare)
+    if compare:
+        ## Fixed x axis size for each frame
+        fig.update_xaxes(tickvals = [i*5 for i in range(8)], 
+                        range = [0, 43],
+                        gridcolor='Black')
+    else:
+        ## Fixed x axis size for each frame
+        fig.update_xaxes(tickvals = [i*5 for i in range(8)], 
+                        range = [0, 40],
+                        gridcolor='Black')
+    
     return fig
 
 ## Function for creating plot of occupancy status by neighborhood

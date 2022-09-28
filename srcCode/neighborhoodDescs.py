@@ -11,7 +11,7 @@ text = {
 
 opts = {
     "DROPDOWN_CENSUS": ['Age', 'Industry', 'Race and Ethnicity', 'Size'],
-    "DROPDOWN_CENSUS_HH": ['Income', 'Occupancy', 'Tenure'],
+    "DROPDOWN_CENSUS_HH": ['Income', 'Income Distribution', 'Occupancy', 'Tenure'],
     "DROPDOWN_HISTORY": ['Median Price', 'Sales Quantity'],
     "DROPDOWN_NEIGHBORHOOD": ['10th & Page', 'Barracks / Rugby', 'Barracks Road',
                               'Belmont','Fifeville',"Fry's Spring", 'Greenbrier',
