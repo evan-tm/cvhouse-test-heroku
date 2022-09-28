@@ -115,6 +115,11 @@ def plotIndustrySector():
                 animation_frame="Year",
                 labels={'value':cd.text['IND_X_TITLE'], 
                         'Industry':cd.text['IND_Y_TITLE']}, 
+                color_discrete_map={'Private For-Profit': '#46494b',
+                                    'Self-Employed Incorporated': '#e96a26',
+                                    'Private Not-For-Profit': '#009192',
+                                    'Government': '#5b1453',
+                                    'Self-Employed Not Incorporated': '#9d7298'},
                 orientation="h", custom_data=["Desc"],
                 title = cd.text['IND_CITY_TITLE'])
     ## Change text displayed when mouse hovering over bar
@@ -248,7 +253,7 @@ def plotRaceCity():
     fig = addFigAnnotations(fig, raceCity, [i for i in range(8)], 'Race and Ethnicity')
     ## Fixed x axis size for each frame
     fig.update_xaxes(tickvals = [i*10 for i in range(8)], 
-                     range = [0, 78],
+                     range = [0, 82],
                      gridcolor='Black')
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
@@ -306,7 +311,8 @@ def plotIncomeDistCity():
                  title=cd.text['INCOME_DIST_CITY_TITLE'], 
                  height=500,
                  labels={'Income':cd.text['INCOME_X_TITLE'],
-                         'Bracket':cd.text['INCOME_Y_TITLE']})
+                         'Bracket':cd.text['INCOME_Y_TITLE']},
+                 color_discrete_sequence=["#e96a26"])
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
@@ -328,6 +334,9 @@ def plotIncomeDistCity():
     fig.update_xaxes(tickvals = [i*2 for i in range(9)], 
                      range = [0, 18],
                      gridcolor='Black')
+    ## Update bar styling
+    fig.update_traces(marker_color='#ed8851', marker_line_color='#e96a26',
+                      marker_line_width=1.5, opacity=0.8)
 
     return fig
 
@@ -338,8 +347,8 @@ def plotOccupancyCity():
 
     fig = px.bar(occupancyCity, x='Units', y='x',color='OccupancyStatus', 
                 animation_frame = "Year",
-                color_discrete_map={'Occupied': 'MidnightBlue',
-                                    'Vacant': 'Crimson'},
+                color_discrete_map={'Occupied': '#009192',
+                                    'Vacant': '#e96a26'},
                 orientation = 'h',
                 custom_data=["Unitsct"],
                 labels={"OccupancyStatus": "Occupancy Status",
@@ -379,8 +388,8 @@ def plotTenureCity():
 
     fig = px.bar(tenureCity, x='Units', y='x',color='Tenure', 
                 animation_frame = "Year",
-                color_discrete_map={'Occupied': '#009192',
-                                    'Vacant': '#7c4375'},
+                color_discrete_map={'Owner occupied': '#009192',
+                                    'Renter occupied': '#5b1453'},
                 orientation = 'h',
                 custom_data=["Unitsct"],
                 labels={"Units": ""},
@@ -746,6 +755,8 @@ def plotIncomeDistNeighborhood(n, compare = False):
         fig.update_xaxes(tickvals = [i*5 for i in range(8)], 
                         range = [0, 40],
                         gridcolor='Black')
+    fig.update_traces(marker_color='#ed8851', marker_line_color='#e96a26',
+                      marker_line_width=1.5, opacity=0.8)
     
     return fig
 
@@ -757,8 +768,8 @@ def plotOccupancyNeighborhood(n):
     fig = px.bar(occupancyNeighborhood, x=n, y='x',
                 color='OccupancyStatus', 
                 animation_frame = "Year",
-                color_discrete_map={'Occupied': 'MidnightBlue',
-                                    'Vacant': 'Crimson'},
+                color_discrete_map={'Occupied': '#009192',
+                                    'Vacant': '#e96a26'},
                 orientation = 'h',
                 custom_data=[n + "ct"],
                 labels={"OccupancyStatus": "Occupancy Status",
@@ -799,8 +810,8 @@ def plotTenureNeighborhood(n):
     fig = px.bar(tenureNeighborhood, x=n, y='x',
                 color='Tenure', 
                 animation_frame = "Year",
-                color_discrete_map={'Occupied': '#009192',
-                                    'Vacant': '#7c4375'},
+                color_discrete_map={'Owner occupied': '#009192',
+                                    'Renter occupied': '#5b1453'},
                 orientation = 'h',
                 custom_data=[n + "ct"],
                 labels={n: ""},
