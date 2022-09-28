@@ -212,7 +212,7 @@
     left: 0%;
 }
 #census_city_plot .js-plotly-plot .plotly .modebar {
-    left: 95%;
+    left: 94%;
 }
 #history_price_city_plot .js-plotly-plot .plotly .modebar {
     left: 95%;
@@ -224,7 +224,7 @@
     left: 0%;
 }
 #census_neighborhood_plot .js-plotly-plot .plotly .modebar {
-    left: 95%;
+    left: 94%;
 }
 #neighborhood_price_history_plot .js-plotly-plot .plotly .modebar {
     left: 4%;
