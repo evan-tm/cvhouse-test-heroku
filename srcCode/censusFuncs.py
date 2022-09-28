@@ -533,12 +533,12 @@ def plotAgeNeighborhood(n, compare = False):
     if compare:
         ## Fixed x axis size for each frame
         fig.update_xaxes(tickvals = [i*5 for i in range(11)], 
-                        range = [0, 64],
+                        range = [0, 62],
                         gridcolor='Black')
     else:
         ## Fixed x axis size for each frame
         fig.update_xaxes(tickvals = [i*5 for i in range(11)], 
-                        range = [0, 55],
+                        range = [0, 57],
                         gridcolor='Black')
     # update legend and hovers for animated frames
     for idx, f in enumerate(fig.frames):
