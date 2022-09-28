@@ -309,7 +309,7 @@ def plotIncomeDistCity():
                  x="Income",
                  orientation="h",
                  title=cd.text['INCOME_DIST_CITY_TITLE'], 
-                 height=500,
+                 height=480,
                  labels={'Income':cd.text['INCOME_X_TITLE'],
                          'Bracket':cd.text['INCOME_Y_TITLE']},
                  color_discrete_sequence=["#e96a26"])
@@ -717,7 +717,7 @@ def plotIncomeDistNeighborhood(n, compare = False):
                  animation_frame='Year',
                  orientation="h",
                  title=cd.text['INCOME_NEIGHBORHOOD_TITLE'].format(hood=n), 
-                 height=500,
+                 height=480,
                  labels={n:cd.text['INCOME_X_TITLE'],
                          'Race':cd.text['INCOME_Y_TITLE']})
     # update layout
