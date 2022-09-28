@@ -500,7 +500,7 @@ def plotAgeNeighborhood(n, compare = False):
                  animation_frame='Year', 
                  barmode='group',
                  orientation="h",
-                 height = 540,
+                 height = 550,
                  title=cd.text['AGE_NEIGHBORHOOD_TITLE'].format(hood=n), 
                  labels={'variable':cd.text['AGE_LEGEND_TITLE'], 
                          n+"_T":cd.text['AGE_X_TITLE'],
