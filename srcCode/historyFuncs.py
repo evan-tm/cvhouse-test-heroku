@@ -17,9 +17,10 @@ def plotNeighborhoodHistorySales(neighs, var):
         to_plot = "median"
         y_label = "Yearly Median Sale Price [$, inflation adjusted]"
     fig = go.Figure(data=go.Scatter(x=sales_year["SaleDate"], y=sales_year["SaleAmountAdjusted"][to_plot], 
-                                    name="Charlottesville City"))
+                                    name="Charlottesville City", line=dict(color="#7c4375")))
     syn = pd.read_pickle("data/rolling/sales_year_nb_" + base64.b64encode(neighs.encode('ascii')).decode('ascii') + ".pkl")
-    fig.add_trace(go.Scatter(x=syn["SaleDate"], y=syn["SaleAmountAdjusted"][to_plot], name=neighs))
+    fig.add_trace(go.Scatter(x=syn["SaleDate"], y=syn["SaleAmountAdjusted"][to_plot], 
+                             name=neighs, line=dict(color="#009192")))
     fig.update_layout(xaxis_title="Year",
                       yaxis_title=y_label,
                       margin=go.layout.Margin(l=0, r=0, b=0, t=0),
@@ -39,13 +40,13 @@ def plotNeighborhoodHistorySales(neighs, var):
 
 def plotCityHistoryPrice():
     fig = go.Figure(data=go.Scatter(x=sales_year["SaleDate"], y=sales_year["SaleAmountAdjusted"]["median"], 
-                                    name="All Sales"))
+                                    name="All Sales", line=dict(color="#7c4375")))
     fig.add_trace(go.Scatter(x=sales_year_single["SaleDate"], y=sales_year_single["SaleAmountAdjusted"]["median"], 
-                             name="Single Family"))
+                             name="Single Family", line=dict(color='#009192')))
     fig.add_trace(go.Scatter(x=sales_year_two["SaleDate"], y=sales_year_two["SaleAmountAdjusted"]["median"], 
-                             name="Two Family"))
+                             name="Two Family", line=dict(color='#ed8851')))
     fig.add_trace(go.Scatter(x=sales_year_multi["SaleDate"], y=sales_year_multi["SaleAmountAdjusted"]["median"], 
-                             name="Multi-family and Others"))
+                             name="Multi-family and Others", line=dict(color='#6b6d6f')))
     fig.update_xaxes(range=["1945-01-01T00:00:00Z", "2022-12-31T23:59:59Z"],
                      gridcolor='Black')
     fig.update_yaxes(gridcolor='Black')
@@ -65,13 +66,13 @@ def plotCityHistoryPrice():
 
 def plotCityHistoryQuantity():
     fig = go.Figure(data=go.Scatter(x=sales_year["SaleDate"], y=sales_year["SaleAmountAdjusted"]["count"], 
-                                    name="All Sales"))
+                                    name="All Sales", line=dict(color="#7c4375")))
     fig.add_trace(go.Scatter(x=sales_year_single["SaleDate"], y=sales_year_single["SaleAmountAdjusted"]["count"], 
-                             name="Single Family"))
+                             name="Single Family", line=dict(color='#009192')))
     fig.add_trace(go.Scatter(x=sales_year_two["SaleDate"], y=sales_year_two["SaleAmountAdjusted"]["count"], 
-                             name="Two Family"))
+                             name="Two Family", line=dict(color='#ed8851')))
     fig.add_trace(go.Scatter(x=sales_year_multi["SaleDate"], y=sales_year_multi["SaleAmountAdjusted"]["count"], 
-                             name="Multi-family and Others"))
+                             name="Multi-family and Others", line=dict(color='#6b6d6f')))
     fig.update_xaxes(range=["1945-01-01T00:00:00Z", "2022-12-31T23:59:59Z"],
                      gridcolor='Black')
     fig.update_yaxes(gridcolor='Black')
@@ -97,11 +98,15 @@ def plotCompareHistorySales(n, var, neighs):
         to_plot = "median"
         y_label = "Yearly Median Sale Price [$, inflation adjusted]"
     fig = go.Figure(data=go.Scatter(x=sales_year["SaleDate"], y=sales_year["SaleAmountAdjusted"][to_plot], 
-                                    name="Charlottesville City"))
+                                    name="Charlottesville City", line=dict(color="#7c4375")))
     if n:
+        i = 0
+        colors = ['#009192', '#ed8851']
         for each in neighs:
             syn = pd.read_pickle("data/rolling/sales_year_nb_" + base64.b64encode(each.encode('ascii')).decode('ascii') + ".pkl")
-            fig.add_trace(go.Scatter(x=syn["SaleDate"], y=syn["SaleAmountAdjusted"][to_plot], name=each))
+            fig.add_trace(go.Scatter(x=syn["SaleDate"], y=syn["SaleAmountAdjusted"][to_plot], 
+                                     name=each, line=dict(color=colors[i])))
+            i = i + 1
     fig.update_layout(xaxis_title="Year",
                       yaxis_title=y_label,
                       margin=go.layout.Margin(l=0, r=0, b=0, t=0),

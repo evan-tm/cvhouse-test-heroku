@@ -470,7 +470,7 @@ def plotIndustryByNeighborhood(n, compare = False):
                                     "25", "30", "35", "40", "45", 
                                     "50", "55", "60"], 
                         tickvals = [i*5 for i in range(13)], 
-                        range = [0, 65],
+                        range = [0, 68],
                         gridcolor='Black')
     ## move slider's and buttons' positions slightly left
     fig['layout']['updatemenus'][0]['x']=-0.04
@@ -533,7 +533,7 @@ def plotAgeNeighborhood(n, compare = False):
     if compare:
         ## Fixed x axis size for each frame
         fig.update_xaxes(tickvals = [i*5 for i in range(11)], 
-                        range = [0, 62],
+                        range = [0, 64],
                         gridcolor='Black')
     else:
         ## Fixed x axis size for each frame
@@ -610,7 +610,7 @@ def plotRaceNeighborhood(n, compare = False):
     else:
         ## Fixed x axis size for each frame
         fig.update_xaxes(tickvals = [i*10 for i in range(11)], 
-                        range = [0, 109],
+                        range = [0, 114],
                         gridcolor='Black')
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
