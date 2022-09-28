@@ -304,7 +304,7 @@ def plotIncomeDistCity():
                  x="Income",
                  orientation="h",
                  title=cd.text['INCOME_DIST_CITY_TITLE'], 
-                 height=550,
+                 height=500,
                  labels={'Income':cd.text['INCOME_X_TITLE'],
                          'Bracket':cd.text['INCOME_Y_TITLE']})
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
@@ -708,7 +708,7 @@ def plotIncomeDistNeighborhood(n, compare = False):
                  animation_frame='Year',
                  orientation="h",
                  title=cd.text['INCOME_NEIGHBORHOOD_TITLE'].format(hood=n), 
-                 height=550,
+                 height=500,
                  labels={n:cd.text['INCOME_X_TITLE'],
                          'Race':cd.text['INCOME_Y_TITLE']})
     # update layout
