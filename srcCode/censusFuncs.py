@@ -169,7 +169,7 @@ def plotAgeCity():
                  barmode='group',
                  orientation="h",
                  title=cd.text['AGE_CITY_TITLE'], 
-                 height = 600,
+                 height = 550,
                  labels={'variable':cd.text['AGE_LEGEND_TITLE'], 
                          'value':cd.text['AGE_X_TITLE'],
                          'Age':cd.text['AGE_Y_TITLE']},
@@ -222,6 +222,7 @@ def plotRaceCity():
                  x="Pop",
                  animation_frame='Year',
                  orientation="h",
+                 height = 500,
                  title=cd.text['RACE_CITY_TITLE'], 
                  labels={'Pop':cd.text['RACE_X_TITLE'],
                          'Race and Ethnicity':cd.text['RACE_Y_TITLE']})
@@ -231,7 +232,6 @@ def plotRaceCity():
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
-                      autosize=True,
                       font=dict(size=17, color="rgb(7,13,30)"),
                       legend=dict(yanchor="bottom", 
                                   x=0.90, 
@@ -708,7 +708,7 @@ def plotIncomeDistNeighborhood(n, compare = False):
                  animation_frame='Year',
                  orientation="h",
                  title=cd.text['INCOME_NEIGHBORHOOD_TITLE'].format(hood=n), 
-                 height=600,
+                 height=550,
                  labels={n:cd.text['INCOME_X_TITLE'],
                          'Race':cd.text['INCOME_Y_TITLE']})
     # update layout
