@@ -119,6 +119,10 @@ def layout(id=None):
                                                                 'zoomIn2d', 'zoomOut2d',
                                                                 'autoScale2d']})
                     ], className="subcontainer"),
+                html.Br(),
+                # Disclaimers
+                html.Div([dcc.Markdown(children=nd.text['FOOTNOTE'])], 
+                         className="subcontainer left_text bodytext"),
             ], className = "container background")
     return html.Div(
     [
@@ -213,7 +217,9 @@ def layout(id=None):
             ], className="subcontainer"),
         #dcc.Link('Take me back up', href='#', className = "subcontainer inline_sublinks"),
         html.Br(),
-        html.Br(),
+        # Disclaimers
+        html.Div([dcc.Markdown(children=nd.text['FOOTNOTE'])], 
+                 className="subcontainer left_text bodytext"),
     ], className = "container background")
 
 @callback(

@@ -31,9 +31,6 @@ history_zoning_checklist_two = "Two family"
 history_zoning_checklist_multi = "Multi family and others"
 HIST_NEIGHBORHOOD_TITLE = 'History of Residential Sales by'
 
-## footnote
-source = '''Prices have been adjusted for inflation. Only sales with state code Residential 
-(urban/suburban) and Multifamily are included.'''
 modebarVisible = False
 # ----------------------------------------------------------------------------
 # Building dash
@@ -146,7 +143,8 @@ layout = html.Div(
             ], className="subcontainer"),
         html.Br(),
         # Disclaimers
-        html.Div([dcc.Markdown(children=source)], className="subcontainer left_text bodytext"),
+        html.Div([dcc.Markdown(children=cd.text['FOOTNOTE'])], 
+                 className="subcontainer left_text bodytext"),
         #dcc.Link('Take me back up', href='#', className = "subcontainer links_text"),
     ], className="container background")
 

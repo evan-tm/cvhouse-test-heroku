@@ -13,17 +13,26 @@ def plotNeighborhoodHistorySales(neighs, var):
     if var == "Sales Quantity":
         to_plot = "count"
         y_label = "<b>Yearly Number of Sales</b>"
+        if len(neighs) == 2:
+            title = "Yearly Sales Quantity by Year for " + neighs[0] + " and " + neighs[1]
+        else:
+            title = "Yearly Sales Quantity by Year for " + neighs
     else:
         to_plot = "median"
-        y_label = "<b>Yearly Median Sale Price [$, inflation adjusted]</b>"
+        y_label = "<b>Yearly Median Sale Price ($, inflation adjusted)</b>"
+        if len(neighs) == 2:
+            title = "Yearly Median Sale Price by Year for " + neighs[0] + " and " + neighs[1] + " ($, inflation adjusted)"
+        else:
+            title = "Yearly Median Sale Price by Year for " + neighs + " ($, inflation adjusted)"
     fig = go.Figure(data=go.Scatter(x=sales_year["SaleDate"], y=sales_year["SaleAmountAdjusted"][to_plot], 
                                     name="Charlottesville City", line=dict(color="#7c4375")))
     syn = pd.read_pickle("data/rolling/sales_year_nb_" + base64.b64encode(neighs.encode('ascii')).decode('ascii') + ".pkl")
     fig.add_trace(go.Scatter(x=syn["SaleDate"], y=syn["SaleAmountAdjusted"][to_plot], 
                              name=neighs, line=dict(color="#009192")))
-    fig.update_layout(xaxis_title="<b>Year</b>",
+    fig.update_layout(title=title,
+                      xaxis_title="<b>Year</b>",
                       yaxis_title=y_label,
-                      margin=go.layout.Margin(l=0, r=0, b=0, t=0),
+                      margin=go.layout.Margin(l=0, r=0, b=0, t=50, pad=15),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
                       autosize=True,
@@ -32,7 +41,8 @@ def plotNeighborhoodHistorySales(neighs, var):
                       font_color="#070D1E",
                       titlefont={'size': 19},
                       title_font_family="FranklinGothicPro",
-                      title_font_color="#1C1D1E")
+                      title_font_color="#1C1D1E",
+                      title_x=0.453)
     fig.update_xaxes(gridcolor='Black')
     fig.update_yaxes(gridcolor='Black')
     fig['data'][0]['showlegend'] = True
@@ -51,9 +61,10 @@ def plotCityHistoryPrice():
     fig.update_xaxes(range=["1945-01-01T00:00:00Z", "2022-12-31T23:59:59Z"],
                      gridcolor='Black')
     fig.update_yaxes(gridcolor='Black')
-    fig.update_layout(xaxis_title="<b>Year</b>",
-                      yaxis_title="<b>Yearly Median Sale Price [$, inflation adjusted]</b>",
-                      margin=go.layout.Margin(l=0, r=0, b=0, t=0),
+    fig.update_layout(title="Yearly Median Sale Price of Residential Property in Charlottesville, Virginia ($, inflation adjusted)",
+                      xaxis_title="<b>Year</b>",
+                      yaxis_title="<b>Yearly Median Sale Price ($, inflation adjusted)</b>",
+                      margin=go.layout.Margin(l=0, r=0, b=0, t=50, pad=15),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
                       autosize=True,
@@ -62,7 +73,8 @@ def plotCityHistoryPrice():
                       font_color="#070D1E",
                       titlefont={'size': 19},
                       title_font_family="FranklinGothicPro",
-                      title_font_color="#1C1D1E")
+                      title_font_color="#1C1D1E",
+                      title_x=0.453)
     fig['data'][0]['showlegend'] = True
     return fig
 
@@ -78,9 +90,10 @@ def plotCityHistoryQuantity():
     fig.update_xaxes(range=["1945-01-01T00:00:00Z", "2022-12-31T23:59:59Z"],
                      gridcolor='Black')
     fig.update_yaxes(gridcolor='Black')
-    fig.update_layout(xaxis_title="<b>Year</b>",
+    fig.update_layout(title="Yearly Sales Quantity of Residential Property in Charlottesville, Virginia",
+                      xaxis_title="<b>Year</b>",
                       yaxis_title="<b>Yearly Number of Sales</b>",
-                      margin=go.layout.Margin(l=0, r=0, b=0, t=0),
+                      margin=go.layout.Margin(l=0, r=0, b=0, t=50, pad=15),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
                       autosize=True,
@@ -89,7 +102,8 @@ def plotCityHistoryQuantity():
                       font_color="#070D1E",
                       titlefont={'size': 19},
                       title_font_family="FranklinGothicPro",
-                      title_font_color="#1C1D1E")
+                      title_font_color="#1C1D1E",
+                      title_x=0.453)
     fig['data'][0]['showlegend'] = True
     return fig\
 
@@ -97,9 +111,11 @@ def plotCompareHistorySales(n, var, neighs):
     if var == "Sales Quantity":
         to_plot = "count"
         y_label = "<b>Yearly Number of Sales</b>"
+        title = "Yearly Sales Quantity of Residential Property in Charlottesville, Virginia"
     else:
         to_plot = "median"
-        y_label = "<b>Yearly Median Sale Price [$, inflation adjusted]</b>"
+        y_label = "<b>Yearly Median Sale Price ($, inflation adjusted)</b>"
+        title = "Yearly Median Sale Price of Residential Property in Charlottesville, Virginia ($, inflation adjusted)"
     fig = go.Figure(data=go.Scatter(x=sales_year["SaleDate"], y=sales_year["SaleAmountAdjusted"][to_plot], 
                                     name="Charlottesville City", line=dict(color="#7c4375")))
     if n:
@@ -110,9 +126,10 @@ def plotCompareHistorySales(n, var, neighs):
             fig.add_trace(go.Scatter(x=syn["SaleDate"], y=syn["SaleAmountAdjusted"][to_plot], 
                                      name=each, line=dict(color=colors[i])))
             i = i + 1
-    fig.update_layout(xaxis_title="<b>Year</b>",
+    fig.update_layout(title = title,
+                      xaxis_title="<b>Year</b>",
                       yaxis_title=y_label,
-                      margin=go.layout.Margin(l=0, r=0, b=0, t=0),
+                      margin=go.layout.Margin(l=0, r=0, b=0, t=50, pad=15),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
                       autosize=True,
@@ -121,7 +138,8 @@ def plotCompareHistorySales(n, var, neighs):
                       font_color="#070D1E",
                       titlefont={'size': 19},
                       title_font_family="FranklinGothicPro",
-                      title_font_color="#1C1D1E")
+                      title_font_color="#1C1D1E",
+                      title_x=0.453)
     fig.update_xaxes(gridcolor='Black')
     fig.update_yaxes(gridcolor='Black')
     fig['data'][0]['showlegend'] = True

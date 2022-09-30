@@ -6,7 +6,10 @@ text = {
     "VIEW_BUTTON": "Change view",
     "DROPDOWN_CENSUS": "Describe Charlottesville Population by",
     "DROPDOWN_CENSUS_HH": "Describe Charlottesville Households by",
-    "DROPDOWN_HISTORY": ""
+    "DROPDOWN_HISTORY": "",
+    "FOOTNOTE": '''Prices have been adjusted for inflation to 2022 dollars. \
+        Only sales with state code Residential (urban/suburban) and \
+        Multifamily are included.'''
 }
 
 opts = {

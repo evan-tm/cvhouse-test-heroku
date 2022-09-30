@@ -6,7 +6,10 @@ text = {
     "DROPDOWN_CENSUS_HH": "Describe {} Households by",
     "DROPDOWN_HISTORY": "",
     "DROPDOWN_NEIGHBORHOOD": "",
-    "HISTORY_TITLE": 'History of Residential Sales by'
+    "HISTORY_TITLE": 'History of Residential Sales by',
+    "FOOTNOTE": '''Prices have been adjusted for inflation to 2022 dollars. \
+        Only sales with state code Residential (urban/suburban) and \
+        Multifamily are included.'''
 }
 
 opts = {
