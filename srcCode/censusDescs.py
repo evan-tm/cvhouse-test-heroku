@@ -15,7 +15,7 @@ text = {
     "IND_NEIGHBORHOOD_HOVER": '%{value:.2f}% of Total Employed<br>' + \
                  'Industries: <b>%{customdata}</b>' + \
                  '<extra></extra>',
-    "AGE_CITY_TITLE": 'Population Chart for Charlottesville, VA',
+    "AGE_CITY_TITLE": 'Population Chart for Charlottesville, Virginia',
     "AGE_LEGEND_TITLE": 'Sex',
     "AGE_X_TITLE": 'Population (%)',
     "AGE_Y_TITLE": 'Age Group',
@@ -28,12 +28,12 @@ text = {
                             '<br>%{value:.2f}% of Neighborhood\'s Population<br>' + \
                             '<b>%{customdata}</b> People<br>' + \
                             '<extra></extra>',
-    "RACE_CITY_TITLE": 'Population by Race and Ethnicity for Charlottesville, VA (% of Total)',
+    "RACE_CITY_TITLE": 'Population by Race and Ethnicity for Charlottesville, Virginia (% of Total)',
     "RACE_X_TITLE": 'Population (%)',
     "RACE_Y_TITLE": 'Race and Ethnicity',
     "RACE_NEIGHBORHOOD_TITLE": 'Population by Race and Ethnicity for {hood} (% of Total)',
-    "INCOME_CITY_TITLE": 'Median Household Income by Year for Charlottesville, VA ($)',
-    "INCOME_DIST_CITY_TITLE": 'Households by Income in 2020 for Charlottesville, VA (% of Total)',
+    "INCOME_CITY_TITLE": 'Median Household Income by Year for Charlottesville, Virginia ($)',
+    "INCOME_DIST_CITY_TITLE": 'Households by Income in 2020 for Charlottesville, Virginia (% of Total)',
     "INCOME_X_TITLE": 'Population (%)',
     "INCOME_Y_TITLE": 'Income Bracket',
     "INCOME_NEIGHBORHOOD_TITLE": 'Households by Income in 2020 for {hood} (% of Total)',

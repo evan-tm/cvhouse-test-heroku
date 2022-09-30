@@ -120,7 +120,8 @@ layout = html.Div(
                               ad.default['DD_TAX'], dd_id="afford_dropdown_tax",
                               clearable=False, searchable=False),
             html.Button(ad.text['CALC_BUTTON'], id="afford_button", className="center_text subtitle",
-                                style={"background-color": "#e96a26", "color": "#FFFFFF"}),
+                                style={"background-color": "#e96a26", "color": "#FFFFFF",
+                                       'border': '0', 'width': '150px'}),
         ], className="subcontainer"),
     html.Div(
         [
