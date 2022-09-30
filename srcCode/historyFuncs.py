@@ -12,25 +12,26 @@ sales_year_multi = pd.read_pickle("data/rolling/sales_year_multi.pkl")
 def plotNeighborhoodHistorySales(neighs, var):
     if var == "Sales Quantity":
         to_plot = "count"
-        y_label = "Yearly Number of Sales"
+        y_label = "<b>Yearly Number of Sales</b>"
     else:
         to_plot = "median"
-        y_label = "Yearly Median Sale Price [$, inflation adjusted]"
+        y_label = "<b>Yearly Median Sale Price [$, inflation adjusted]</b>"
     fig = go.Figure(data=go.Scatter(x=sales_year["SaleDate"], y=sales_year["SaleAmountAdjusted"][to_plot], 
                                     name="Charlottesville City", line=dict(color="#7c4375")))
     syn = pd.read_pickle("data/rolling/sales_year_nb_" + base64.b64encode(neighs.encode('ascii')).decode('ascii') + ".pkl")
     fig.add_trace(go.Scatter(x=syn["SaleDate"], y=syn["SaleAmountAdjusted"][to_plot], 
                              name=neighs, line=dict(color="#009192")))
-    fig.update_layout(xaxis_title="Year",
+    fig.update_layout(xaxis_title="<b>Year</b>",
                       yaxis_title=y_label,
                       margin=go.layout.Margin(l=0, r=0, b=0, t=0),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
                       autosize=True,
                       font=dict(size=17),
-                      font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                      font_family="FranklinGothic",
                       font_color="#070D1E",
-                      title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                      titlefont={'size': 19},
+                      title_font_family="FranklinGothicPro",
                       title_font_color="#1C1D1E")
     fig.update_xaxes(gridcolor='Black')
     fig.update_yaxes(gridcolor='Black')
@@ -50,16 +51,17 @@ def plotCityHistoryPrice():
     fig.update_xaxes(range=["1945-01-01T00:00:00Z", "2022-12-31T23:59:59Z"],
                      gridcolor='Black')
     fig.update_yaxes(gridcolor='Black')
-    fig.update_layout(xaxis_title="Year",
-                      yaxis_title="Yearly Median Sale Price [$, inflation adjusted]",
+    fig.update_layout(xaxis_title="<b>Year</b>",
+                      yaxis_title="<b>Yearly Median Sale Price [$, inflation adjusted]</b>",
                       margin=go.layout.Margin(l=0, r=0, b=0, t=0),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
                       autosize=True,
                       font=dict(size=17),
-                      font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                      font_family="FranklinGothic",
                       font_color="#070D1E",
-                      title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                      titlefont={'size': 19},
+                      title_font_family="FranklinGothicPro",
                       title_font_color="#1C1D1E")
     fig['data'][0]['showlegend'] = True
     return fig
@@ -76,16 +78,17 @@ def plotCityHistoryQuantity():
     fig.update_xaxes(range=["1945-01-01T00:00:00Z", "2022-12-31T23:59:59Z"],
                      gridcolor='Black')
     fig.update_yaxes(gridcolor='Black')
-    fig.update_layout(xaxis_title="Year",
-                      yaxis_title="Yearly Number of Sales",
+    fig.update_layout(xaxis_title="<b>Year</b>",
+                      yaxis_title="<b>Yearly Number of Sales</b>",
                       margin=go.layout.Margin(l=0, r=0, b=0, t=0),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
                       autosize=True,
                       font=dict(size=17),
-                      font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                      font_family="FranklinGothic",
                       font_color="#070D1E",
-                      title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                      titlefont={'size': 19},
+                      title_font_family="FranklinGothicPro",
                       title_font_color="#1C1D1E")
     fig['data'][0]['showlegend'] = True
     return fig\
@@ -93,10 +96,10 @@ def plotCityHistoryQuantity():
 def plotCompareHistorySales(n, var, neighs):
     if var == "Sales Quantity":
         to_plot = "count"
-        y_label = "Yearly Number of Sales"
+        y_label = "<b>Yearly Number of Sales</b>"
     else:
         to_plot = "median"
-        y_label = "Yearly Median Sale Price [$, inflation adjusted]"
+        y_label = "<b>Yearly Median Sale Price [$, inflation adjusted]</b>"
     fig = go.Figure(data=go.Scatter(x=sales_year["SaleDate"], y=sales_year["SaleAmountAdjusted"][to_plot], 
                                     name="Charlottesville City", line=dict(color="#7c4375")))
     if n:
@@ -107,16 +110,17 @@ def plotCompareHistorySales(n, var, neighs):
             fig.add_trace(go.Scatter(x=syn["SaleDate"], y=syn["SaleAmountAdjusted"][to_plot], 
                                      name=each, line=dict(color=colors[i])))
             i = i + 1
-    fig.update_layout(xaxis_title="Year",
+    fig.update_layout(xaxis_title="<b>Year</b>",
                       yaxis_title=y_label,
                       margin=go.layout.Margin(l=0, r=0, b=0, t=0),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
                       autosize=True,
                       font=dict(size=17),
-                      font_family="franklin-gothic-atf,Helvetica,sans-serif",
+                      font_family="FranklinGothic",
                       font_color="#070D1E",
-                      title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
+                      titlefont={'size': 19},
+                      title_font_family="FranklinGothicPro",
                       title_font_color="#1C1D1E")
     fig.update_xaxes(gridcolor='Black')
     fig.update_yaxes(gridcolor='Black')

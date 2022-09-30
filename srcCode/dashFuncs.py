@@ -144,15 +144,19 @@ def createLeftAlignDropdown(description, opts, default_value,
         opts_dict = None
     if desc_id:
         return html.Div([
-            html.Span(description, id=desc_id, className="dd_elem1 right_text bodytext"), 
-            dcc.Dropdown(id=dd_id, options=opts_dict, value=default_value, className="dd_elem2 subcontainer", 
-            style=dd_style, **kwargs)
+            html.B(description, id=desc_id, 
+                      className="dd_elem1 right_text bodytext"), 
+            dcc.Dropdown(id=dd_id, options=opts_dict, value=default_value, 
+                         className="dd_elem2 subcontainer", 
+                         style=dd_style, **kwargs)
         ], className=grid_class)
     else:
         return html.Div([
-            html.Span(description, className="dd_elem1 right_text bodytext"),
-            dcc.Dropdown(id=dd_id, options=opts_dict, value=default_value, className="dd_elem2 subcontainer", 
-            style=dd_style, **kwargs)
+            html.B(description, 
+                      className="dd_elem1 right_text bodytext"),
+            dcc.Dropdown(id=dd_id, options=opts_dict, value=default_value, 
+                         className="dd_elem2 subcontainer", 
+                         style=dd_style, **kwargs)
         ], className=grid_class)
 
 def createArrowLink(link_text, link):

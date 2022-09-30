@@ -12,6 +12,8 @@ import srcCode.historyFuncs as hf
 
 dash.register_page(__name__)
 
+modebarVisible = False
+
 ## Gets the correct description from the cvillepedia file (written by Erin)
 ## in: neighborhood
 ## out: html formatted text with neighborhood description
@@ -57,7 +59,7 @@ def layout(id=None):
                     [
                         dcc.Graph(id='census_neighborhood_plot', 
                                 figure=cf.plotIndustryByNeighborhood(id),
-                                config={'displayModeBar': True,
+                                config={'displayModeBar': modebarVisible,
                                     "displaylogo": False,
                                     'modeBarButtonsToRemove': ['pan2d', 'select2d', 
                                                                 'lasso2d', 'zoom2d',
@@ -79,7 +81,7 @@ def layout(id=None):
                     [
                         dcc.Graph(id='census_hh_neighborhood_plot', 
                                 figure=cf.plotIncomeNeighborhood(id),
-                                config={'displayModeBar': True,
+                                config={'displayModeBar': modebarVisible,
                                     "displaylogo": False,
                                     'modeBarButtonsToRemove': ['pan2d', 'select2d', 
                                                                 'lasso2d', 'zoom2d',
@@ -101,7 +103,7 @@ def layout(id=None):
                         dcc.Graph(id='neighborhood_price_history_plot', 
                                 figure=hf.plotNeighborhoodHistorySales(id, nd.default['DROPDOWN_HISTORY']),
                                 style={"width": "100%"}, 
-                                config={'displayModeBar': True,
+                                config={'displayModeBar': modebarVisible,
                                     "displaylogo": False,
                                     'modeBarButtonsToRemove': ['pan2d', 'select2d', 
                                                                 'lasso2d', 'zoom2d',
@@ -110,7 +112,7 @@ def layout(id=None):
                         dcc.Graph(id='neighborhood_quant_history_plot', 
                                 figure=hf.plotNeighborhoodHistorySales(id, nd.opts['DROPDOWN_HISTORY'][1]),
                                 style={"width": "100%"}, 
-                                config={'displayModeBar': True,
+                                config={'displayModeBar': modebarVisible,
                                     "displaylogo": False,
                                     'modeBarButtonsToRemove': ['pan2d', 'select2d', 
                                                                 'lasso2d', 'zoom2d',
@@ -149,7 +151,7 @@ def layout(id=None):
             [
                 dcc.Graph(id='census_neighborhood_plot', 
                         figure=cf.plotIndustryByNeighborhood(nd.default['DROPDOWN_NEIGHBORHOOD']),
-                        config={'displayModeBar': True,
+                        config={'displayModeBar': modebarVisible,
                             "displaylogo": False,
                             'modeBarButtonsToRemove': ['pan2d', 'select2d', 
                                                         'lasso2d', 'zoom2d',
@@ -171,7 +173,7 @@ def layout(id=None):
             [
                 dcc.Graph(id='census_hh_neighborhood_plot', 
                         figure=cf.plotIncomeNeighborhood(nd.default['DROPDOWN_NEIGHBORHOOD']),
-                        config={'displayModeBar': True,
+                        config={'displayModeBar': modebarVisible,
                             "displaylogo": False,
                             'modeBarButtonsToRemove': ['pan2d', 'select2d', 
                                                         'lasso2d', 'zoom2d',
@@ -193,7 +195,7 @@ def layout(id=None):
                 dcc.Graph(id='neighborhood_price_history_plot', 
                         figure=hf.plotNeighborhoodHistorySales(nd.default['DROPDOWN_NEIGHBORHOOD'], nd.default['DROPDOWN_HISTORY']),
                         style={"width": "100%"}, 
-                        config={'displayModeBar': True,
+                        config={'displayModeBar': modebarVisible,
                             "displaylogo": False,
                             'modeBarButtonsToRemove': ['pan2d', 'select2d', 
                                                         'lasso2d', 'zoom2d',
@@ -202,7 +204,7 @@ def layout(id=None):
                 dcc.Graph(id='neighborhood_quant_history_plot', 
                         figure=hf.plotNeighborhoodHistorySales(nd.default['DROPDOWN_NEIGHBORHOOD'], nd.opts['DROPDOWN_HISTORY'][1]),
                         style={"width": "100%"}, 
-                        config={'displayModeBar': True,
+                        config={'displayModeBar': modebarVisible,
                             "displaylogo": False,
                             'modeBarButtonsToRemove': ['pan2d', 'select2d', 
                                                         'lasso2d', 'zoom2d',

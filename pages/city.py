@@ -34,6 +34,7 @@ HIST_NEIGHBORHOOD_TITLE = 'History of Residential Sales by'
 ## footnote
 source = '''Prices have been adjusted for inflation. Only sales with state code Residential 
 (urban/suburban) and Multifamily are included.'''
+modebarVisible = False
 # ----------------------------------------------------------------------------
 # Building dash
 year = np.arange(1945, 2021, 1, dtype=int)
@@ -82,7 +83,7 @@ layout = html.Div(
             [
                 dcc.Graph(id='census_city_plot', 
                           figure=cf.plotIndustrySector(),
-                          config={'displayModeBar': True,
+                          config={'displayModeBar': modebarVisible,
                             "displaylogo": False,
                             'modeBarButtonsToRemove': ['pan2d', 'select2d', 
                                                         'lasso2d', 'zoom2d',
@@ -104,7 +105,7 @@ layout = html.Div(
             [
                 dcc.Graph(id='census_hh_city_plot', 
                           figure=cf.plotIncomeCity(),
-                          config={'displayModeBar': True,
+                          config={'displayModeBar': modebarVisible,
                             "displaylogo": False,
                             'modeBarButtonsToRemove': ['pan2d', 'select2d', 
                                                         'lasso2d', 'zoom2d',
@@ -127,7 +128,7 @@ layout = html.Div(
                 dcc.Graph(id='history_price_city_plot', 
                           figure=hf.plotCityHistoryPrice(),
                           style={"width": "100%"}, 
-                          config={'displayModeBar': True,
+                          config={'displayModeBar': modebarVisible,
                             "displaylogo": False,
                             'modeBarButtonsToRemove': ['pan2d', 'select2d', 
                                                         'lasso2d', 'zoom2d',
@@ -136,7 +137,7 @@ layout = html.Div(
                 dcc.Graph(id='history_quant_city_plot', 
                           figure=hf.plotCityHistoryQuantity(),
                           style={"width": "100%"}, 
-                          config={'displayModeBar': True,
+                          config={'displayModeBar': modebarVisible,
                             "displaylogo": False,
                             'modeBarButtonsToRemove': ['pan2d', 'select2d', 
                                                         'lasso2d', 'zoom2d',

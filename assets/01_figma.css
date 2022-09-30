@@ -86,6 +86,9 @@
 	display:block;
 	font-size:18px;
 }
+.boldtext {
+	font-weight: 700;
+}
 .inline_title {
 	color:#070D1E;
 	font-size:25px;

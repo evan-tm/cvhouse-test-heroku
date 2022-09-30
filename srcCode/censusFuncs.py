@@ -119,7 +119,7 @@ def plotIndustrySector():
                                     'Self-Employed Incorporated': '#e96a26',
                                     'Private Not-For-Profit': '#009192',
                                     'Government': '#5b1453',
-                                    'Self-Employed Not Incorporated': '#9d7298'},
+                                    'Self-Employed Not Incorporated': '#f5d915'},
                 orientation="h", custom_data=["Desc"],
                 title = cd.text['IND_CITY_TITLE'])
     ## Change text displayed when mouse hovering over bar
@@ -176,7 +176,7 @@ def plotAgeCity():
                  title=cd.text['AGE_CITY_TITLE'], 
                  height = 550,
                  labels={'variable':cd.text['AGE_LEGEND_TITLE'], 
-                         'value':cd.text['AGE_X_TITLE'],
+                         'Total':cd.text['AGE_X_TITLE'],
                          'Age':cd.text['AGE_Y_TITLE']},
                  custom_data=["Totalct"])
     ## Change text displayed when mouse hovering over bar
@@ -277,7 +277,8 @@ def plotIncomeCity():
     # begin building figure
     fig = px.line(incomeCity, x="Year", y="Real_Income",
                     title=cd.text['INCOME_CITY_TITLE'],
-                    labels={"Real_Income": "Median Household Income ($)"},
+                    labels={"Real_Income": "<b>Median Household Income ($)</b>",
+                            "Year": "<b>Year</b>"},
                     markers = True,
                     color_discrete_sequence=["#7c4375"])
     fig.update_layout(title_x=0.517)
@@ -425,6 +426,8 @@ def plotTenureCity():
 ## out: figure
 def plotSizeCity():
     fig = px.line(popCity, x="Year", y="Population",
+                    labels={'Year':'<b>Year</b>',
+                            'Population':'<b>Population</b>'}, 
                     title="Population by Year for Charlottesville, VA",
                     markers=True)
     fig.update_xaxes(gridcolor='Black')
@@ -674,7 +677,8 @@ def plotIncomeNeighborhood(n):
                         title="Median Household Income by Year for " + n[0] + \
                             " and " + n[1] + ' ($)',
                         labels={"variable": "Neighborhood",
-                                "value": "Median Household Income ($)"},
+                                "value": "<b>Median Household Income ($)</b>",
+                                "Year": "<b>Year</b>"},
                         markers = True,
                         color_discrete_sequence=["#7c4375", "#009192"])
         fig.update_layout(title_x=0.46)
@@ -684,7 +688,8 @@ def plotIncomeNeighborhood(n):
         dfIncomeHood = incomeNeighborhood[n]
         fig = px.line(dfIncomeHood, x="Year", y=n[0],
                         title="Median Household Income by Year for " + n[0] + ' ($)',
-                        labels={n[0]: "Median Household Income ($)"},
+                        labels={n[0]: "<b>Median Household Income ($)</b>",
+                                "Year": "<b>Year</b>"},
                         markers = True,
                         color_discrete_sequence=["#7c4375"])
         fig.update_layout(title_x=0.517)
@@ -719,7 +724,8 @@ def plotIncomeDistNeighborhood(n, compare = False):
                  title=cd.text['INCOME_NEIGHBORHOOD_TITLE'].format(hood=n), 
                  height=480,
                  labels={n:cd.text['INCOME_X_TITLE'],
-                         'Race':cd.text['INCOME_Y_TITLE']})
+                         'Race':cd.text['INCOME_Y_TITLE'],
+                         'Bracket':'<b>Bracket</b>'})
     # update layout
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
                       plot_bgcolor="rgba(0,0,0,0)",
@@ -783,7 +789,7 @@ def plotOccupancyNeighborhood(n):
                         plot_bgcolor="rgba(0,0,0,0)",
                         paper_bgcolor="rgba(0,0,0,0)",
                         font=dict(size=17, color="rgb(7,13,30)"),
-                        titlefont={'size': 17},
+                        titlefont={'size': 19},
                         title_x = 0.55,
                         font_family="FranklinGothic",
                         font_color="#070D1E",
@@ -854,7 +860,9 @@ def plotSizeNeighborhood(n):
         fig = px.line(dfPopHood, x="Year", y="Population", color='NAME',
                         title="Population by Year for " + dfPopHood['NAME'][0] + \
                             " and " + dfPopHood['NAME'][1],
-                        labels={"NAME": "Neighborhood"},
+                        labels={"NAME": "Neighborhood",
+                                "Year": "<b>Year</b>",
+                                "Population": "<b>Population</b>"},
                         markers = True,
                         color_discrete_sequence=["#7c4375", "#009192"])
         fig.update_layout(title_x=0.46)
@@ -863,6 +871,8 @@ def plotSizeNeighborhood(n):
         dfPopHood = dfPopHood.reset_index(drop=True)
         fig = px.line(dfPopHood, x="Year", y="Population",
                         title="Population by Year for " + dfPopHood['NAME'][0],
+                        labels={"Year": "<b>Year</b>",
+                                "Population": "<b>Population</b>"},
                         markers = True,
                         color_discrete_sequence=["#7c4375"])
         fig.update_layout(title_x=0.517)

@@ -4,8 +4,8 @@ text = {
     "LOADING": "Loading...",
     "IND_CITY_TITLE": 'Industries and Sectors of Charlottesville Residents (% of Total Employed Age 16+ Civilians)',
     "IND_CITY_LEGEND_TITLE": 'Sector',
-    "IND_X_TITLE": 'Employed Population (%)',
-    "IND_Y_TITLE": 'Industries',
+    "IND_X_TITLE": '<b>Employed Population (%)</b>',
+    "IND_Y_TITLE": '<b>Industries</b>',
     "IND_CITY_HOVER": '<i>Sector</i>: %{data.name}' + \
                  '<br>%{value:.2f}% of Total Employed<br>' + \
                  'Industries: <b>%{customdata}</b>' + \
@@ -17,8 +17,8 @@ text = {
                  '<extra></extra>',
     "AGE_CITY_TITLE": 'Population Chart for Charlottesville, Virginia',
     "AGE_LEGEND_TITLE": 'Sex',
-    "AGE_X_TITLE": 'Population (%)',
-    "AGE_Y_TITLE": 'Age Group',
+    "AGE_X_TITLE": '<b>Population (%)</b>',
+    "AGE_Y_TITLE": '<b>Age Group</b>',
     "AGE_CITY_HOVER": 'Age Group: <b>%{data.name}</b>' + \
                  '<br>%{value:.2f}% of Total Population<br>' + \
                  '<b>%{customdata}</b> People' + \
@@ -29,13 +29,13 @@ text = {
                             '<b>%{customdata}</b> People<br>' + \
                             '<extra></extra>',
     "RACE_CITY_TITLE": 'Population by Race and Ethnicity for Charlottesville, Virginia (% of Total)',
-    "RACE_X_TITLE": 'Population (%)',
-    "RACE_Y_TITLE": 'Race and Ethnicity',
+    "RACE_X_TITLE": '<b>Population (%)</b>',
+    "RACE_Y_TITLE": '<b>Race and Ethnicity</b>',
     "RACE_NEIGHBORHOOD_TITLE": 'Population by Race and Ethnicity for {hood} (% of Total)',
     "INCOME_CITY_TITLE": 'Median Household Income by Year for Charlottesville, Virginia ($)',
     "INCOME_DIST_CITY_TITLE": 'Households by Income in 2020 for Charlottesville, Virginia (% of Total)',
-    "INCOME_X_TITLE": 'Population (%)',
-    "INCOME_Y_TITLE": 'Income Bracket',
+    "INCOME_X_TITLE": '<b>Population (%)</b>',
+    "INCOME_Y_TITLE": '<b>Income Bracket</b>',
     "INCOME_NEIGHBORHOOD_TITLE": 'Households by Income in 2020 for {hood} (% of Total)',
     "OCC_CITY_TITLE": 'Occupancy Status of Charlottesville Households (% of Total Households)',
     "OCC_CITY_HOVER": '<i>Status</i>: <b>%{data.name}</b>' + \

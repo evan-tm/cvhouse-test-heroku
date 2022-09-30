@@ -36,10 +36,14 @@ layout = html.Div(
                     ], href=cd.links['EVAN'], target="_blank", className = "ctct_elem4"),
                 ], className = "grid_contact"),
                 html.Div([
-                    html.B(cd.text['SPENCER'], className="ctct_elem1 center_text bodytext"),
-                    html.B(cd.text['XINLUN'], className="ctct_elem2 center_text bodytext"),
-                    html.B(cd.text['MALVIKA'], className="ctct_elem3 center_text bodytext"),
-                    html.B(cd.text['EVAN'], className="ctct_elem4 center_text bodytext"),
+                    html.B(cd.text['SPENCER'], 
+                           className="ctct_elem1 center_text bodytext boldtext"),
+                    html.B(cd.text['XINLUN'], 
+                           className="ctct_elem2 center_text bodytext boldtext"),
+                    html.B(cd.text['MALVIKA'], 
+                           className="ctct_elem3 center_text bodytext boldtext"),
+                    html.B(cd.text['EVAN'], 
+                           className="ctct_elem4 center_text bodytext boldtext"),
                 ], className = "grid_contact"),
                 html.Div([
                     html.I(cd.text['STUDENT'], className="ctct_elem1 center_text bodytext"),
@@ -60,8 +64,10 @@ layout = html.Div(
                     ], href=cd.links['ERIN'], target="_blank", className = "ctct_elem3"),
                 ], className = "grid_contact"),
                 html.Div([
-                    html.B(cd.text['KROPKO'], className="ctct_elem2 center_text bodytext"),
-                    html.B(cd.text['ERIN'], className="ctct_elem3 center_text bodytext"),
+                    html.B(cd.text['KROPKO'], 
+                           className="ctct_elem2 center_text bodytext boldtext"),
+                    html.B(cd.text['ERIN'], 
+                           className="ctct_elem3 center_text bodytext boldtext"),
                 ], className = "grid_contact"),
                 html.Div([
                     html.I(cd.text['ADVISOR'], className="ctct_elem2 center_text bodytext"),
