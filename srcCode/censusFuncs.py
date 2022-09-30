@@ -426,9 +426,9 @@ def plotTenureCity():
 ## out: figure
 def plotSizeCity():
     fig = px.line(popCity, x="Year", y="Population",
-                    labels={'Year':'<b>Year</b>',
-                            'Population':'<b>Population</b>'}, 
-                    title="Population by Year for Charlottesville, VA",
+                    labels={'Year':cd.text['SIZE_X_TITLE'],
+                            'Population':cd.text['SIZE_Y_TITLE']}, 
+                    title=cd.text['SIZE_CITY_TITLE'],
                     markers=True)
     fig.update_xaxes(gridcolor='Black')
     fig.update_yaxes(gridcolor='Black')
@@ -861,8 +861,8 @@ def plotSizeNeighborhood(n):
                         title="Population by Year for " + dfPopHood['NAME'][0] + \
                             " and " + dfPopHood['NAME'][1],
                         labels={"NAME": "Neighborhood",
-                                "Year": "<b>Year</b>",
-                                "Population": "<b>Population</b>"},
+                                "Year": cd.text['SIZE_X_TITLE'],
+                                "Population": cd.text['SIZE_Y_TITLE']},
                         markers = True,
                         color_discrete_sequence=["#7c4375", "#009192"])
         fig.update_layout(title_x=0.46)
@@ -871,8 +871,8 @@ def plotSizeNeighborhood(n):
         dfPopHood = dfPopHood.reset_index(drop=True)
         fig = px.line(dfPopHood, x="Year", y="Population",
                         title="Population by Year for " + dfPopHood['NAME'][0],
-                        labels={"Year": "<b>Year</b>",
-                                "Population": "<b>Population</b>"},
+                        labels={"Year": cd.text['SIZE_X_TITLE'],
+                                "Population": cd.text['SIZE_Y_TITLE']},
                         markers = True,
                         color_discrete_sequence=["#7c4375"])
         fig.update_layout(title_x=0.517)
