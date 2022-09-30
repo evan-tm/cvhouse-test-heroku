@@ -316,6 +316,14 @@
 	text-decoration: none;
 	border-bottom: 2px solid #e96a26;
 }
+.support_link {
+	display:inline-block;
+	font-size:21px;
+	color:#7c4375;
+	font-weight: 600;
+	text-decoration: none;
+	border-bottom: 2px solid #e96a26;
+}
 .header_links_text:hover {
 	color: #515151;
 }
