@@ -333,7 +333,7 @@ def update_census_hh_neighborhood_id_plot(censusSelection, n):
     if censusSelection == nd.opts['DROPDOWN_CENSUS_HH'][0]:
         return cf.plotIncomeNeighborhood(n)
     elif censusSelection == nd.opts['DROPDOWN_CENSUS_HH'][1]:
-        return cf.plotIncomeDistNeighborhood(n)
+        return cf.plotIncomeDistNeighborhood(n, article = True)
     elif censusSelection == nd.opts['DROPDOWN_CENSUS_HH'][2]:
         return cf.plotOccupancyNeighborhood(n)
     else:

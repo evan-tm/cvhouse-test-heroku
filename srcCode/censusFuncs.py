@@ -736,7 +736,7 @@ def plotIncomeNeighborhood(n):
 ## Function for creating income distribution plot for the neighborhoods
 ## in: neighborhood, t/f whether the plot is for the comparison page
 ## out: figure
-def plotIncomeDistNeighborhood(n, compare = False):
+def plotIncomeDistNeighborhood(n, compare = False, article = False):
     # begin building figure
     fig = px.bar(incomeNeighborhoodDist, 
                  y="Bracket", 
@@ -776,6 +776,11 @@ def plotIncomeDistNeighborhood(n, compare = False):
         ## Fixed x axis size for each frame
         fig.update_xaxes(tickvals = [i*5 for i in range(8)], 
                         range = [0, 43],
+                        gridcolor='Black')
+    elif article:
+        ## Fixed x axis size for each frame
+        fig.update_xaxes(tickvals = [i*5 for i in range(8)], 
+                        range = [0, 42],
                         gridcolor='Black')
     else:
         ## Fixed x axis size for each frame
