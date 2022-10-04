@@ -9,7 +9,9 @@ text = {
     "HISTORY_TITLE": 'History of Residential Sales by',
     "FOOTNOTE": '''Prices have been adjusted for inflation to 2022 dollars. \
         Only sales with state code Residential (urban/suburban) and \
-        Multifamily are included.'''
+        Multifamily are included.''',
+    "MOBILE_DISCLAIMER": "Mobile Users: Please reload the page as a desktop \
+        site for an improved experience.",
 }
 
 opts = {

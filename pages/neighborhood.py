@@ -47,6 +47,12 @@ def layout(id=None):
                                             dd_style={"display": "none"}, grid_width="1fr", clearable=False),
                         ], className="neighborhood_drop"),
                     ], className = "subcontainer"),
+                html.Div(
+                   [
+                       html.Span(html.B(nd.text['MOBILE_DISCLAIMER']), 
+                                 id="copy_text", className="left_text bodytext"),
+                   ], className = "subcontainer"),
+                html.Br(),
                 # Population census charts
                 html.Div([
                     df.createLeftAlignDropdown(nd.text['DROPDOWN_CENSUS'], nd.opts['DROPDOWN_CENSUS'],
