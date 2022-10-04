@@ -365,6 +365,26 @@
 	align-items:center;
 	justify-items:center;
 }
+.grid_dd3 {
+	display: grid;
+  	grid-template-areas: 
+  		"dd_elem1 dd_elem2 .";
+	grid-template-columns: 7fr 1fr 4fr;
+	max-width:1600px;
+	margin:5px auto;
+	align-items:center;
+	justify-items:center;
+}
+.grid_dd4 {
+	display: grid;
+  	grid-template-areas: 
+  		"dd_elem1 dd_elem2 .";
+	grid-template-columns: 5fr 1fr 6fr;
+	max-width:1600px;
+	margin:5px auto;
+	align-items:center;
+	justify-items:center;
+}
 .center_div {
 	text-align: center;
 }
