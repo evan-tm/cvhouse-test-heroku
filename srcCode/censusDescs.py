@@ -2,13 +2,12 @@
 
 text = {
     "LOADING": "Loading...",
-    "IND_CITY_TITLE": 'Industries and Sectors of Charlottesville Residents (% of Total Employed Age 16+ Civilians)',
+    "IND_CITY_TITLE": 'Industries of Charlottesville Residents by Year (% of Total Employed Age 16+ Civilians)',
     "IND_CITY_LEGEND_TITLE": 'Sector',
     "IND_X_TITLE": '<b>Employed Population (%)</b>',
     "IND_Y_TITLE": '<b>Industries</b>',
-    "IND_CITY_HOVER": '<i>Sector</i>: %{data.name}' + \
-                 '<br>%{value:.2f}% of Total Employed<br>' + \
-                 'Industries: <b>%{customdata}</b>' + \
+    "IND_CITY_HOVER": 'Industries: <b>%{customdata}</b>' + \
+                 '<br>%{value:.2f}% of Total Employed' + \
                  '<extra></extra>',
     "IND_NEIGHBORHOOD_TITLE": 'Industries of {hood} Residents (% of Total Employed Age 16+ Civilians)',
     "IND_NEIGHBORHOOD_LEGEND_TITLE": "Neighborhood",

@@ -109,33 +109,21 @@ def addFrameAnnotations(frame, data, num, frameIndex, column, compare = False):
 def plotIndustrySector():
     fig = px.bar(industryCity, 
                 y="Industry", 
-                x=["Private For-Profit", "Self-Employed Incorporated", 
-                   "Private Not-For-Profit", "Government", 
-                   "Self-Employed Not Incorporated"], 
+                x="Total", 
                 animation_frame="Year",
-                labels={'value':cd.text['IND_X_TITLE'], 
-                        'Industry':cd.text['IND_Y_TITLE']}, 
-                color_discrete_map={'Private For-Profit': '#46494b',
-                                    'Self-Employed Incorporated': '#e96a26',
-                                    'Private Not-For-Profit': '#009192',
-                                    'Government': '#5b1453',
-                                    'Self-Employed Not Incorporated': '#f5d915'},
+                labels={'Total':cd.text['IND_X_TITLE'], 
+                        'Industry':cd.text['IND_Y_TITLE']},
                 orientation="h", custom_data=["Desc"],
                 title = cd.text['IND_CITY_TITLE'])
     ## Change text displayed when mouse hovering over bar
     fig.update_traces(hovertemplate = cd.text['IND_CITY_HOVER'],
-                      opacity=0.8)
+                      marker_color='#ed8851', marker_line_color='#e96a26',
+                      marker_line_width=1.5, opacity=0.8)
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
                     plot_bgcolor="rgba(0,0,0,0)",
                     paper_bgcolor="rgba(0,0,0,0)",
                     autosize=True,
                     font=dict(size=17, color="rgb(7,13,30)"),
-                    legend_title_text=cd.text['IND_CITY_LEGEND_TITLE'],
-                    legend=dict(yanchor="bottom", 
-                                x=0.83, 
-                                y=0, 
-                                xanchor="right",
-                                bgcolor="Gainsboro"),
                     hoverlabel_align = 'left',
                     titlefont={'size': 19},
                     title_x = 0.56,
@@ -151,7 +139,6 @@ def plotIndustrySector():
                     tickvals = [i*5 for i in range(9)], 
                     range = [0, 45],
                     gridcolor='Black')
-    #fig['layout']['updatemenus'][0]['pad']=dict(r= 0, t= 70)
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
     fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000
@@ -159,6 +146,9 @@ def plotIndustrySector():
     for idx, f in enumerate(fig.frames):
         for dat in f.data:
             dat.hovertemplate = cd.text['IND_CITY_HOVER']
+            dat.marker = dict(color='#ed8851',
+                              line=dict(color='#e96a26',
+                                        width=1.5))
         f = addFrameAnnotations(f, industryCity, [i for i in range(13)], idx, 'Industry')
   
     return fig
