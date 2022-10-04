@@ -454,7 +454,7 @@ def plotSizeCity():
 
 ## Function for creating plot of industry employment populations by neighborhood
 ## out: figure
-def plotIndustryByNeighborhood(n, compare = False):
+def plotIndustryByNeighborhood(n, compare = False, article = False):
     fig = px.bar(industryNeighborhood, 
                  x=n,
                  y='Industry', 
@@ -504,6 +504,15 @@ def plotIndustryByNeighborhood(n, compare = False):
                         range = [0, 76],
                         gridcolor='Black')
         fig.update_layout(titlefont={'size': 16})
+    elif article:
+        ## Fixed x axis size for each frame
+        fig.update_xaxes(ticktext = ["0", "5", "10", "15", "20", 
+                                    "25", "30", "35", "40", "45", 
+                                    "50", "55", "60"], 
+                        tickvals = [i*5 for i in range(13)], 
+                        range = [0, 74],
+                        gridcolor='Black')
+        fig.update_layout(titlefont={'size': 16})
     else:
         ## Fixed x axis size for each frame
         fig.update_xaxes(ticktext = ["0", "5", "10", "15", "20", 
@@ -532,7 +541,7 @@ def plotIndustryByNeighborhood(n, compare = False):
 
 ## Function for creating plot of age by sex by neighborhood
 ## out: figure
-def plotAgeNeighborhood(n, compare = False):
+def plotAgeNeighborhood(n, compare = False, article = False):
     # begin building figure
     fig = px.bar(ageNeighborhood, 
                  y="Age", 
@@ -575,6 +584,11 @@ def plotAgeNeighborhood(n, compare = False):
         fig.update_xaxes(tickvals = [i*5 for i in range(11)], 
                         range = [0, 62],
                         gridcolor='Black')
+    elif article:
+        ## Fixed x axis size for each frame
+        fig.update_xaxes(tickvals = [i*5 for i in range(11)], 
+                        range = [0, 61],
+                        gridcolor='Black')
     else:
         ## Fixed x axis size for each frame
         fig.update_xaxes(tickvals = [i*5 for i in range(11)], 
@@ -603,7 +617,7 @@ def plotAgeNeighborhood(n, compare = False):
 ## Function for creating race plot for the individual neighborhoods
 ## in: neighborhood, t/f whether the plot is for the comparison page
 ## out: figure
-def plotRaceNeighborhood(n, compare = False):
+def plotRaceNeighborhood(n, compare = False, article = False):
     # begin building figure
     fig = px.bar(raceNeighborhood, 
                  y="Race and Ethnicity", 
@@ -647,6 +661,11 @@ def plotRaceNeighborhood(n, compare = False):
                         range = [0, 122],
                         gridcolor='Black')
         fig.update_layout(titlefont={'size': 17})
+    elif article:
+        ## Fixed x axis size for each frame
+        fig.update_xaxes(tickvals = [i*10 for i in range(10)], 
+                        range = [0, 118],
+                        gridcolor='Black')
     else:
         ## Fixed x axis size for each frame
         fig.update_xaxes(tickvals = [i*10 for i in range(11)], 
@@ -683,7 +702,7 @@ def plotIncomeNeighborhood(n):
                         labels={"variable": "Neighborhood",
                                 "value": "<b>Median Household Income ($)</b>",
                                 "Year": "<b>Year</b>"},
-                        markers = True,
+                        markers = True, height = 500,
                         color_discrete_sequence=["#7c4375", "#009192"])
         fig.update_layout(title_x=0.46)
     else:
@@ -694,7 +713,7 @@ def plotIncomeNeighborhood(n):
                         title="Median Household Income by Year for " + n[0] + ' ($)',
                         labels={n[0]: "<b>Median Household Income ($)</b>",
                                 "Year": "<b>Year</b>"},
-                        markers = True,
+                        markers = True, height = 500,
                         color_discrete_sequence=["#7c4375"])
         fig.update_layout(title_x=0.517)
 
@@ -703,7 +722,6 @@ def plotIncomeNeighborhood(n):
     fig.update_layout(margin=go.layout.Margin(l=0, r=0, b=0, t=50, pad=15),
                     plot_bgcolor="rgba(0,0,0,0)",
                     paper_bgcolor="rgba(0,0,0,0)",
-                    autosize=True,
                     font=dict(size=17),
                     font_family="FranklinGothic",
                     font_color="#070D1E",
@@ -795,12 +813,12 @@ def plotOccupancyNeighborhood(n):
                 custom_data=[n + "ct"],
                 labels={"OccupancyStatus": "Occupancy Status",
                         n: ""},
+                height = 400,
                 title = cd.text['OCC_NEIGHBORHOOD_TITLE'].format(hood=n))
     ## Change text displayed when mouse hovering over bar
     fig.update_traces(hovertemplate = cd.text['OCC_NEIGHBORHOOD_HOVER'],
                       texttemplate = cd.text['OCC_ANNOTATE'])
     fig.update_layout(margin=go.layout.Margin(l=50, r=10, b=0, t=30, pad=15),
-                        autosize=True,
                         plot_bgcolor="rgba(0,0,0,0)",
                         paper_bgcolor="rgba(0,0,0,0)",
                         font=dict(size=17, color="rgb(7,13,30)"),
@@ -836,12 +854,12 @@ def plotTenureNeighborhood(n):
                 orientation = 'h',
                 custom_data=[n + "ct"],
                 labels={n: ""},
+                height = 400,
                 title = cd.text['TENURE_NEIGHBORHOOD_TITLE'].format(hood=n))
     ## Change text displayed when mouse hovering over bar
     fig.update_traces(hovertemplate = cd.text['OCC_NEIGHBORHOOD_HOVER'],
                       texttemplate = cd.text['OCC_ANNOTATE'])
     fig.update_layout(margin=go.layout.Margin(l=50, r=10, b=0, t=30, pad=15),
-                        autosize=True,
                         plot_bgcolor="rgba(0,0,0,0)",
                         paper_bgcolor="rgba(0,0,0,0)",
                         font=dict(size=17, color="rgb(7,13,30)"),
@@ -878,7 +896,7 @@ def plotSizeNeighborhood(n):
                         labels={"NAME": "Neighborhood",
                                 "Year": cd.text['SIZE_X_TITLE'],
                                 "Population": cd.text['SIZE_Y_TITLE']},
-                        markers = True,
+                        markers = True, height = 500,
                         color_discrete_sequence=["#7c4375", "#009192"])
         fig.update_layout(title_x=0.46)
     else:
@@ -888,7 +906,7 @@ def plotSizeNeighborhood(n):
                         title="Population by Year for " + dfPopHood['NAME'][0],
                         labels={"Year": cd.text['SIZE_X_TITLE'],
                                 "Population": cd.text['SIZE_Y_TITLE']},
-                        markers = True,
+                        markers = True, height = 500,
                         color_discrete_sequence=["#7c4375"])
         fig.update_layout(title_x=0.517)
 
@@ -898,7 +916,6 @@ def plotSizeNeighborhood(n):
     fig.update_layout(margin=go.layout.Margin(l=0, r=0, b=0, t=50, pad=15),
                     plot_bgcolor="rgba(0,0,0,0)",
                     paper_bgcolor="rgba(0,0,0,0)",
-                    autosize=True,
                     font=dict(size=17),
                     font_family="FranklinGothic",
                     font_color="#070D1E",

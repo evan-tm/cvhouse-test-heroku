@@ -43,7 +43,7 @@ def layout(id=None):
                         # Neighborhood dropdown
                         html.Div([
                             df.createDropdown(nd.text['DROPDOWN_NEIGHBORHOOD'], nd.opts['DROPDOWN_NEIGHBORHOOD'],
-                                            id, dd_id="dropdown_neighborhood",
+                                            id, dd_id="dropdown_neighborhood_id",
                                             dd_style={"display": "none"}, grid_width="1fr", clearable=False),
                         ], className="neighborhood_drop"),
                     ], className = "subcontainer"),
@@ -56,15 +56,15 @@ def layout(id=None):
                 # Population census charts
                 html.Div([
                     df.createLeftAlignDropdown(nd.text['DROPDOWN_CENSUS'], nd.opts['DROPDOWN_CENSUS'],
-                                    nd.default['DROPDOWN_CENSUS'], dd_id='dropdown_neighborhood_census',
+                                    nd.default['DROPDOWN_CENSUS'], dd_id='dropdown_neighborhood_id_census',
                                     dd_style={'width': '175px'}, grid_class="grid_dd3",
-                                    desc_id='dd_neighborhood_census_text',
+                                    desc_id='dd_neighborhood_id_census_text',
                                     clearable=False, searchable=False),
                 ], className = "subcontainer"),
                 html.Div(
                     [
-                        dcc.Graph(id='census_neighborhood_plot', 
-                                figure=cf.plotIndustryByNeighborhood(id),
+                        dcc.Graph(id='census_neighborhood_id_plot', 
+                                figure=cf.plotIndustryByNeighborhood(id, article = True),
                                 config={'displayModeBar': modebarVisible,
                                     "displaylogo": False,
                                     'modeBarButtonsToRemove': ['pan2d', 'select2d', 
@@ -78,14 +78,14 @@ def layout(id=None):
                 # Household census charts
                 html.Div([
                     df.createLeftAlignDropdown(nd.text['DROPDOWN_CENSUS_HH'], nd.opts['DROPDOWN_CENSUS_HH'],
-                                    nd.default['DROPDOWN_CENSUS_HH'], dd_id='dropdown_neighborhood_census_hh',
+                                    nd.default['DROPDOWN_CENSUS_HH'], dd_id='dropdown_neighborhood_id_census_hh',
                                     dd_style={'width': '175px'}, grid_class="grid_dd3",
-                                    desc_id='dd_neighborhood_census_hh_text',
+                                    desc_id='dd_neighborhood_id_census_hh_text',
                                     clearable=False, searchable=False),
                 ], className = "subcontainer"),
                 html.Div(
                     [
-                        dcc.Graph(id='census_hh_neighborhood_plot', 
+                        dcc.Graph(id='census_hh_neighborhood_id_plot', 
                                 figure=cf.plotIncomeNeighborhood(id),
                                 config={'displayModeBar': modebarVisible,
                                     "displaylogo": False,
@@ -100,13 +100,13 @@ def layout(id=None):
                 # History of price
                 html.Div([
                     df.createLeftAlignDropdown(nd.text['HISTORY_TITLE'], nd.opts['DROPDOWN_HISTORY'],
-                                    nd.default['DROPDOWN_HISTORY'], dd_id='dropdown_neighborhood_history',
+                                    nd.default['DROPDOWN_HISTORY'], dd_id='dropdown_neighborhood_id_history',
                                     dd_style={'width': '150px'}, grid_class="grid_dd4",
                                     clearable=False, searchable=False),
                 ], className = "subcontainer"),
                 html.Div(
                     [
-                        dcc.Graph(id='neighborhood_price_history_plot', 
+                        dcc.Graph(id='neighborhood_id_price_history_plot', 
                                 figure=hf.plotNeighborhoodHistorySales(id, nd.default['DROPDOWN_HISTORY']),
                                 style={"width": "100%"}, 
                                 config={'displayModeBar': modebarVisible,
@@ -115,7 +115,7 @@ def layout(id=None):
                                                                 'lasso2d', 'zoom2d',
                                                                 'zoomIn2d', 'zoomOut2d',
                                                                 'autoScale2d']}),
-                        dcc.Graph(id='neighborhood_quant_history_plot', 
+                        dcc.Graph(id='neighborhood_id_quant_history_plot', 
                                 figure=hf.plotNeighborhoodHistorySales(id, nd.opts['DROPDOWN_HISTORY'][1]),
                                 style={"width": "100%"}, 
                                 config={'displayModeBar': modebarVisible,
@@ -289,6 +289,68 @@ def history_neighborhood_sales(neighs):
           Output("neighborhood_quant_history_plot", "style"),
           Input("dropdown_neighborhood_history", "value"))
 def show_hide_history_plot(historySelection):
+    if historySelection == nd.opts['DROPDOWN_HISTORY'][0]:
+        return ({'display': 'block', "width": "100%"}, 
+                {'display': 'none'})
+    else:
+        return ({'display': 'none'}, 
+                {'display': 'block', "width": "100%"})
+
+@callback(
+    Output('dd_neighborhood_id_census_text', 'children'),
+    Output('dd_neighborhood_id_census_hh_text', 'children'),
+    Input('dropdown_neighborhood_id', 'value'))
+def update_neighborhood_id_texts(n):
+    if n == 'Jefferson Park Avenue':
+        return nd.text['DROPDOWN_CENSUS'].format('Jefferson Park Ave'), \
+            nd.text['DROPDOWN_CENSUS_HH'].format('Jefferson Park Ave')
+    return nd.text['DROPDOWN_CENSUS'].format(n), \
+        nd.text['DROPDOWN_CENSUS_HH'].format(n)
+
+@callback(
+    Output('census_neighborhood_id_plot', 'figure'),
+    Input('dropdown_neighborhood_id_census', 'value'), 
+    Input('dropdown_neighborhood_id', 'value'))
+def update_census_neighborhood_id_plot(censusSelection, n):
+    if n is None:
+        return cf.plotIndustryByNeighborhood(nd.default['DROPDOWN_NEIGHBORHOOD'], article = True)
+    if censusSelection == nd.opts['DROPDOWN_CENSUS'][0]:
+        return cf.plotAgeNeighborhood(n, article = True)
+    elif censusSelection == nd.opts['DROPDOWN_CENSUS'][1]:
+        return cf.plotIndustryByNeighborhood(n, article = True)
+    elif censusSelection == nd.opts['DROPDOWN_CENSUS'][2]:
+        return cf.plotRaceNeighborhood(n, article = True)
+    else:
+        return cf.plotSizeNeighborhood(n)
+
+@callback(
+    Output('census_hh_neighborhood_id_plot', 'figure'),
+    Input('dropdown_neighborhood_id_census_hh', 'value'), 
+    Input('dropdown_neighborhood_id', 'value'))
+def update_census_hh_neighborhood_id_plot(censusSelection, n):
+    if n is None:
+        return cf.plotIncomeNeighborhood(nd.default['DROPDOWN_NEIGHBORHOOD'])
+    if censusSelection == nd.opts['DROPDOWN_CENSUS_HH'][0]:
+        return cf.plotIncomeNeighborhood(n)
+    elif censusSelection == nd.opts['DROPDOWN_CENSUS_HH'][1]:
+        return cf.plotIncomeDistNeighborhood(n)
+    elif censusSelection == nd.opts['DROPDOWN_CENSUS_HH'][2]:
+        return cf.plotOccupancyNeighborhood(n)
+    else:
+        return cf.plotTenureNeighborhood(n)
+
+@callback(Output("neighborhood_id_price_history_plot", "figure"),
+          Output("neighborhood_id_quant_history_plot", "figure"),
+          [Input("dropdown_neighborhood_id", "value")])
+def history_neighborhood_id_sales(neighs):
+    fig1 = hf.plotNeighborhoodHistorySales(neighs, nd.default['DROPDOWN_HISTORY'])
+    fig2 = hf.plotNeighborhoodHistorySales(neighs, nd.opts['DROPDOWN_HISTORY'][1])
+    return fig1, fig2
+
+@callback(Output("neighborhood_id_price_history_plot", "style"),
+          Output("neighborhood_id_quant_history_plot", "style"),
+          Input("dropdown_neighborhood_id_history", "value"))
+def show_hide_history_plot_id(historySelection):
     if historySelection == nd.opts['DROPDOWN_HISTORY'][0]:
         return ({'display': 'block', "width": "100%"}, 
                 {'display': 'none'})
