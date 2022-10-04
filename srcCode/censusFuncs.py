@@ -308,9 +308,10 @@ def plotIncomeDistCity():
     fig = px.bar(incomeCityDist, 
                  y="Bracket", 
                  x="Income",
+                 animation_frame='Year',
                  orientation="h",
                  title=cd.text['INCOME_DIST_CITY_TITLE'], 
-                 height=480,
+                 height=550,
                  labels={'Income':cd.text['INCOME_X_TITLE'],
                          'Bracket':cd.text['INCOME_Y_TITLE']},
                  color_discrete_sequence=["#e96a26"])
@@ -324,7 +325,7 @@ def plotIncomeDistCity():
                                   xanchor="right",
                                   bgcolor="DimGray"),
                       titlefont={'size': 19},
-                      title_x = 0.565,
+                      title_x = 0.55,
                       font_family="FranklinGothic",
                       font_color="#070D1E",
                       title_font_family="FranklinGothicPro",
@@ -335,6 +336,18 @@ def plotIncomeDistCity():
     fig.update_xaxes(tickvals = [i*2 for i in range(9)], 
                      range = [0, 18],
                      gridcolor='Black')
+    fig['layout']['updatemenus'][0]['x']=-0.04
+    fig['layout']['sliders'][0]['x']=-0.04
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000
+    ## Loop through frames to edit hover and by-frame ticker annotations
+    for idx, f in enumerate(fig.frames):
+        for dat in f.data:
+            dat.marker = dict(color='#ed8851',
+                              line=dict(color='#e96a26',
+                                        width=1.5))
+        f = addFrameAnnotations(f, incomeCityDist, 
+                                [i for i in range(16)], 
+                                idx, 'Bracket')
     ## Update bar styling
     fig.update_traces(marker_color='#ed8851', marker_line_color='#e96a26',
                       marker_line_width=1.5, opacity=0.8)
@@ -723,10 +736,9 @@ def plotIncomeDistNeighborhood(n, compare = False):
                  animation_frame='Year',
                  orientation="h",
                  title=cd.text['INCOME_NEIGHBORHOOD_TITLE'].format(hood=n), 
-                 height=480,
+                 height=550,
                  labels={n:cd.text['INCOME_X_TITLE'],
-                         'Race':cd.text['INCOME_Y_TITLE'],
-                         'Bracket':'<b>Bracket</b>'})
+                         'Bracket':cd.text['INCOME_Y_TITLE']})
     # update layout
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
                       plot_bgcolor="rgba(0,0,0,0)",
@@ -738,7 +750,7 @@ def plotIncomeDistNeighborhood(n, compare = False):
                                   xanchor="right",
                                   bgcolor="DimGray"),
                       titlefont={'size': 19},
-                      title_x = 0.56,
+                      title_x = 0.555,
                       font_family="FranklinGothic",
                       font_color="#070D1E",
                       title_font_family="FranklinGothicPro",
@@ -762,6 +774,18 @@ def plotIncomeDistNeighborhood(n, compare = False):
         fig.update_xaxes(tickvals = [i*5 for i in range(8)], 
                         range = [0, 40],
                         gridcolor='Black')
+    fig['layout']['updatemenus'][0]['x']=-0.04
+    fig['layout']['sliders'][0]['x']=-0.04
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000
+    ## Loop through frames to edit hover and by-frame ticker annotations
+    for idx, f in enumerate(fig.frames):
+        for dat in f.data:
+            dat.marker = dict(color='#ed8851',
+                              line=dict(color='#e96a26',
+                                        width=1.5))
+        f = addFrameAnnotations(f, incomeNeighborhoodDist, 
+                                [i for i in range(16)], 
+                                idx, 'Bracket', compare)
     fig.update_traces(marker_color='#ed8851', marker_line_color='#e96a26',
                       marker_line_width=1.5, opacity=0.8)
     

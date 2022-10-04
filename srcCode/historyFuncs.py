@@ -12,18 +12,18 @@ sales_year_multi = pd.read_pickle("data/rolling/sales_year_multi.pkl")
 def plotNeighborhoodHistorySales(neighs, var):
     if var == "Sales Quantity":
         to_plot = "count"
-        y_label = "<b>Yearly Number of Sales</b>"
+        y_label = "<b>Number of Sales</b>"
         if len(neighs) == 2:
-            title = "Yearly Sales Quantity by Year for " + neighs[0] + " and " + neighs[1]
+            title = "Sales Quantity by Year for " + neighs[0] + " and " + neighs[1]
         else:
-            title = "Yearly Sales Quantity by Year for " + neighs
+            title = "Sales Quantity by Year for " + neighs
     else:
         to_plot = "median"
-        y_label = "<b>Yearly Median Sale Price ($, inflation adjusted)</b>"
+        y_label = "<b>Median Sale Price ($, inflation adjusted)</b>"
         if len(neighs) == 2:
-            title = "Yearly Median Sale Price by Year for " + neighs[0] + " and " + neighs[1] + " ($, inflation adjusted)"
+            title = "Median Sale Price by Year for " + neighs[0] + " and " + neighs[1] + " ($, inflation adjusted)"
         else:
-            title = "Yearly Median Sale Price by Year for " + neighs + " ($, inflation adjusted)"
+            title = "Median Sale Price by Year for " + neighs + " ($, inflation adjusted)"
     fig = go.Figure(data=go.Scatter(x=sales_year["SaleDate"], y=sales_year["SaleAmountAdjusted"][to_plot], 
                                     name="Charlottesville City", line=dict(color="#7c4375")))
     syn = pd.read_pickle("data/rolling/sales_year_nb_" + base64.b64encode(neighs.encode('ascii')).decode('ascii') + ".pkl")
@@ -61,9 +61,9 @@ def plotCityHistoryPrice():
     fig.update_xaxes(range=["1945-01-01T00:00:00Z", "2022-12-31T23:59:59Z"],
                      gridcolor='Black')
     fig.update_yaxes(gridcolor='Black')
-    fig.update_layout(title="Yearly Median Sale Price of Residential Property in Charlottesville, Virginia ($, inflation adjusted)",
+    fig.update_layout(title="Median Sale Price of Residential Property by Year in Charlottesville, Virginia ($, inflation adjusted)",
                       xaxis_title="<b>Year</b>",
-                      yaxis_title="<b>Yearly Median Sale Price ($, inflation adjusted)</b>",
+                      yaxis_title="<b>Median Sale Price ($, inflation adjusted)</b>",
                       margin=go.layout.Margin(l=0, r=0, b=0, t=50, pad=15),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
@@ -90,9 +90,9 @@ def plotCityHistoryQuantity():
     fig.update_xaxes(range=["1945-01-01T00:00:00Z", "2022-12-31T23:59:59Z"],
                      gridcolor='Black')
     fig.update_yaxes(gridcolor='Black')
-    fig.update_layout(title="Yearly Sales Quantity of Residential Property in Charlottesville, Virginia",
+    fig.update_layout(title="Sales Quantity of Residential Property by Year in Charlottesville, Virginia",
                       xaxis_title="<b>Year</b>",
-                      yaxis_title="<b>Yearly Number of Sales</b>",
+                      yaxis_title="<b>Number of Sales</b>",
                       margin=go.layout.Margin(l=0, r=0, b=0, t=50, pad=15),
                       plot_bgcolor="rgba(0,0,0,0)",
                       paper_bgcolor="rgba(0,0,0,0)",
@@ -110,12 +110,12 @@ def plotCityHistoryQuantity():
 def plotCompareHistorySales(n, var, neighs):
     if var == "Sales Quantity":
         to_plot = "count"
-        y_label = "<b>Yearly Number of Sales</b>"
-        title = "Yearly Sales Quantity of Residential Property in Charlottesville, Virginia"
+        y_label = "<b>Number of Sales</b>"
+        title = "Sales Quantity of Residential Property by Year in Charlottesville, Virginia"
     else:
         to_plot = "median"
-        y_label = "<b>Yearly Median Sale Price ($, inflation adjusted)</b>"
-        title = "Yearly Median Sale Price of Residential Property in Charlottesville, Virginia ($, inflation adjusted)"
+        y_label = "<b>Median Sale Price ($, inflation adjusted)</b>"
+        title = "Median Sale Price of Residential Property by Year in Charlottesville, Virginia ($, inflation adjusted)"
     fig = go.Figure(data=go.Scatter(x=sales_year["SaleDate"], y=sales_year["SaleAmountAdjusted"][to_plot], 
                                     name="Charlottesville City", line=dict(color="#7c4375")))
     if n:
