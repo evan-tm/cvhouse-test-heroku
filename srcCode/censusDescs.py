@@ -35,10 +35,10 @@ text = {
     "SIZE_X_TITLE": '<b>Year</b>',
     "SIZE_Y_TITLE": '<b>Population</b>',
     "INCOME_CITY_TITLE": 'Median Household Income by Year for Charlottesville, Virginia ($)',
-    "INCOME_DIST_CITY_TITLE": 'Households by Income in 2020 for Charlottesville, Virginia (% of Total)',
-    "INCOME_X_TITLE": '<b>Population (%)</b>',
+    "INCOME_DIST_CITY_TITLE": 'Households by Income for Charlottesville, Virginia (% of Total)',
+    "INCOME_X_TITLE": '<b>Households (%)</b>',
     "INCOME_Y_TITLE": '<b>Income Bracket</b>',
-    "INCOME_NEIGHBORHOOD_TITLE": 'Households by Income in 2020 for {hood} (% of Total)',
+    "INCOME_NEIGHBORHOOD_TITLE": 'Households by Income Bracket for {hood} (% of Total)',
     "OCC_CITY_TITLE": 'Occupancy Status of Charlottesville Households (% of Total Households)',
     "OCC_CITY_HOVER": '<i>Status</i>: <b>%{data.name}</b>' + \
                  '<br>%{value:.2f}% of Total Households<br>' + \
