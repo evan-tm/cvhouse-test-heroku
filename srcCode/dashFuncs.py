@@ -6,6 +6,7 @@ import dash_bootstrap_components as dbc
 import dash_daq as daq
 import srcCode.toolbarDescs as tb
 
+# -*- coding: utf-8 -*-
 
 ## Creates a Dash dropdown menu
 def createDropdown(description, opts, default_value, 
@@ -96,19 +97,8 @@ def createTopBar():
     return dbc.NavbarSimple(children=[
                 dbc.NavItem(dbc.NavLink(tb.opts['HOME'], href="/",
                                         className="header_links_text")),
-                dbc.DropdownMenu(
-                    children=[
-                        dbc.DropdownMenuItem("City data pages", header=True,
-                                             className="header_links_text"),
-                        dbc.DropdownMenuItem(tb.opts['CITY'], href="/city",
-                                             className="header_links_text"),
-                        dbc.DropdownMenuItem(tb.opts['AIRBNB'], href="/airbnb",
-                                             className="header_links_text"),
-                    ],
-                    nav=True,
-                    in_navbar=True,
-                    label="City",
-                ),
+                dbc.NavItem(dbc.NavLink(tb.opts['CITY_SELECT'], href="/city",
+                                        className="header_links_text")),
                 dbc.DropdownMenu(
                     children=[
                         dbc.DropdownMenuItem("Neighborhood data pages", header=True,
@@ -120,12 +110,27 @@ def createTopBar():
                     ],
                     nav=True,
                     in_navbar=True,
-                    label="Neighborhood",
+                    label=tb.opts['NEIGHBORHOOD_SELECT'],
                 ),
                 dbc.NavItem(dbc.NavLink(tb.opts['RESOURCES'], href="/resources",
                                         className="header_links_text")),
                 dbc.NavItem(dbc.NavLink(tb.opts['CONTACT'], href="/contact",
                                         className="header_links_text")),
+                dbc.DropdownMenu(
+                    children=[
+                        dbc.DropdownMenuItem("App settings", header=True,
+                                             className="header_links_text"),
+                        dcc.Checklist(
+                            options=[{"value": "Show tickers", "label": "Show tickers"}],
+                            value=[], id="settings_checklist", className="header_links_text", 
+                            persistence=True, inputStyle={"margin-left": "15px", "margin-right": "5px"}
+                        ),
+                    ],
+                    nav=True,
+                    in_navbar=True,
+                    label='⚙',
+                    align_end=True
+                ),
             ],
             brand="Changing Charlottesville",
             brand_href="#",

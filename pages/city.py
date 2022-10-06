@@ -150,25 +150,27 @@ layout = html.Div(
 
 @callback(
     Output('census_city_plot', 'figure'),
-    Input('dropdown_city_census', 'value'))
-def update_census_city_plot(censusSelection):
+    [Input('dropdown_city_census', 'value'),
+    Input("settings_checklist", "value")])
+def update_census_city_plot(censusSelection, settings):
     if censusSelection == cd.opts['DROPDOWN_CENSUS'][0]:
-        return cf.plotAgeCity()
+        return cf.plotAgeCity(tickers=('Show tickers' in settings))
     elif censusSelection == cd.opts['DROPDOWN_CENSUS'][1]:
-        return cf.plotIndustrySector()
+        return cf.plotIndustrySector(tickers=('Show tickers' in settings))
     elif censusSelection == cd.opts['DROPDOWN_CENSUS'][2]:
-        return cf.plotRaceCity()
+        return cf.plotRaceCity(tickers=('Show tickers' in settings))
     else:
         return cf.plotSizeCity()
 
 @callback(
     Output('census_hh_city_plot', 'figure'),
-    Input('dropdown_city_census_hh', 'value'))
-def update_census_hh_city_plot(censusSelection):
+    [Input('dropdown_city_census_hh', 'value'),
+    Input("settings_checklist", "value")])
+def update_census_hh_city_plot(censusSelection, settings):
     if censusSelection == cd.opts['DROPDOWN_CENSUS_HH'][0]:
         return cf.plotIncomeCity()
     elif censusSelection == cd.opts['DROPDOWN_CENSUS_HH'][1]:
-        return cf.plotIncomeDistCity()
+        return cf.plotIncomeDistCity(tickers=('Show tickers' in settings))
     elif censusSelection == cd.opts['DROPDOWN_CENSUS_HH'][2]:
         return cf.plotOccupancyCity()
     else:

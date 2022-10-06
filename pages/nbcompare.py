@@ -154,13 +154,16 @@ def nbc_names(n, value):
 
 
 @callback(Output("nbc_ind_plots", "children"),
-          [Input("compare_button", "n_clicks"), State("nbc_checklist", "value")])
-def nbc_industry_plots(n, value):
+          [Input("compare_button", "n_clicks"), 
+          State("nbc_checklist", "value"),
+          Input('settings_checklist', 'value')])
+def nbc_industry_plots(n, value, settings):
     ind_plots = []
     if n:
         for ind, each in enumerate(value):
             ind_plots.append(dcc.Graph(id=('nbc_' + str(ind) + '_ind'),
-                            figure=cf.plotIndustryByNeighborhood(each, True), 
+                            figure=cf.plotIndustryByNeighborhood(each, compare = True, 
+                                                                 tickers=('Show tickers' in settings)), 
                             config={'displayModeBar': True,
                             "displaylogo": False,
                             'modeBarButtonsToRemove': ['pan2d', 'select2d', 
@@ -172,13 +175,16 @@ def nbc_industry_plots(n, value):
 
 
 @callback(Output("nbc_age_plots", "children"),
-          [Input("compare_button", "n_clicks"), State("nbc_checklist", "value")])
-def nbc_age_plots(n, value):
+          [Input("compare_button", "n_clicks"), 
+          State("nbc_checklist", "value"),
+          Input("settings_checklist", 'value')])
+def nbc_age_plots(n, value, settings):
     age_plots = []
     if n:
         for ind, each in enumerate(value):
             age_plots.append(dcc.Graph(id=('nbc_' + str(ind) + '_age'),
-                            figure=cf.plotAgeNeighborhood(each, True), 
+                            figure=cf.plotAgeNeighborhood(each, compare=True, 
+                                                          tickers=('Show tickers' in settings)), 
                             config={'displayModeBar': True,
                             "displaylogo": False,
                             'modeBarButtonsToRemove': ['pan2d', 'select2d', 
@@ -190,13 +196,16 @@ def nbc_age_plots(n, value):
 
 
 @callback(Output("nbc_race_plots", "children"),
-          [Input("compare_button", "n_clicks"), State("nbc_checklist", "value")])
-def nbc_race_plots(n, value):
+          [Input("compare_button", "n_clicks"), 
+          State("nbc_checklist", "value"),
+          Input("settings_checklist", "value")])
+def nbc_race_plots(n, value, settings):
     race_plots = []
     if n:
         for ind, each in enumerate(value):
             race_plots.append(dcc.Graph(id=('nbc_' + str(ind) + '_race'),
-                            figure=cf.plotRaceNeighborhood(each, True), 
+                            figure=cf.plotRaceNeighborhood(each, compare=True, 
+                                                           tickers=('Show tickers' in settings)), 
                             config={'displayModeBar': True,
                             "displaylogo": False,
                             'modeBarButtonsToRemove': ['pan2d', 'select2d', 
@@ -208,7 +217,8 @@ def nbc_race_plots(n, value):
 
 
 @callback(Output("nbc_occ_plots", "children"),
-          [Input("compare_button", "n_clicks"), State("nbc_checklist", "value")])
+          [Input("compare_button", "n_clicks"), 
+          State("nbc_checklist", "value")])
 def nbc_occ_plots(n, value):
     occ_plots = []
     if n:
@@ -226,7 +236,8 @@ def nbc_occ_plots(n, value):
 
 
 @callback(Output("nbc_vac_plots", "children"),
-          [Input("compare_button", "n_clicks"), State("nbc_checklist", "value")])
+          [Input("compare_button", "n_clicks"), 
+          State("nbc_checklist", "value")])
 def nbc_vac_plots(n, value):
     vac_plots = []
     if n:
@@ -244,7 +255,8 @@ def nbc_vac_plots(n, value):
 
 
 @callback(Output("nbc_size_plot", "figure"),
-          [Input("compare_button", "n_clicks"), State("nbc_checklist", "value")])
+          [Input("compare_button", "n_clicks"), 
+          State("nbc_checklist", "value")])
 def update_size_plot(n, neighs):
     if n:
         return cf.plotSizeNeighborhood(neighs)
@@ -252,7 +264,8 @@ def update_size_plot(n, neighs):
         return cf.plotSizeCity()
 
 @callback(Output("nbc_income_plot", "figure"),
-          [Input("compare_button", "n_clicks"), State("nbc_checklist", "value")])
+          [Input("compare_button", "n_clicks"), 
+          State("nbc_checklist", "value")])
 def update_income_plot(n, neighs):
     if n:
         return cf.plotIncomeNeighborhood(neighs)
@@ -261,6 +274,8 @@ def update_income_plot(n, neighs):
 
 
 @callback(Output("nbc_history_plot", "figure"),
-          [Input("compare_button", "n_clicks"), Input("dropdown_nbc_history", "value"), State("nbc_checklist", "value")])
+          [Input("compare_button", "n_clicks"), 
+          Input("dropdown_nbc_history", "value"), 
+          State("nbc_checklist", "value")])
 def history_neighborhood_price(n, var, neighs):
     return hf.plotCompareHistorySales(n, var, neighs)

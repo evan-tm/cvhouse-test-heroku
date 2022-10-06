@@ -106,7 +106,7 @@ def addFrameAnnotations(frame, data, num, frameIndex, column, compare = False):
 
 ## Function for creating plot of industry employment populations by sector
 ## out: figure
-def plotIndustrySector():
+def plotIndustrySector(tickers = True):
     fig = px.bar(industryCity, 
                 y="Industry", 
                 x="Total", 
@@ -120,8 +120,8 @@ def plotIndustrySector():
                       marker_color='#ed8851', marker_line_color='#e96a26',
                       marker_line_width=1.5, opacity=0.8)
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
-                    plot_bgcolor="rgba(0,0,0,0)",
-                    paper_bgcolor="rgba(0,0,0,0)",
+                    plot_bgcolor="white",
+                    paper_bgcolor="white",
                     autosize=True,
                     font=dict(size=17, color="rgb(7,13,30)"),
                     hoverlabel_align = 'left',
@@ -131,8 +131,9 @@ def plotIndustrySector():
                     font_color="#070D1E",
                     title_font_family="FranklinGothicPro",
                     title_font_color="#1C1D1E")
-    ## Adds (count : pct) ticker at far right of chart
-    fig = addFigAnnotations(fig, industryCity, [i for i in range(13)], 'Industry')
+    if tickers:
+        ## Adds (count : pct) ticker at far right of chart
+        fig = addFigAnnotations(fig, industryCity, [i for i in range(13)], 'Industry')
     ## Fixed x axis size for each frame
     fig.update_xaxes(ticktext = ["0", "5", "10", "15", "20", 
                                  "25", "30", "35", "40"], 
@@ -149,13 +150,15 @@ def plotIndustrySector():
             dat.marker = dict(color='#ed8851',
                               line=dict(color='#e96a26',
                                         width=1.5))
-        f = addFrameAnnotations(f, industryCity, [i for i in range(13)], idx, 'Industry')
+        if tickers:
+            f = addFrameAnnotations(f, industryCity, [i for i in range(13)], 
+                                    idx, 'Industry')
   
     return fig
 
 ## Function for creating age plot for the city overall
 ## out: figure
-def plotAgeCity():
+def plotAgeCity(tickers = True):
     # begin building figure
     fig = px.bar(ageCity, 
                  y="Age", 
@@ -174,8 +177,8 @@ def plotAgeCity():
                       marker_color='#7c4375', marker_line_color='#5b1453',
                       marker_line_width=1.5, opacity=0.8)
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
-                      plot_bgcolor="rgba(0,0,0,0)",
-                      paper_bgcolor="rgba(0,0,0,0)",
+                      plot_bgcolor="white",
+                      paper_bgcolor="white",
                       font=dict(size=17, color="rgb(7,13,30)"),
                       legend=dict(yanchor="bottom", 
                                   x=0.90, 
@@ -188,8 +191,9 @@ def plotAgeCity():
                       font_color="#070D1E",
                       title_font_family="FranklinGothicPro",
                       title_font_color="#1C1D1E")
-    ## Adds (count : pct) ticker at far right of chart
-    fig = addFigAnnotations(fig, ageCity, [i for i in range(18)], 'Age')
+    if tickers:
+        ## Adds (count : pct) ticker at far right of chart
+        fig = addFigAnnotations(fig, ageCity, [i for i in range(18)], 'Age')
     ## Fixed x axis size for each frame
     fig.update_xaxes(tickvals = [i*2 for i in range(12)], 
                      range = [0, 24],
@@ -204,13 +208,15 @@ def plotAgeCity():
             dat.marker = dict(color='#7c4375',
                               line=dict(color='#5b1453',
                                         width=1.5))
-        f = addFrameAnnotations(f, ageCity, [i for i in range(18)], idx, 'Age')
+        if tickers:
+            f = addFrameAnnotations(f, ageCity, [i for i in range(18)], 
+                                    idx, 'Age')
   
     return fig
 
 ## Function for creating race plot for the city overall
 ## out: figure
-def plotRaceCity():
+def plotRaceCity(tickers = True):
     # begin building figure
     fig = px.bar(raceCity, 
                  y="Race and Ethnicity", 
@@ -225,8 +231,8 @@ def plotRaceCity():
     fig.update_yaxes(categoryorder="total ascending")
     # update layout
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
-                      plot_bgcolor="rgba(0,0,0,0)",
-                      paper_bgcolor="rgba(0,0,0,0)",
+                      plot_bgcolor="white",
+                      paper_bgcolor="white",
                       font=dict(size=17, color="rgb(7,13,30)"),
                       legend=dict(yanchor="bottom", 
                                   x=0.90, 
@@ -239,8 +245,10 @@ def plotRaceCity():
                       font_color="#070D1E",
                       title_font_family="FranklinGothicPro",
                       title_font_color="#1C1D1E")
-    ## Adds (count : pct) ticker at far right of chart
-    fig = addFigAnnotations(fig, raceCity, [i for i in range(8)], 'Race and Ethnicity')
+    if tickers:
+        ## Adds (count : pct) ticker at far right of chart
+        fig = addFigAnnotations(fig, raceCity, [i for i in range(8)], 
+                                'Race and Ethnicity')
     ## Fixed x axis size for each frame
     fig.update_xaxes(tickvals = [i*10 for i in range(8)], 
                      range = [0, 82],
@@ -254,7 +262,9 @@ def plotRaceCity():
             dat.marker = dict(color='#33a7a8',
                               line=dict(color='#009192',
                                         width=1.5))
-        f = addFrameAnnotations(f, raceCity, [i for i in range(8)], idx, 'Race and Ethnicity')
+        if tickers:
+            f = addFrameAnnotations(f, raceCity, [i for i in range(8)], 
+                                    idx, 'Race and Ethnicity')
     ## Set bar color
     fig.update_traces(marker_color='#33a7a8', marker_line_color='#009192',
                       marker_line_width=1.5, opacity=0.8)
@@ -264,36 +274,36 @@ def plotRaceCity():
 ## Function for creating income plot for the city overall
 ## out: figure
 def plotIncomeCity():
-    # begin building figure
-    fig = px.line(incomeCity, x="Year", y="Real_Income",
+    fig = px.line(incomeCity, x="Year", y=cd.opts['CITY_LIST'],
                     title=cd.text['INCOME_CITY_TITLE'],
-                    labels={"Real_Income": "<b>Median Household Income ($)</b>",
-                            "Year": "<b>Year</b>"},
-                    markers = True,
-                    color_discrete_sequence=["#7c4375"])
-    fig.update_layout(title_x=0.517)
-
-    fig.update_xaxes(tickvals = [year for year in range(2009, 2021)], 
+                    labels={'value': cd.text['INCOME_CITY_Y_TITLE'],
+                            "Year": "<b>Year</b>",
+                            'variable': '<b>City</b>'},
+                    markers = True, height = 450,
+                    color_discrete_sequence=["#ed8851", "#009192", "#7c4375", 
+                                             "#dd5279", "#f7e144", "#6b6d6f"])
+    fig.update_xaxes(tickvals = [2010 + 2*year for year in range(6)], 
                      range = [2008.5, 2020.5], gridcolor='Black')
-    fig.update_yaxes(gridcolor='Black')
+    fig.update_yaxes(tickvals = [10000 * k for k in range(3, 8)],
+                     gridcolor='Black')
     fig.update_layout(margin=go.layout.Margin(l=0, r=0, b=0, t=50, pad=15),
-                    plot_bgcolor="rgba(0,0,0,0)",
-                    paper_bgcolor="rgba(0,0,0,0)",
+                    plot_bgcolor="white",
+                    paper_bgcolor="white",
                     autosize=True,
                     font=dict(size=17),
                     font_family="FranklinGothic",
                     font_color="#070D1E",
                     titlefont={'size': 19},
                     title_font_family="FranklinGothicPro",
-                    title_font_color="#1C1D1E")
-    fig.update_traces(line_width=5, 
-                      marker_size = 10, marker_symbol='diamond')
+                    title_font_color="#1C1D1E",
+                    title_x=0.46)
+    fig.update_traces(line_width=5, mode='lines')
                       
     return fig
 
 ## Function for creating income distribution plot for the city overall
 ## out: figure
-def plotIncomeDistCity():
+def plotIncomeDistCity(tickers = True):
     # begin building figure
     fig = px.bar(incomeCityDist, 
                  y="Bracket", 
@@ -306,8 +316,8 @@ def plotIncomeDistCity():
                          'Bracket':cd.text['INCOME_Y_TITLE']},
                  color_discrete_sequence=["#e96a26"])
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
-                      plot_bgcolor="rgba(0,0,0,0)",
-                      paper_bgcolor="rgba(0,0,0,0)",
+                      plot_bgcolor="white",
+                      paper_bgcolor="white",
                       font=dict(size=17, color="rgb(7,13,30)"),
                       legend=dict(yanchor="bottom", 
                                   x=0.90, 
@@ -320,8 +330,9 @@ def plotIncomeDistCity():
                       font_color="#070D1E",
                       title_font_family="FranklinGothicPro",
                       title_font_color="#1C1D1E")
-    ## Adds (count : pct) ticker at far right of chart
-    fig = addFigAnnotations(fig, incomeCityDist, [i for i in range(16)], 'Bracket')
+    if tickers:
+        ## Adds (count : pct) ticker at far right of chart
+        fig = addFigAnnotations(fig, incomeCityDist, [i for i in range(16)], 'Bracket')
     ## Fixed x axis size for each frame
     fig.update_xaxes(tickvals = [i*2 for i in range(9)], 
                      range = [0, 18],
@@ -335,9 +346,10 @@ def plotIncomeDistCity():
             dat.marker = dict(color='#ed8851',
                               line=dict(color='#e96a26',
                                         width=1.5))
-        f = addFrameAnnotations(f, incomeCityDist, 
-                                [i for i in range(16)], 
-                                idx, 'Bracket')
+        if tickers:
+            f = addFrameAnnotations(f, incomeCityDist, 
+                                    [i for i in range(16)], 
+                                    idx, 'Bracket')
     ## Update bar styling
     fig.update_traces(marker_color='#ed8851', marker_line_color='#e96a26',
                       marker_line_width=1.5, opacity=0.8)
@@ -363,8 +375,8 @@ def plotOccupancyCity():
                       texttemplate = cd.text['OCC_ANNOTATE'])
     fig.update_layout(margin=go.layout.Margin(l=50, r=10, b=0, t=30, pad=15),
                         autosize=True,
-                        plot_bgcolor="rgba(0,0,0,0)",
-                        paper_bgcolor="rgba(0,0,0,0)",
+                        plot_bgcolor="white",
+                        paper_bgcolor="white",
                         font=dict(size=17, color="rgb(7,13,30)"),
                         titlefont={'size': 19},
                         title_x = 0.55,
@@ -403,8 +415,8 @@ def plotTenureCity():
                       texttemplate=cd.text['OCC_ANNOTATE'])
     fig.update_layout(margin=go.layout.Margin(l=50, r=10, b=0, t=30, pad=15),
                         autosize=True,
-                        plot_bgcolor="rgba(0,0,0,0)",
-                        paper_bgcolor="rgba(0,0,0,0)",
+                        plot_bgcolor="white",
+                        paper_bgcolor="white",
                         font=dict(size=17, color="rgb(7,13,30)"),
                         titlefont={'size': 19},
                         title_x = 0.55,
@@ -428,33 +440,36 @@ def plotTenureCity():
 ## Function for creating plot of population size by neighborhood
 ## out: figure
 def plotSizeCity():
-    fig = px.line(popCity, x="Year", y="Population",
+    fig = px.line(popCity, x="Year", y=cd.opts['CITY_LIST'],
                     labels={'Year':cd.text['SIZE_X_TITLE'],
-                            'Population':cd.text['SIZE_Y_TITLE']}, 
+                            'value':cd.text['SIZE_Y_TITLE'],
+                            'variable': '<b>City</b>'}, 
                     title=cd.text['SIZE_CITY_TITLE'],
-                    markers=True)
-    fig.update_xaxes(tickvals = [year for year in range(2009, 2021)], 
+                    height = 450,
+                    color_discrete_sequence=["#ed8851", "#009192", "#7c4375", 
+                                             "#dd5279", "#f7e144", "#6b6d6f"])
+    fig.update_xaxes(tickvals = [2010 + 2*year for year in range(6)], 
                      range = [2008.5, 2020.5], gridcolor='Black')
-    fig.update_yaxes(gridcolor='Black')
+    fig.update_yaxes(tickvals = [25000 + 10000 * k for k in range(4)],
+                     gridcolor='Black')
     fig.update_layout(margin=go.layout.Margin(l=0, r=0, b=0, t=50, pad=15),
-                    plot_bgcolor="rgba(0,0,0,0)",
-                    paper_bgcolor="rgba(0,0,0,0)",
-                    autosize=True,
+                    plot_bgcolor="white",
+                    paper_bgcolor="white",
                     font=dict(size=17),
                     font_family="FranklinGothic",
                     font_color="#070D1E",
                     titlefont={'size': 19},
                     title_font_family="FranklinGothicPro",
                     title_font_color="#1C1D1E",
-                    title_x=0.515)
-    fig.update_traces(line_color='#7c4375', line_width=5, 
-                      marker_size = 10, marker_symbol='diamond')
+                    title_x=0.46)
+    fig.update_traces(line_width=5, mode='lines')
 
     return fig
 
 ## Function for creating plot of industry employment populations by neighborhood
 ## out: figure
-def plotIndustryByNeighborhood(n, compare = False, article = False):
+def plotIndustryByNeighborhood(n, compare = False, 
+                               article = False, tickers = True):
     fig = px.bar(industryNeighborhood, 
                  x=n,
                  y='Industry', 
@@ -470,8 +485,8 @@ def plotIndustryByNeighborhood(n, compare = False, article = False):
                       marker_color='#ed8851', marker_line_color='#e96a26',
                       marker_line_width=1.5, opacity=0.8)
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15), 
-                      plot_bgcolor="rgba(0,0,0,0)", 
-                      paper_bgcolor="rgba(0,0,0,0)", 
+                      plot_bgcolor="white", 
+                      paper_bgcolor="white", 
                       autosize=True, 
                       font=dict(size=17, color="rgb(7,13,30)"),
                       legend=dict(yanchor="bottom", 
@@ -486,15 +501,17 @@ def plotIndustryByNeighborhood(n, compare = False, article = False):
                       font_color="#070D1E",
                       title_font_family="FranklinGothicPro",
                       title_font_color="#1C1D1E")
-    ## get index of neighborhood selection
-    hood_index = industryNeighborhood.columns.get_loc(n)
-    ## update dataset with correct ticker for neighborhood selection
-    industryNeighborhood['ag'] = [f'({industryNeighborhood.iloc[i, hood_index+19]:,} : {industryNeighborhood.iloc[i, hood_index]:.2f}%)' 
-                               for i in range(industryNeighborhood.shape[0])]
-    ## Adds (count : pct) ticker at far right of chart
-    fig = addFigAnnotations(fig, industryNeighborhood, 
-                            [i for i in range(13)], 'Industry',
-                            compare)
+    if tickers:
+        ## get index of neighborhood selection
+        hood_index = industryNeighborhood.columns.get_loc(n)
+        ## update dataset with correct ticker for neighborhood selection
+        industryNeighborhood['ag'] = [f'({industryNeighborhood.iloc[i, hood_index+19]:,}' + 
+                                      f' : {industryNeighborhood.iloc[i, hood_index]:.2f}%)' 
+                                      for i in range(industryNeighborhood.shape[0])]
+        ## Adds (count : pct) ticker at far right of chart
+        fig = addFigAnnotations(fig, industryNeighborhood, 
+                                [i for i in range(13)], 'Industry',
+                                compare)
     if compare:
         ## Fixed x axis size for each frame
         fig.update_xaxes(ticktext = ["0", "5", "10", "15", "20", 
@@ -532,16 +549,18 @@ def plotIndustryByNeighborhood(n, compare = False, article = False):
             dat.marker = dict(color='#ed8851',
                               line=dict(color='#e96a26',
                                         width=1.5))
-        f = addFrameAnnotations(f, industryNeighborhood, 
-                                [i for i in range(13)], 
-                                idx, 'Industry', compare)
+        if tickers:
+            f = addFrameAnnotations(f, industryNeighborhood, 
+                                    [i for i in range(13)], 
+                                    idx, 'Industry', compare)
 
     return fig
 
 
 ## Function for creating plot of age by sex by neighborhood
 ## out: figure
-def plotAgeNeighborhood(n, compare = False, article = False):
+def plotAgeNeighborhood(n, compare = False, 
+                        article = False, tickers = True):
     # begin building figure
     fig = px.bar(ageNeighborhood, 
                  y="Age", 
@@ -556,8 +575,8 @@ def plotAgeNeighborhood(n, compare = False, article = False):
                          'Age':cd.text['AGE_Y_TITLE']})
     # update layout
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
-                      plot_bgcolor="rgba(0,0,0,0)",
-                      paper_bgcolor="rgba(0,0,0,0)",
+                      plot_bgcolor="white",
+                      paper_bgcolor="white",
                       font=dict(size=17, color="rgb(7,13,30)"),
                       legend=dict(yanchor="bottom", 
                                   x=0.90, 
@@ -570,15 +589,17 @@ def plotAgeNeighborhood(n, compare = False, article = False):
                       font_color="#070D1E",
                       title_font_family="FranklinGothicPro",
                       title_font_color="#1C1D1E")
-    ## get index of neighborhood selection
-    hood_index = ageNeighborhood.columns.get_loc(n + "_T")
-    ## update dataset with correct ticker for neighborhood selection
-    ageNeighborhood['ag'] = [f'({ageNeighborhood.iloc[i, hood_index+1]:,} : {ageNeighborhood.iloc[i, hood_index]:.2f}%)' 
-                               for i in range(ageNeighborhood.shape[0])]
-    ## Adds (count : pct) ticker at far right of chart
-    fig = addFigAnnotations(fig, ageNeighborhood, 
-                            [i for i in range(18)], 'Age',
-                            compare)
+    if tickers:
+        ## get index of neighborhood selection
+        hood_index = ageNeighborhood.columns.get_loc(n + "_T")
+        ## update dataset with correct ticker for neighborhood selection
+        ageNeighborhood['ag'] = [f'({ageNeighborhood.iloc[i, hood_index+1]:,}' + 
+                                 f' : {ageNeighborhood.iloc[i, hood_index]:.2f}%)' 
+                                 for i in range(ageNeighborhood.shape[0])]
+        ## Adds (count : pct) ticker at far right of chart
+        fig = addFigAnnotations(fig, ageNeighborhood, 
+                                [i for i in range(18)], 'Age',
+                                compare)
     if compare:
         ## Fixed x axis size for each frame
         fig.update_xaxes(tickvals = [i*5 for i in range(11)], 
@@ -601,9 +622,10 @@ def plotAgeNeighborhood(n, compare = False, article = False):
             dat.marker = dict(color='#7c4375',
                               line=dict(color='#5b1453',
                                         width=1.5))
-        f = addFrameAnnotations(f, ageNeighborhood, 
-                                [i for i in range(18)], 
-                                idx, 'Age', compare)
+        if tickers:
+            f = addFrameAnnotations(f, ageNeighborhood, 
+                                    [i for i in range(18)], 
+                                    idx, 'Age', compare)
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
     fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000
@@ -617,7 +639,8 @@ def plotAgeNeighborhood(n, compare = False, article = False):
 ## Function for creating race plot for the individual neighborhoods
 ## in: neighborhood, t/f whether the plot is for the comparison page
 ## out: figure
-def plotRaceNeighborhood(n, compare = False, article = False):
+def plotRaceNeighborhood(n, compare = False, 
+                         article = False, tickers = True):
     # begin building figure
     fig = px.bar(raceNeighborhood, 
                  y="Race and Ethnicity", 
@@ -632,8 +655,8 @@ def plotRaceNeighborhood(n, compare = False, article = False):
     fig.update_yaxes(categoryorder="total ascending")
     # update layout
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
-                      plot_bgcolor="rgba(0,0,0,0)",
-                      paper_bgcolor="rgba(0,0,0,0)",
+                      plot_bgcolor="white",
+                      paper_bgcolor="white",
                       font=dict(size=17, color="rgb(7,13,30)"),
                       legend=dict(yanchor="bottom", 
                                   x=0.90, 
@@ -646,15 +669,16 @@ def plotRaceNeighborhood(n, compare = False, article = False):
                       font_color="#070D1E",
                       title_font_family="FranklinGothicPro",
                       title_font_color="#1C1D1E")
-    ## get index of neighborhood selection
-    hood_index = raceNeighborhood.columns.get_loc(n)
-    ## update dataset with correct ticker for neighborhood selection
-    raceNeighborhood['ag'] = [f'({raceNeighborhood.iloc[i, hood_index+19]:,} : {raceNeighborhood.iloc[i, hood_index]:.2f}%)' 
-                               for i in range(raceNeighborhood.shape[0])]
-    ## Adds (count : pct) ticker at far right of chart
-    fig = addFigAnnotations(fig, raceNeighborhood, 
-                            [i for i in range(8)], 'Race and Ethnicity',
-                            compare)
+    if tickers:
+        ## get index of neighborhood selection
+        hood_index = raceNeighborhood.columns.get_loc(n)
+        ## update dataset with correct ticker for neighborhood selection
+        raceNeighborhood['ag'] = [f'({raceNeighborhood.iloc[i, hood_index+19]:,} : {raceNeighborhood.iloc[i, hood_index]:.2f}%)' 
+                                for i in range(raceNeighborhood.shape[0])]
+        ## Adds (count : pct) ticker at far right of chart
+        fig = addFigAnnotations(fig, raceNeighborhood, 
+                                [i for i in range(8)], 'Race and Ethnicity',
+                                compare)
     if compare:
         ## Fixed x axis size for each frame
         fig.update_xaxes(tickvals = [i*10 for i in range(10)], 
@@ -680,9 +704,10 @@ def plotRaceNeighborhood(n, compare = False, article = False):
             dat.marker = dict(color='#33a7a8',
                               line=dict(color='#009192',
                                         width=1.5))
-        f = addFrameAnnotations(f, raceNeighborhood, 
-                                [i for i in range(8)], 
-                                idx, 'Race and Ethnicity', compare)
+        if tickers:
+            f = addFrameAnnotations(f, raceNeighborhood, 
+                                    [i for i in range(8)], 
+                                    idx, 'Race and Ethnicity', compare)
     ## Set bar color
     fig.update_traces(marker_color='#33a7a8', marker_line_color='#009192',
                       marker_line_width=1.5, opacity=0.8)
@@ -702,7 +727,7 @@ def plotIncomeNeighborhood(n):
                         labels={"variable": "Neighborhood",
                                 "value": "<b>Median Household Income ($)</b>",
                                 "Year": "<b>Year</b>"},
-                        markers = True, height = 500,
+                        markers = True, height = 450,
                         color_discrete_sequence=["#7c4375", "#009192"])
         fig.update_layout(title_x=0.46)
     else:
@@ -713,30 +738,31 @@ def plotIncomeNeighborhood(n):
                         title="Median Household Income by Year for " + n[0] + ' ($)',
                         labels={n[0]: "<b>Median Household Income ($)</b>",
                                 "Year": "<b>Year</b>"},
-                        markers = True, height = 500,
+                        markers = True, height = 450,
                         color_discrete_sequence=["#7c4375"])
         fig.update_layout(title_x=0.517)
 
-    fig.update_xaxes(gridcolor='Black')
+    fig.update_xaxes(tickvals = [year for year in range(2013, 2021)], 
+                     range = [2012.5, 2020.5], gridcolor='Black')
     fig.update_yaxes(gridcolor='Black')
     fig.update_layout(margin=go.layout.Margin(l=0, r=0, b=0, t=50, pad=15),
-                    plot_bgcolor="rgba(0,0,0,0)",
-                    paper_bgcolor="rgba(0,0,0,0)",
+                    plot_bgcolor="white",
+                    paper_bgcolor="white",
                     font=dict(size=17),
                     font_family="FranklinGothic",
                     font_color="#070D1E",
                     titlefont={'size': 19},
                     title_font_family="FranklinGothicPro",
                     title_font_color="#1C1D1E")
-    fig.update_traces(line_width=5, 
-                      marker_size = 10, marker_symbol='diamond')
+    fig.update_traces(line_width=5, mode='lines')
                       
     return fig
 
 ## Function for creating income distribution plot for the neighborhoods
 ## in: neighborhood, t/f whether the plot is for the comparison page
 ## out: figure
-def plotIncomeDistNeighborhood(n, compare = False, article = False):
+def plotIncomeDistNeighborhood(n, compare = False, 
+                               article = False, tickers = True):
     # begin building figure
     fig = px.bar(incomeNeighborhoodDist, 
                  y="Bracket", 
@@ -749,8 +775,8 @@ def plotIncomeDistNeighborhood(n, compare = False, article = False):
                          'Bracket':cd.text['INCOME_Y_TITLE']})
     # update layout
     fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
-                      plot_bgcolor="rgba(0,0,0,0)",
-                      paper_bgcolor="rgba(0,0,0,0)",
+                      plot_bgcolor="white",
+                      paper_bgcolor="white",
                       font=dict(size=17, color="rgb(7,13,30)"),
                       legend=dict(yanchor="bottom", 
                                   x=0.90, 
@@ -763,15 +789,17 @@ def plotIncomeDistNeighborhood(n, compare = False, article = False):
                       font_color="#070D1E",
                       title_font_family="FranklinGothicPro",
                       title_font_color="#1C1D1E")
-    ## get index of neighborhood selection
-    hood_index = incomeNeighborhoodDist.columns.get_loc(n)
-    ## update dataset with correct ticker for neighborhood selection
-    incomeNeighborhoodDist['ag'] = [f'({incomeNeighborhoodDist.iloc[i, hood_index+19]:,} : {incomeNeighborhoodDist.iloc[i, hood_index]:.2f}%)' 
-                                    for i in range(incomeNeighborhoodDist.shape[0])]
-    ## Adds (count : pct) ticker at far right of chart
-    fig = addFigAnnotations(fig, incomeNeighborhoodDist, 
-                            [i for i in range(16)], 'Bracket',
-                            compare)
+    if tickers:
+        ## get index of neighborhood selection
+        hood_index = incomeNeighborhoodDist.columns.get_loc(n)
+        ## update dataset with correct ticker for neighborhood selection
+        incomeNeighborhoodDist['ag'] = [f'({incomeNeighborhoodDist.iloc[i, hood_index+19]:,}' + \
+                                        f' : {incomeNeighborhoodDist.iloc[i, hood_index]:.2f}%)' 
+                                        for i in range(incomeNeighborhoodDist.shape[0])]
+        ## Adds (count : pct) ticker at far right of chart
+        fig = addFigAnnotations(fig, incomeNeighborhoodDist, 
+                                [i for i in range(16)], 'Bracket',
+                                compare)
     if compare:
         ## Fixed x axis size for each frame
         fig.update_xaxes(tickvals = [i*5 for i in range(8)], 
@@ -796,9 +824,10 @@ def plotIncomeDistNeighborhood(n, compare = False, article = False):
             dat.marker = dict(color='#ed8851',
                               line=dict(color='#e96a26',
                                         width=1.5))
-        f = addFrameAnnotations(f, incomeNeighborhoodDist, 
-                                [i for i in range(16)], 
-                                idx, 'Bracket', compare)
+        if tickers:
+            f = addFrameAnnotations(f, incomeNeighborhoodDist, 
+                                    [i for i in range(16)], 
+                                    idx, 'Bracket', compare)
     fig.update_traces(marker_color='#ed8851', marker_line_color='#e96a26',
                       marker_line_width=1.5, opacity=0.8)
     
@@ -824,8 +853,8 @@ def plotOccupancyNeighborhood(n):
     fig.update_traces(hovertemplate = cd.text['OCC_NEIGHBORHOOD_HOVER'],
                       texttemplate = cd.text['OCC_ANNOTATE'])
     fig.update_layout(margin=go.layout.Margin(l=50, r=10, b=0, t=30, pad=15),
-                        plot_bgcolor="rgba(0,0,0,0)",
-                        paper_bgcolor="rgba(0,0,0,0)",
+                        plot_bgcolor="white",
+                        paper_bgcolor="white",
                         font=dict(size=17, color="rgb(7,13,30)"),
                         titlefont={'size': 19},
                         title_x = 0.55,
@@ -865,8 +894,8 @@ def plotTenureNeighborhood(n):
     fig.update_traces(hovertemplate = cd.text['OCC_NEIGHBORHOOD_HOVER'],
                       texttemplate = cd.text['OCC_ANNOTATE'])
     fig.update_layout(margin=go.layout.Margin(l=50, r=10, b=0, t=30, pad=15),
-                        plot_bgcolor="rgba(0,0,0,0)",
-                        paper_bgcolor="rgba(0,0,0,0)",
+                        plot_bgcolor="white",
+                        paper_bgcolor="white",
                         font=dict(size=17, color="rgb(7,13,30)"),
                         titlefont={'size': 19},
                         title_x = 0.55,
@@ -919,15 +948,14 @@ def plotSizeNeighborhood(n):
                      range = [2012.5, 2020.5], gridcolor='Black')
     fig.update_yaxes(gridcolor='Black')
     fig.update_layout(margin=go.layout.Margin(l=0, r=0, b=0, t=50, pad=15),
-                    plot_bgcolor="rgba(0,0,0,0)",
-                    paper_bgcolor="rgba(0,0,0,0)",
+                    plot_bgcolor="white",
+                    paper_bgcolor="white",
                     font=dict(size=17),
                     font_family="FranklinGothic",
                     font_color="#070D1E",
                     titlefont={'size': 19},
                     title_font_family="FranklinGothicPro",
                     title_font_color="#1C1D1E")
-    fig.update_traces(line_width=5, 
-                      marker_size = 10, marker_symbol='diamond')
+    fig.update_traces(line_width=5, mode='lines')
                       
     return fig

@@ -14,8 +14,10 @@ text = {
 
 opts = {
     "HOME": "Home",
+    "CITY_SELECT": "City Data",
     "CITY": "Explore the City",
     "AIRBNB": "Airbnb & VRBO",
+    "NEIGHBORHOOD_SELECT": "Neighborhood Data",
     "NEIGHBORHOOD": "Explore each Neighborhood",
     "NBCOMPARE": "Compare Neighborhoods",
     "RESOURCES": "Resources",

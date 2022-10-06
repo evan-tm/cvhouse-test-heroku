@@ -31,13 +31,15 @@ text = {
     "RACE_X_TITLE": '<b>Population (%)</b>',
     "RACE_Y_TITLE": '<b>Race and Ethnicity</b>',
     "RACE_NEIGHBORHOOD_TITLE": 'Population by Race and Ethnicity for {hood} (% of Total)',
-    "SIZE_CITY_TITLE": "Population by Year for Charlottesville, Virginia",
+    "SIZE_CITY_TITLE": "Population by Year for Central Virginia Cities",
     "SIZE_X_TITLE": '<b>Year</b>',
     "SIZE_Y_TITLE": '<b>Population</b>',
-    "INCOME_CITY_TITLE": 'Median Household Income by Year for Charlottesville, Virginia ($)',
+    "INCOME_CITY_TITLE": "Median Household Income by Year for " + \
+                            "Central Virginia Cities ($)",
     "INCOME_DIST_CITY_TITLE": 'Households by Income for Charlottesville, Virginia (% of Total)',
     "INCOME_X_TITLE": '<b>Households (%)</b>',
     "INCOME_Y_TITLE": '<b>Income Bracket</b>',
+    "INCOME_CITY_Y_TITLE": "<b>Median Household Income ($)</b>",
     "INCOME_NEIGHBORHOOD_TITLE": 'Households by Income Bracket for {hood} (% of Total)',
     "OCC_CITY_TITLE": 'Occupancy Status of Charlottesville Households (% of Total Households)',
     "OCC_CITY_HOVER": '<i>Status</i>: <b>%{data.name}</b>' + \
@@ -55,7 +57,8 @@ text = {
 }
 
 opts = {
-    
+    "CITY_LIST": ['Charlottesville', 'Staunton', 'Harrisonburg', 
+                         'Blacksburg', 'Petersburg', 'Fredericksburg']
 }
 
 default = {
