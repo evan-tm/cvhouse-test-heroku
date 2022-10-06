@@ -308,38 +308,36 @@ def update_neighborhood_id_texts(n):
 @callback(
     Output('census_neighborhood_id_plot', 'figure'),
     [Input('dropdown_neighborhood_id_census', 'value'), 
-    Input('dropdown_neighborhood_id', 'value'),
-    Input('settings_checklist', 'value')])
-def update_census_neighborhood_id_plot(censusSelection, n, settings):
+    Input('dropdown_neighborhood_id', 'value')])
+def update_census_neighborhood_id_plot(censusSelection, n):
     if n is None:
         return cf.plotIndustryByNeighborhood(nd.default['DROPDOWN_NEIGHBORHOOD'], 
                                              article = True, 
-                                             tickers=('Show tickers' in settings))
+                                             tickers=False)
     if censusSelection == nd.opts['DROPDOWN_CENSUS'][0]:
         return cf.plotAgeNeighborhood(n, article = True, 
-                                      tickers=('Show tickers' in settings))
+                                      tickers=False)
     elif censusSelection == nd.opts['DROPDOWN_CENSUS'][1]:
         return cf.plotIndustryByNeighborhood(n, article = True, 
-                                             tickers=('Show tickers' in settings))
+                                             tickers=False)
     elif censusSelection == nd.opts['DROPDOWN_CENSUS'][2]:
         return cf.plotRaceNeighborhood(n, article = True, 
-                                       tickers=('Show tickers' in settings))
+                                       tickers=False)
     else:
         return cf.plotSizeNeighborhood(n)
 
 @callback(
     Output('census_hh_neighborhood_id_plot', 'figure'),
     [Input('dropdown_neighborhood_id_census_hh', 'value'), 
-    Input('dropdown_neighborhood_id', 'value'),
-    Input('settings_checklist', 'value')])
-def update_census_hh_neighborhood_id_plot(censusSelection, n, settings):
+    Input('dropdown_neighborhood_id', 'value')])
+def update_census_hh_neighborhood_id_plot(censusSelection, n):
     if n is None:
         return cf.plotIncomeNeighborhood(nd.default['DROPDOWN_NEIGHBORHOOD'])
     if censusSelection == nd.opts['DROPDOWN_CENSUS_HH'][0]:
         return cf.plotIncomeNeighborhood(n)
     elif censusSelection == nd.opts['DROPDOWN_CENSUS_HH'][1]:
         return cf.plotIncomeDistNeighborhood(n, article = True,
-                                             tickers=('Show tickers' in settings))
+                                             tickers=False)
     elif censusSelection == nd.opts['DROPDOWN_CENSUS_HH'][2]:
         return cf.plotOccupancyNeighborhood(n)
     else:
