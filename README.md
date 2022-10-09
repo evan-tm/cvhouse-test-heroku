@@ -1,10 +1,8 @@
-# cvhouse-heroku
-Deployment test for CVille Housing capstone project at cvhouse.heroku.com
+# Changing Charlottesville Dashboard
 
-Data Sources:
+Codebase for the Changing Charlottesville Dashboard featured in Charlottesville Tomorrow's series on neighborhood development.
 
-ALICE Project - ALICE Household Survival and Stability Budget Methodologies
+You can view the complete dashboard at cvhouse.herokuapp.com on a laptop/desktop/tablet or by using the "desktop site" setting on your mobile browser. 
 
-U.S. Census - American Community Survey
+Please note that the dashboard is still in development!
 
-Charlottesville Open Data Portal
