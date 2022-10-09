@@ -142,7 +142,7 @@ def plotIndustrySector(tickers = True):
                     gridcolor='Black')
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
-    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = cd.opts['ANIMATION_TIME']
     ## Loop through frames to edit hover and by-frame ticker annotations
     for idx, f in enumerate(fig.frames):
         for dat in f.data:
@@ -200,7 +200,7 @@ def plotAgeCity(tickers = True):
                      gridcolor='Black')
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
-    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = cd.opts['ANIMATION_TIME']
     ## Loop through frames to edit hover and by-frame ticker annotations
     for idx, f in enumerate(fig.frames):
         for dat in f.data:
@@ -255,7 +255,7 @@ def plotRaceCity(tickers = True):
                      gridcolor='Black')
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
-    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = cd.opts['ANIMATION_TIME']
     ## Loop through frames to edit hover and by-frame ticker annotations
     for idx, f in enumerate(fig.frames):
         for dat in f.data:
@@ -339,7 +339,7 @@ def plotIncomeDistCity(tickers = True):
                      gridcolor='Black')
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
-    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = cd.opts['ANIMATION_TIME']
     ## Loop through frames to edit hover and by-frame ticker annotations
     for idx, f in enumerate(fig.frames):
         for dat in f.data:
@@ -389,7 +389,7 @@ def plotOccupancyCity():
     fig.update_yaxes(showticklabels=False, title=None)
     fig['layout']['updatemenus'][0]['x']=0.1
     fig['layout']['sliders'][0]['x']=0.1
-    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 500
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = cd.opts['ANIMATION_TIME'] / 2
     ## Loop through frames to edit hover and by-frame ticker annotations
     for idx, f in enumerate(fig.frames):
         for dat in f.data:
@@ -429,7 +429,7 @@ def plotTenureCity():
     fig.update_yaxes(showticklabels=False, title=None)
     fig['layout']['updatemenus'][0]['x']=0.1
     fig['layout']['sliders'][0]['x']=0.1
-    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 500
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = cd.opts['ANIMATION_TIME'] / 2
     ## Loop through frames to edit hover and by-frame ticker annotations
     for idx, f in enumerate(fig.frames):
         for dat in f.data:
@@ -541,7 +541,7 @@ def plotIndustryByNeighborhood(n, compare = False,
     ## move slider's and buttons' positions slightly left
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
-    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = cd.opts['ANIMATION_TIME']
     ## Loop through frames to edit hover and by-frame ticker annotations
     for idx, f in enumerate(fig.frames):
         for dat in f.data:
@@ -628,7 +628,7 @@ def plotAgeNeighborhood(n, compare = False,
                                     idx, 'Age', compare)
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
-    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = cd.opts['ANIMATION_TIME']
     ## Change text displayed when mouse hovering over bar
     fig.update_traces(hovertemplate = cd.text['AGE_NEIGHBORHOOD_HOVER'],
                       marker_color='#7c4375', marker_line_color='#5b1453',
@@ -697,7 +697,7 @@ def plotRaceNeighborhood(n, compare = False,
                         gridcolor='Black')
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
-    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = cd.opts['ANIMATION_TIME']
     ## Loop through frames to edit hover and by-frame ticker annotations
     for idx, f in enumerate(fig.frames):
         for dat in f.data:
@@ -817,7 +817,7 @@ def plotIncomeDistNeighborhood(n, compare = False,
                         gridcolor='Black')
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
-    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 1000
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = cd.opts['ANIMATION_TIME']
     ## Loop through frames to edit hover and by-frame ticker annotations
     for idx, f in enumerate(fig.frames):
         for dat in f.data:
@@ -867,7 +867,7 @@ def plotOccupancyNeighborhood(n):
     fig.update_yaxes(showticklabels=False, title=None)
     fig['layout']['updatemenus'][0]['x']=0.08
     fig['layout']['sliders'][0]['x']=0.08
-    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 500
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = cd.opts['ANIMATION_TIME'] / 2
     ## Loop through frames to edit hover and by-frame ticker annotations
     for idx, f in enumerate(fig.frames):
         for dat in f.data:
@@ -908,7 +908,7 @@ def plotTenureNeighborhood(n):
     fig.update_yaxes(showticklabels=False, title=None)
     fig['layout']['updatemenus'][0]['x']=0.08
     fig['layout']['sliders'][0]['x']=0.08
-    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 500
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = cd.opts['ANIMATION_TIME'] / 2
     ## Loop through frames to edit hover and by-frame ticker annotations
     for idx, f in enumerate(fig.frames):
         for dat in f.data:

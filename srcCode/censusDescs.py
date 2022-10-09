@@ -58,7 +58,8 @@ text = {
 
 opts = {
     "CITY_LIST": ['Charlottesville', 'Staunton', 'Harrisonburg', 
-                         'Blacksburg', 'Petersburg', 'Fredericksburg']
+                         'Blacksburg', 'Petersburg', 'Fredericksburg'],
+    "ANIMATION_TIME": 1500,
 }
 
 default = {
