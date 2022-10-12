@@ -930,7 +930,7 @@ def plotSizeNeighborhood(n):
                         labels={"NAME": "Neighborhood",
                                 "Year": cd.text['SIZE_X_TITLE'],
                                 "Population": cd.text['SIZE_Y_TITLE']},
-                        markers = True, height = 500,
+                        markers = True, height = 450,
                         color_discrete_sequence=["#7c4375", "#009192"])
         fig.update_layout(title_x=0.46)
     else:
