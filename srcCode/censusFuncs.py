@@ -533,10 +533,9 @@ def plotIndustryByNeighborhood(n, compare = False,
     else:
         ## Fixed x axis size for each frame
         fig.update_xaxes(ticktext = ["0", "5", "10", "15", "20", 
-                                    "25", "30", "35", "40", "45", 
-                                    "50", "55", "60"], 
+                                    "25", "30", "35", "40"], 
                         tickvals = [i*5 for i in range(13)], 
-                        range = [0, 68],
+                        range = [0, 42],
                         gridcolor='Black')
     ## move slider's and buttons' positions slightly left
     fig['layout']['updatemenus'][0]['x']=-0.04
@@ -808,12 +807,12 @@ def plotIncomeDistNeighborhood(n, compare = False,
     elif article:
         ## Fixed x axis size for each frame
         fig.update_xaxes(tickvals = [i*5 for i in range(8)], 
-                        range = [0, 42],
+                        range = [0, 22],
                         gridcolor='Black')
     else:
         ## Fixed x axis size for each frame
-        fig.update_xaxes(tickvals = [i*5 for i in range(8)], 
-                        range = [0, 40],
+        fig.update_xaxes(tickvals = [i*5 for i in range(4)], 
+                        range = [0, 20],
                         gridcolor='Black')
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
