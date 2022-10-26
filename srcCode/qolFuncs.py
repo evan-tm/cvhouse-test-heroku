@@ -256,11 +256,6 @@ def plotSchoolMap():
                     title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
                     title_font_color="#1C1D1E")
     fig.update_traces(hovertemplate=None, hoverinfo = 'skip')
-    #fig.update_traces(hovertemplate="<br>".join([
-    #                                "Elementary: %{hovertext}",
-    #                                "Upper Elementary: Walker",
-    #                                "Middle: Buford",
-    #                                "High: Charlottesville"]))
     # school points scatter
     fig2 = px.scatter_mapbox(eduPoints, lon = eduPoints.geometry.x, 
                             lat = eduPoints.geometry.y,
@@ -281,9 +276,9 @@ def plotSchoolMap():
                     title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
                     title_font_color="#1C1D1E")
     fig2.update_traces(hovertemplate="<br>".join([
-                                    "%{hovertext}",
+                                    "<b>%{hovertext}</b>",
                                     "",
-                                    "Address: %{customdata[0]}"]), 
+                                    "<i>Address: %{customdata[0]}</i>"]), 
                     marker={'size': 12})
 
     fig.add_trace(fig2.data[0])
@@ -304,7 +299,8 @@ def plotTreeMap():
                             center={"lat": 38.039, "lon": -78.47826},
                             zoom=12.3, opacity = 0.5, 
                             color_continuous_scale=["#e96a26", "#009192"],
-                            labels={'coverage': 'Canopy Coverage (%)'})
+                            labels={'coverage': 'Canopy Coverage (%)'},
+                            hover_name=treeDF.index, hover_data={"coverage": True},)
     fig.update_layout(mapbox_accesstoken=mapbox_token_schools, 
                     mapbox_style=mapbox_style_schools,
                     margin=go.layout.Margin(l=0, r=0,  b=0, t=0),
@@ -316,8 +312,10 @@ def plotTreeMap():
                     font_color="#070D1E",
                     title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
                     title_font_color="#1C1D1E")
-    #fig.update_traces(hovertemplate=None, hoverinfo = 'skip')
-
+    fig.update_traces(hovertemplate="<br>".join([
+                                    "<b>%{hovertext}</b>",
+                                    "",
+                                    "Canopy Coverage: %{customdata[0]}%"]))
     fig.update_yaxes(scaleanchor="x", scaleratio=1)
     return fig
 

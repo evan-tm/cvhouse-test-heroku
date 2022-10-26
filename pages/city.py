@@ -45,7 +45,6 @@ layout = html.Div(
         html.Div(
             [
                 dcc.Graph(id="afford_map", 
-                          figure=pf.plotAffordMap("Neighborhood", 2020),
                           config={'displayModeBar': True,
                                   "displaylogo": False,
                                   'modeBarButtonsToRemove': ['pan2d', 'select2d', 
