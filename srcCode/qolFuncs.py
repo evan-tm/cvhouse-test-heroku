@@ -45,6 +45,8 @@ mapbox_token_public = "pk.eyJ1IjoiZXZhbi10bSIsImEiOiJjbDFlYTlncTMwM2J3M2RwbDdjaX
 mapbox_style = "mapbox://styles/evan-tm/cl1ik4lmv003z15ru0ip4isbz"
 mapbox_token_public_hood = "pk.eyJ1IjoiZXZhbi10bSIsImEiOiJjbDFlYTlncTMwM2J3M2RwbDdjaXc2bW02In0.cxB8jf_1CFeoeVUAuOsYuA"
 mapbox_style_hood = "mapbox://styles/evan-tm/cl1xthgjs000i14qv2eaz09w5"
+mapbox_token_schools = "pk.eyJ1IjoiZXZhbi10bSIsImEiOiJjbDFlYTlncTMwM2J3M2RwbDdjaXc2bW02In0.cxB8jf_1CFeoeVUAuOsYuA"
+mapbox_style_schools = "mapbox://styles/evan-tm/cl9oyf4bq001d14lmgwfi8kav"
 
 lats = []
 lons = []
@@ -78,7 +80,7 @@ def plotResourcesMap():
                             hover_name="name", hover_data={"addr:street": True},
                             center={"lat": 38.039, "lon": -78.47826}, 
                             color_discrete_sequence=['green'],
-                            zoom=12)
+                            zoom=12.3)
     fig1.update_layout(mapbox_accesstoken=mapbox_token_public, 
                       mapbox_style=mapbox_style,
                       margin=go.layout.Margin(l=0, r=0,  b=0, t=0),
@@ -102,7 +104,7 @@ def plotResourcesMap():
                              hover_name="name", hover_data={"address": True, 
                                                        "Desc": True},
                              center={"lat": 38.039, "lon": -78.47826}, 
-                             color_discrete_sequence=['purple'],
+                             color_discrete_sequence=['#5b1453'],
                              zoom=12)
     fig2.update_layout(mapbox_accesstoken=mapbox_token_public, 
                        mapbox_style=mapbox_style,
@@ -127,7 +129,7 @@ def plotResourcesMap():
                              lat = libraries.geometry.y,
                              hover_name="name", hover_data={"address": True},
                              center={"lat": 38.039, "lon": -78.47826}, 
-                             color_discrete_sequence=['teal'],
+                             color_discrete_sequence=['#009192'],
                              zoom=12)
     fig3.update_layout(mapbox_accesstoken=mapbox_token_public, 
                        mapbox_style=mapbox_style,
@@ -152,7 +154,7 @@ def plotResourcesMap():
                              hover_name="Station Name", 
                              hover_data={"Address": True},
                              center={"lat": 38.039, "lon": -78.47826}, 
-                             color_discrete_sequence=['red'],
+                             color_discrete_sequence=['#d42758'],
                              zoom=12)
     fig4.update_layout(mapbox_accesstoken=mapbox_token_public, 
                        mapbox_style=mapbox_style,
@@ -176,7 +178,7 @@ def plotResourcesMap():
                              lat = train.geometry.y,
                              hover_name="Location", hover_data={"Address": True},
                              center={"lat": 38.039, "lon": -78.47826}, 
-                            color_discrete_sequence=['orange'],
+                            color_discrete_sequence=['#e96a26'],
                             zoom=12)
     fig5.update_layout(mapbox_accesstoken=mapbox_token_public, 
                         mapbox_style=mapbox_style,
@@ -269,7 +271,7 @@ def plotResourcesMap():
                             hover_name="Description", hover_data={"Location": True, 
                                                                 "Address": True},
                             center={"lat": 38.039, "lon": -78.47826}, 
-                            color_discrete_sequence=['blue'],
+                            color_discrete_sequence=['#f5d915'],
                             zoom=12)
     fig9.update_layout(mapbox_accesstoken=mapbox_token_public, 
                     mapbox_style=mapbox_style,
@@ -329,11 +331,17 @@ def plotSchoolMap():
                             locations = edu.index,
                             hover_name = edu.index,
                             color = edu.index,
+                            color_discrete_sequence={0: '#e96a26',
+                                                     1: '#d42758',
+                                                     2: '#f5d915',
+                                                     3: '#009192',
+                                                     4: '#5b1453',
+                                                     5: '#46494b'},
                             center={"lat": 38.039, "lon": -78.47826},
-                            zoom=12, opacity = 0.5,
+                            zoom=12.3, opacity = 0.5,
                             labels={'ElemSchool': 'Elementary School Zone'})
-    fig.update_layout(mapbox_accesstoken=mapbox_token_public_hood, 
-                    mapbox_style=mapbox_style_hood,
+    fig.update_layout(mapbox_accesstoken=mapbox_token_schools, 
+                    mapbox_style=mapbox_style_schools,
                     margin=go.layout.Margin(l=0, r=0,  b=0, t=0),
                     plot_bgcolor="rgba(0,0,0,0)",
                     paper_bgcolor="rgba(0,0,0,0)",
@@ -357,8 +365,8 @@ def plotSchoolMap():
                             center={"lat": 38.039, "lon": -78.47826}, 
                             zoom = 12,
                             opacity = 1)
-    fig2.update_layout(mapbox_accesstoken=mapbox_token_public_hood, 
-                    mapbox_style=mapbox_style_hood,
+    fig2.update_layout(mapbox_accesstoken=mapbox_token_schools, 
+                    mapbox_style=mapbox_style_schools,
                     margin=go.layout.Margin(l=0, r=0,  b=0, t=0),
                     plot_bgcolor="rgba(0,0,0,0)",
                     paper_bgcolor="rgba(0,0,0,0)",
@@ -390,11 +398,11 @@ def plotTreeMap():
                             locations = treeDF.index,
                             color = treeDF.coverage,
                             center={"lat": 38.039, "lon": -78.47826},
-                            zoom=12, opacity = 0.5, 
-                            color_continuous_scale='Tropic_r',
+                            zoom=12.3, opacity = 0.5, 
+                            color_continuous_scale=["#e96a26", "#009192"],
                             labels={'coverage': 'Canopy Coverage (%)'})
-    fig.update_layout(mapbox_accesstoken=mapbox_token_public, 
-                    mapbox_style=mapbox_style,
+    fig.update_layout(mapbox_accesstoken=mapbox_token_schools, 
+                    mapbox_style=mapbox_style_schools,
                     margin=go.layout.Margin(l=0, r=0,  b=0, t=0),
                     plot_bgcolor="rgba(0,0,0,0)",
                     paper_bgcolor="rgba(0,0,0,0)",

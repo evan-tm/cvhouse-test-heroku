@@ -361,8 +361,8 @@ def plotAffordMap(ns):
                             color = ns.afford,
                             center={"lat": 38.039, "lon": -78.47826},
                             zoom=12, opacity = 0.5,
-                            color_discrete_map={'Affordable':'green',
-                                            'Unaffordable':'orange'},
+                            color_discrete_map={'Affordable':'#009192',
+                                            'Unaffordable':'#e96a26'},
                             labels={'afford': 'Results:'})
     fig.update_layout(mapbox_accesstoken=mapbox_token_public, 
                     mapbox_style=mapbox_style,

@@ -53,7 +53,9 @@ def plotAffordMap(lod, y):
                                    hover_name="Neighborhood", 
                                    hover_data={"MeanSalesStr": True, "NumSales": True},
                                    center={"lat": 38.039, "lon": -78.47826}, 
-                                   zoom=12, 
+                                   zoom=12.3,
+                                   color_continuous_scale=["#009192", "#5b1453",
+                                                           "#e96a26", "#f5d915"],
                                    )
         fig.update_traces(hovertemplate="<br>".join([
             "%{hovertext}",
@@ -86,7 +88,8 @@ def plotAffordMap(lod, y):
                                                "SaleDateStr": True, "Zone": True},
                                    center={"lat": 38.039, "lon": -78.47826}, 
                                    zoom=14,
-                                  )
+                                   color_continuous_scale=["#009192", "#5b1453",
+                                                           "#e96a26", "#f5d915"])
         fig.update_traces(hovertemplate="<br>".join([
             "%{hovertext}",
             "",
