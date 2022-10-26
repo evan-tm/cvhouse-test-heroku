@@ -36,7 +36,6 @@ layout = html.Div(
         [
             # QoL map
             dcc.Graph(id='qol_map', 
-                      figure=qf.plotResourcesMap(), 
                       config={'displayModeBar': True,
                               "displaylogo": False,
                               'modeBarButtonsToRemove': ['pan2d', 'select2d', 

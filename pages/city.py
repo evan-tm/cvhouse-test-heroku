@@ -45,7 +45,6 @@ layout = html.Div(
         html.Div(
             [
                 dcc.Graph(id="afford_map", 
-                          figure=pf.plotAffordMap("Neighborhood", 2020),
                           config={'displayModeBar': True,
                                   "displaylogo": False,
                                   'modeBarButtonsToRemove': ['pan2d', 'select2d', 
@@ -194,6 +193,4 @@ def update_history_city_plot(historySelection):
           [Input("afford_dropdown_lod", "value"), 
           Input("afford_slider_year", "value")])
 def update_afford_map(lod, y):
-    print(lod)
-    print(y)
     return pf.plotAffordMap(lod, y)
