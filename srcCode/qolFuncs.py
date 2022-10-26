@@ -106,18 +106,6 @@ def plotResourcesMap():
                              center={"lat": 38.039, "lon": -78.47826}, 
                              color_discrete_sequence=['#5b1453'],
                              zoom=12)
-    fig2.update_layout(mapbox_accesstoken=mapbox_token_public, 
-                       mapbox_style=mapbox_style,
-                       margin=go.layout.Margin(l=0, r=0,  b=0, t=0),
-                       plot_bgcolor="rgba(0,0,0,0)",
-                       paper_bgcolor="rgba(0,0,0,0)",
-                       autosize=True,
-                       font={'size': 16},
-                       font_family="franklin-gothic-atf,Helvetica,sans-serif",
-                       font_color="#070D1E",
-                       title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
-                       title_font_color="#1C1D1E",
-                       dragmode=False)
     fig2.update_traces(hovertemplate="<br>".join([
                                      "%{hovertext}",
                                      "",
@@ -131,18 +119,6 @@ def plotResourcesMap():
                              center={"lat": 38.039, "lon": -78.47826}, 
                              color_discrete_sequence=['#009192'],
                              zoom=12)
-    fig3.update_layout(mapbox_accesstoken=mapbox_token_public, 
-                       mapbox_style=mapbox_style,
-                       margin=go.layout.Margin(l=0, r=0,  b=0, t=0),
-                       plot_bgcolor="rgba(0,0,0,0)",
-                       paper_bgcolor="rgba(0,0,0,0)",
-                       autosize=True,
-                       font={'size': 16},
-                       font_family="franklin-gothic-atf,Helvetica,sans-serif",
-                       font_color="#070D1E",
-                       title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
-                       title_font_color="#1C1D1E",
-                       dragmode=False)
     fig3.update_traces(hovertemplate="<br>".join([
                                      "%{hovertext}",
                                      "",
@@ -156,18 +132,6 @@ def plotResourcesMap():
                              center={"lat": 38.039, "lon": -78.47826}, 
                              color_discrete_sequence=['#d42758'],
                              zoom=12)
-    fig4.update_layout(mapbox_accesstoken=mapbox_token_public, 
-                       mapbox_style=mapbox_style,
-                       margin=go.layout.Margin(l=0, r=0,  b=0, t=0),
-                       plot_bgcolor="rgba(0,0,0,0)",
-                       paper_bgcolor="rgba(0,0,0,0)",
-                       autosize=True,
-                       font={'size': 16},
-                       font_family="franklin-gothic-atf,Helvetica,sans-serif",
-                       font_color="#070D1E",
-                       title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
-                       title_font_color="#1C1D1E",
-                       dragmode=False)
     fig4.update_traces(hovertemplate="<br>".join([
                                      "%{hovertext}",
                                      "",
@@ -180,18 +144,6 @@ def plotResourcesMap():
                              center={"lat": 38.039, "lon": -78.47826}, 
                             color_discrete_sequence=['#e96a26'],
                             zoom=12)
-    fig5.update_layout(mapbox_accesstoken=mapbox_token_public, 
-                        mapbox_style=mapbox_style,
-                        margin=go.layout.Margin(l=0, r=0,  b=0, t=0),
-                        plot_bgcolor="rgba(0,0,0,0)",
-                        paper_bgcolor="rgba(0,0,0,0)",
-                        autosize=True,
-                        font={'size': 16},
-                        font_family="franklin-gothic-atf,Helvetica,sans-serif",
-                        font_color="#070D1E",
-                        title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
-                        title_font_color="#1C1D1E",
-                        dragmode=False)
     fig5.update_traces(hovertemplate="<br>".join([
                                     "%{hovertext}",
                                     "",
@@ -204,18 +156,6 @@ def plotResourcesMap():
                             center={"lat": 38.039, "lon": -78.47826}, 
                             color_discrete_sequence=['steelblue'],
                             zoom=12)
-    fig6.update_layout(mapbox_accesstoken=mapbox_token_public, 
-                    mapbox_style=mapbox_style,
-                    margin=go.layout.Margin(l=0, r=0,  b=0, t=0),
-                    plot_bgcolor="rgba(0,0,0,0)",
-                    paper_bgcolor="rgba(0,0,0,0)",
-                    autosize=True,
-                    font={'size': 16},
-                    font_family="franklin-gothic-atf,Helvetica,sans-serif",
-                    font_color="#070D1E",
-                    title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
-                    title_font_color="#1C1D1E",
-                    dragmode=False)
     fig6.update_traces(hovertemplate="<br>".join([
                                     "Name: %{customdata[0]}",
                                     "Code: %{hovertext}"]), 
@@ -227,18 +167,6 @@ def plotResourcesMap():
                             center={"lat": 38.039, "lon": -78.47826}, 
                             color_discrete_sequence=['black'],
                             zoom=12)
-    fig7.update_layout(mapbox_accesstoken=mapbox_token_public, 
-                    mapbox_style=mapbox_style,
-                    margin=go.layout.Margin(l=0, r=0,  b=0, t=0),
-                    plot_bgcolor="rgba(0,0,0,0)",
-                    paper_bgcolor="rgba(0,0,0,0)",
-                    autosize=True,
-                    font={'size': 16},
-                    font_family="franklin-gothic-atf,Helvetica,sans-serif",
-                    font_color="#070D1E",
-                    title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
-                    title_font_color="#1C1D1E",
-                    dragmode=False)
     fig7.update_traces(hovertemplate="<br>".join([
                                     "Type: %{hovertext}",
                                     "Capacity: %{customdata[0]}"]), 
@@ -250,18 +178,6 @@ def plotResourcesMap():
                         center={"lat": 38.039, "lon": -78.47826}, 
                         color_discrete_sequence=['darkgreen'], 
                         zoom=12)
-    fig8.update_layout(mapbox_accesstoken=mapbox_token_public, 
-                    mapbox_style=mapbox_style,
-                    margin=go.layout.Margin(l=0, r=0,  b=0, t=0),
-                    plot_bgcolor="rgba(0,0,0,0)",
-                    paper_bgcolor="rgba(0,0,0,0)",
-                    autosize=True,
-                    font={'size': 16},
-                    font_family="franklin-gothic-atf,Helvetica,sans-serif",
-                    font_color="#070D1E",
-                    title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
-                    title_font_color="#1C1D1E",
-                    dragmode=False)
     fig8.update_traces(hovertemplate="<br>".join([
                                     "Type: %{hovertext}"]),
                     line={'width': 1.5})
@@ -273,18 +189,6 @@ def plotResourcesMap():
                             center={"lat": 38.039, "lon": -78.47826}, 
                             color_discrete_sequence=['#f5d915'],
                             zoom=12)
-    fig9.update_layout(mapbox_accesstoken=mapbox_token_public, 
-                    mapbox_style=mapbox_style,
-                    margin=go.layout.Margin(l=0, r=0,  b=0, t=0),
-                    plot_bgcolor="rgba(0,0,0,0)",
-                    paper_bgcolor="rgba(0,0,0,0)",
-                    autosize=True,
-                    font={'size': 16},
-                    font_family="franklin-gothic-atf,Helvetica,sans-serif",
-                    font_color="#070D1E",
-                    title_font_family="franklin-gothic-condensed,Helvetica,sans-serif",
-                    title_font_color="#1C1D1E",
-                    dragmode=False)
     fig9.update_traces(hovertemplate="<br>".join([
                                     "Type: %{hovertext}",
                                     "Location: %{customdata[0]}",
