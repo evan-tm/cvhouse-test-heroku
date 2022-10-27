@@ -135,7 +135,8 @@ layout = html.Div(
    Output(component_id='qol_map', component_property='figure'),
    [Input(component_id='qol_dropdown', component_property='value'),
     Input('results_map', 'figure'),
-    Input('afford_button', 'n_clicks')])
+    Input('afford_button', 'n_clicks')],
+    prevent_initial_call=True)
 def show_hide_qol_map(currentMap, currentResultsFig, n):
 
     optsMap = qd.opts['DD_QOL']

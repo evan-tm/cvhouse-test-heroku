@@ -192,6 +192,7 @@ def update_history_city_plot(historySelection):
 # Update affordability graph
 @callback(Output("afford_map", "figure"),
           [Input("afford_dropdown_lod", "value"), 
-          Input("afford_slider_year", "value")])
+          Input("afford_slider_year", "value")],
+          prevent_initial_call=True)
 def update_afford_map(lod, y):
     return pf.plotAffordMap(lod, y)
