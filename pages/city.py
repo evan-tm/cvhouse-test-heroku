@@ -44,14 +44,7 @@ layout = html.Div(
         # Affordability
         html.Div(
             [
-                dcc.Graph(id="afford_map", 
-                          figure=pf.plotAffordMap("Neighborhood", 2020),
-                          config={'displayModeBar': True,
-                                  "displaylogo": False,
-                                  'modeBarButtonsToRemove': ['pan2d', 'select2d', 
-                                                             'lasso2d', 'toImage'],
-                                  'scrollZoom': False},
-                          style={"width": "100%", "height": "550px"}),
+                html.Div(id="afford_map_div"),
                 html.Div([
                     html.Div([
                         dcc.Slider(min=1945, max=2021, step=1, value=2020, 
@@ -190,9 +183,15 @@ def update_history_city_plot(historySelection):
     
 
 # Update affordability graph
-@callback(Output("afford_map", "figure"),
+@callback(Output("afford_map_div", "children"),
           [Input("afford_dropdown_lod", "value"), 
-          Input("afford_slider_year", "value")],
-          prevent_initial_call=True)
+          Input("afford_slider_year", "value")])
 def update_afford_map(lod, y):
-    return pf.plotAffordMap(lod, y)
+    return dcc.Graph(id="afford_map", 
+                    figure=pf.plotAffordMap(lod, y),
+                    config={'displayModeBar': True,
+                            "displaylogo": False,
+                            'modeBarButtonsToRemove': ['pan2d', 'select2d', 
+                                                        'lasso2d', 'toImage'],
+                            'scrollZoom': False},
+                    style={"width": "100%", "height": "550px"})
