@@ -180,7 +180,6 @@ def update_history_city_plot(historySelection):
     else:
         return ({'display': 'none'}, 
                 {'display': 'block', "width": "100%"})
-    
 
 # Update affordability graph
 @callback(

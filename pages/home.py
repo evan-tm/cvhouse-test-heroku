@@ -43,6 +43,24 @@ layout = html.Div(
                                                          'lasso2d', 'toImage'],
                               'scrollZoom': False},
                       style={"width": "100%", "height": "550px"}),
+            # school map
+            dcc.Graph(id='school_map', 
+                      figure=qf.plotSchoolMap(), 
+                      config={'displayModeBar': True,
+                              "displaylogo": False,
+                              'modeBarButtonsToRemove': ['pan2d', 'select2d', 
+                                                         'lasso2d', 'toImage'],
+                              'scrollZoom': False},
+                      style={'display': 'none', "width": "100%", "height": "550px"}),
+            # tree map
+            dcc.Graph(id='tree_map', 
+                      figure=qf.plotTreeMap(), 
+                      config={'displayModeBar': True,
+                              "displaylogo": False,
+                              'modeBarButtonsToRemove': ['pan2d', 'select2d', 
+                                                         'lasso2d', 'toImage'],
+                              'scrollZoom': False},
+                      style={'display': 'none', "width": "100%", "height": "550px"}),
             # Affordability map
             dcc.Graph(id='results_map', 
                       config={'displayModeBar': True,
@@ -132,19 +150,33 @@ layout = html.Div(
     ], className = "container background")
 
 @callback(
-   Output(component_id='qol_map', component_property='figure'),
+   [Output(component_id='qol_map', component_property='style'),
+    Output(component_id='school_map', component_property='style'),
+    Output(component_id='tree_map', component_property='style'),
+    Output(component_id='results_map', component_property='style')],
    [Input(component_id='qol_dropdown', component_property='value'),
-    Input('results_map', 'figure'),
     Input('afford_button', 'n_clicks')],
     prevent_initial_call=True)
-def show_hide_qol_map(currentMap, currentResultsFig, n):
+def show_hide_qol_map(currentMap, n):
 
     optsMap = qd.opts['DD_QOL']
     if currentMap == optsMap[0]:
-        return qf.plotResourcesMap()
+        return ({'display': 'block', "width": "100%", "height": "550px"}, 
+                {'display': 'none'},
+                {'display': 'none'},
+                {'display': 'none'})
     elif currentMap == optsMap[1]:
-        return qf.plotSchoolMap()
+        return ({'display': 'none'}, 
+                {'display': 'block', "width": "100%", "height": "550px"},
+                {'display': 'none'},
+                {'display': 'none'})
     elif currentMap == optsMap[2]:
-        return qf.plotTreeMap()
+        return ({'display': 'none'}, 
+                {'display': 'none'},
+                {'display': 'block', "width": "100%", "height": "550px"},
+                {'display': 'none'})
     else:
-        return currentResultsFig
+        return ({'display': 'none'}, 
+                {'display': 'none'},
+                {'display': 'none'},
+                {'display': 'block', "width": "100%", "height": "550px"})

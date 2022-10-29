@@ -39,8 +39,6 @@ edu = edu.set_index('ElemSchool')
 treeDF = gpd.read_file('data/lifeQuality/trees.geojson')
 treeDF = treeDF.set_index('NAME')
 
-#mapbox_token_public = "pk.eyJ1IjoieGlubHVuY2hlbmciLCJhIjoiY2t0c3g2eHRrMWp3MTJ3cDMwdDAyYnA2OSJ9.tCcD-LyXD1OK-T6uDd8CYA"
-#mapbox_style = "mapbox://styles/xinluncheng/cktsxjvd923p618mw4fut9gav"
 mapbox_token_public = "pk.eyJ1IjoiZXZhbi10bSIsImEiOiJjbDFlYTlncTMwM2J3M2RwbDdjaXc2bW02In0.cxB8jf_1CFeoeVUAuOsYuA"
 mapbox_style = "mapbox://styles/evan-tm/cl1ik4lmv003z15ru0ip4isbz"
 mapbox_token_public_hood = "pk.eyJ1IjoiZXZhbi10bSIsImEiOiJjbDFlYTlncTMwM2J3M2RwbDdjaXc2bW02In0.cxB8jf_1CFeoeVUAuOsYuA"

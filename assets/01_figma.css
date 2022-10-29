@@ -208,6 +208,12 @@
 #qol_map .js-plotly-plot .plotly .modebar {
     left: 0%;
 }
+#school_map .js-plotly-plot .plotly .modebar {
+    left: 0%;
+}
+#tree_map .js-plotly-plot .plotly .modebar {
+    left: 0%;
+}
 #afford_map .js-plotly-plot .plotly .modebar {
     left: 0%;
 }
