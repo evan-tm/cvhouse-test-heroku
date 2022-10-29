@@ -446,8 +446,11 @@ def plotSizeCity():
                             'variable': '<b>City</b>'}, 
                     title=cd.text['SIZE_CITY_TITLE'],
                     height = 450,
-                    color_discrete_sequence=["#ed8851", "#009192", "#7c4375", 
-                                             "#dd5279", "#f7e144", "#6b6d6f"])
+                    category_orders={'variable': ["Charlottesville", "Blacksburg",
+                                                  "Fredericksburg", "Harrisonburg", 
+                                                  "Petersburg", "Staunton"]},
+                    color_discrete_sequence=["#ed8851", "#dd5279", "#6b6d6f", 
+                                             "#7c4375", "#f7e144", "#009192"])
     fig.update_xaxes(tickvals = [2010 + 2*year for year in range(6)], 
                      range = [2008.5, 2020.5], gridcolor='Black')
     fig.update_yaxes(tickvals = [25000 + 10000 * k for k in range(4)],
