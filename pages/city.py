@@ -163,7 +163,10 @@ def update_census_hh_city_plot(censusSelection, settings):
     if censusSelection == cd.opts['DROPDOWN_CENSUS_HH'][0]:
         return cf.plotIncomeCity()
     elif censusSelection == cd.opts['DROPDOWN_CENSUS_HH'][1]:
-        return cf.plotIncomeDistCity(tickers=('Show tickers' in settings))
+        if "Smpl income" in settings:
+            return cf.plotIncomeDistCitySimple(tickers=('Show tickers' in settings))
+        else:
+            return cf.plotIncomeDistCity(tickers=('Show tickers' in settings))
     elif censusSelection == cd.opts['DROPDOWN_CENSUS_HH'][2]:
         return cf.plotOccupancyCity()
     else:

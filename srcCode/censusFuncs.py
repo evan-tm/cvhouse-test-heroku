@@ -27,6 +27,10 @@ incomeNeighborhood = pd.read_csv('data/census/incomeNeighborhood.csv')
 incomeCityDist = pd.read_csv('data/census/incomeCityDist.csv')
 # Neighborhood income distribution data
 incomeNeighborhoodDist = pd.read_csv('data/census/incomeNeighborhoodDist.csv')
+# City simple income distribution data
+incomeCityDistSimple = pd.read_csv('data/census/incomeCityDistSimple.csv')
+# Neighborhood simple income distribution data
+incomeHoodDistSimple = pd.read_csv('data/census/incomeNeighborhoodDistSimple.csv')
 # City occupancy data
 occupancyCity = pd.read_csv('data/census/occupancyCity.csv')
 # Neighborhood occupancy data
@@ -349,6 +353,61 @@ def plotIncomeDistCity(tickers = True):
         if tickers:
             f = addFrameAnnotations(f, incomeCityDist, 
                                     [i for i in range(16)], 
+                                    idx, 'Bracket')
+    ## Update bar styling
+    fig.update_traces(marker_color='#ed8851', marker_line_color='#e96a26',
+                      marker_line_width=1.5, opacity=0.8)
+
+    return fig
+
+## Function for creating simplified income distribution plot for the city overall
+## out: figure
+def plotIncomeDistCitySimple(tickers = True):
+    # begin building figure
+    fig = px.bar(incomeCityDistSimple, 
+                 y="Bracket", 
+                 x="Income",
+                 animation_frame='Year',
+                 orientation="h",
+                 title=cd.text['INCOME_DIST_CITY_TITLE'], 
+                 height=550,
+                 labels={'Income':cd.text['INCOME_X_TITLE'],
+                         'Bracket':cd.text['INCOME_Y_TITLE']},
+                 color_discrete_sequence=["#e96a26"])
+    fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
+                      plot_bgcolor="white",
+                      paper_bgcolor="white",
+                      font=dict(size=17, color="rgb(7,13,30)"),
+                      legend=dict(yanchor="bottom", 
+                                  x=0.90, 
+                                  y=0.85, 
+                                  xanchor="right",
+                                  bgcolor="DimGray"),
+                      titlefont={'size': 19},
+                      title_x = 0.55,
+                      font_family="FranklinGothic",
+                      font_color="#070D1E",
+                      title_font_family="FranklinGothicPro",
+                      title_font_color="#1C1D1E")
+    if tickers:
+        ## Adds (count : pct) ticker at far right of chart
+        fig = addFigAnnotations(fig, incomeCityDistSimple, [i for i in range(5)], 'Bracket')
+    ## Fixed x axis size for each frame
+    fig.update_xaxes(tickvals = [i*5 for i in range(7)], 
+                     range = [0, 32.55],
+                     gridcolor='Black')
+    fig['layout']['updatemenus'][0]['x']=-0.04
+    fig['layout']['sliders'][0]['x']=-0.04
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = cd.opts['ANIMATION_TIME']
+    ## Loop through frames to edit hover and by-frame ticker annotations
+    for idx, f in enumerate(fig.frames):
+        for dat in f.data:
+            dat.marker = dict(color='#ed8851',
+                              line=dict(color='#e96a26',
+                                        width=1.5))
+        if tickers:
+            f = addFrameAnnotations(f, incomeCityDistSimple, 
+                                    [i for i in range(5)], 
                                     idx, 'Bracket')
     ## Update bar styling
     fig.update_traces(marker_color='#ed8851', marker_line_color='#e96a26',
@@ -830,6 +889,81 @@ def plotIncomeDistNeighborhood(n, compare = False,
         if tickers:
             f = addFrameAnnotations(f, incomeNeighborhoodDist, 
                                     [i for i in range(16)], 
+                                    idx, 'Bracket', compare)
+    fig.update_traces(marker_color='#ed8851', marker_line_color='#e96a26',
+                      marker_line_width=1.5, opacity=0.8)
+    
+    return fig
+
+## Function for creating simple income distribution plot for the neighborhoods
+## in: neighborhood, t/f whether the plot is for the comparison page
+## out: figure
+def plotIncomeDistHoodSimple(n, compare = False, 
+                             article = False, tickers = True):
+    # begin building figure
+    fig = px.bar(incomeHoodDistSimple, 
+                 y="Bracket", 
+                 x=n,
+                 animation_frame='Year',
+                 orientation="h",
+                 title=cd.text['INCOME_NEIGHBORHOOD_TITLE'].format(hood=n), 
+                 height=550,
+                 labels={n:cd.text['INCOME_X_TITLE'],
+                         'Bracket':cd.text['INCOME_Y_TITLE']})
+    # update layout
+    fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
+                      plot_bgcolor="white",
+                      paper_bgcolor="white",
+                      font=dict(size=17, color="rgb(7,13,30)"),
+                      legend=dict(yanchor="bottom", 
+                                  x=0.90, 
+                                  y=0.85, 
+                                  xanchor="right",
+                                  bgcolor="DimGray"),
+                      titlefont={'size': 19},
+                      title_x = 0.555,
+                      font_family="FranklinGothic",
+                      font_color="#070D1E",
+                      title_font_family="FranklinGothicPro",
+                      title_font_color="#1C1D1E")
+    if tickers:
+        ## get index of neighborhood selection
+        hood_index = incomeHoodDistSimple.columns.get_loc(n)
+        ## update dataset with correct ticker for neighborhood selection
+        incomeHoodDistSimple['ag'] = [f'({incomeHoodDistSimple.iloc[i, hood_index+19]:,}' + \
+                                        f' : {incomeHoodDistSimple.iloc[i, hood_index]:.2f}%)' 
+                                        for i in range(incomeHoodDistSimple.shape[0])]
+        ## Adds (count : pct) ticker at far right of chart
+        fig = addFigAnnotations(fig, incomeHoodDistSimple, 
+                                [i for i in range(5)], 'Bracket',
+                                compare)
+    if compare:
+        ## Fixed x axis size for each frame
+        fig.update_xaxes(tickvals = [i*5 for i in range(8)], 
+                        range = [0, 43],
+                        gridcolor='Black')
+    elif article:
+        ## Fixed x axis size for each frame
+        fig.update_xaxes(tickvals = [i*5 for i in range(8)], 
+                        range = [0, 42],
+                        gridcolor='Black')
+    else:
+        ## Fixed x axis size for each frame
+        fig.update_xaxes(tickvals = [i*5 for i in range(8)], 
+                        range = [0, 36],
+                        gridcolor='Black') # reset range max to 40
+    fig['layout']['updatemenus'][0]['x']=-0.04
+    fig['layout']['sliders'][0]['x']=-0.04
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = cd.opts['ANIMATION_TIME']
+    ## Loop through frames to edit hover and by-frame ticker annotations
+    for idx, f in enumerate(fig.frames):
+        for dat in f.data:
+            dat.marker = dict(color='#ed8851',
+                              line=dict(color='#e96a26',
+                                        width=1.5))
+        if tickers:
+            f = addFrameAnnotations(f, incomeHoodDistSimple, 
+                                    [i for i in range(5)], 
                                     idx, 'Bracket', compare)
     fig.update_traces(marker_color='#ed8851', marker_line_color='#e96a26',
                       marker_line_width=1.5, opacity=0.8)

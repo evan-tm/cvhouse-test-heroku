@@ -269,7 +269,10 @@ def update_census_hh_neighborhood_plot(censusSelection, n, settings):
     if censusSelection == nd.opts['DROPDOWN_CENSUS_HH'][0]:
         return cf.plotIncomeNeighborhood(n)
     elif censusSelection == nd.opts['DROPDOWN_CENSUS_HH'][1]:
-        return cf.plotIncomeDistNeighborhood(n, tickers=('Show tickers' in settings))
+        if "Smpl income" in settings:
+            return cf.plotIncomeDistHoodSimple(n, tickers=('Show tickers' in settings))
+        else:
+            return cf.plotIncomeDistNeighborhood(n, tickers=('Show tickers' in settings))
     elif censusSelection == nd.opts['DROPDOWN_CENSUS_HH'][2]:
         return cf.plotOccupancyNeighborhood(n)
     else:
@@ -336,8 +339,8 @@ def update_census_hh_neighborhood_id_plot(censusSelection, n):
     if censusSelection == nd.opts['DROPDOWN_CENSUS_HH'][0]:
         return cf.plotIncomeNeighborhood(n)
     elif censusSelection == nd.opts['DROPDOWN_CENSUS_HH'][1]:
-        return cf.plotIncomeDistNeighborhood(n, article = True,
-                                             tickers=False)
+        return cf.plotIncomeDistHoodSimple(n, article = True,
+                                           tickers=False)
     elif censusSelection == nd.opts['DROPDOWN_CENSUS_HH'][2]:
         return cf.plotOccupancyNeighborhood(n)
     else:
