@@ -646,7 +646,7 @@ def plotAgeNeighborhood(n, compare = False,
                                   xanchor="right",
                                   bgcolor="DimGray"),
                       titlefont={'size': 19},
-                      title_x = 0.56,
+                      title_x = 0.53,
                       font_family="FranklinGothic",
                       font_color="#070D1E",
                       title_font_family="FranklinGothicPro",
@@ -674,8 +674,8 @@ def plotAgeNeighborhood(n, compare = False,
                         gridcolor='Black')
     else:
         ## Fixed x axis size for each frame
-        fig.update_xaxes(tickvals = [i*5 for i in range(11)], 
-                        range = [0, 56],
+        fig.update_xaxes(tickvals = [i*2 for i in range(8)], 
+                        range = [0, 16.5],
                         gridcolor='Black')
     # update legend and hovers for animated frames
     for idx, f in enumerate(fig.frames):
@@ -949,8 +949,8 @@ def plotIncomeDistHoodSimple(n, compare = False,
                         gridcolor='Black')
     else:
         ## Fixed x axis size for each frame
-        fig.update_xaxes(tickvals = [i*5 for i in range(8)], 
-                        range = [0, 36],
+        fig.update_xaxes(tickvals = [i*5 for i in range(9)], 
+                        range = [0, 43],
                         gridcolor='Black') # reset range max to 40
     fig['layout']['updatemenus'][0]['x']=-0.04
     fig['layout']['sliders'][0]['x']=-0.04
