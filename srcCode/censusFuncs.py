@@ -1096,3 +1096,99 @@ def plotSizeNeighborhood(n):
     fig.update_traces(line_width=5, mode='lines')
                       
     return fig
+
+## Function for creating plot of race and ethnicity by neighborhood
+## compared to the city overall
+## out: figure
+def plotRECompareCity():
+    raceCity['x'] = 0
+
+    fig = px.bar(raceCity, x='Pop', y='x',
+                color='Race and Ethnicity', 
+                animation_frame = "Year",
+                color_discrete_map={'White, not Hispanic': '#e96a26',
+                                    'Black, not Hispanic': '#5b1453',
+                                    'American Indian, not Hispanic': '#009192',
+                                    'Asian, not Hispanic': '#46494b',
+                                    'Pacific Islander, not Hispanic': '#000000',
+                                    'Some other race, not Hispanic': '#ffffff',
+                                    'Two or more races, not Hispanic': '#f5d915',
+                                    'Hispanic or Latino (may be of any race)': '#d42758'},
+                orientation = 'h',
+                custom_data=["Popct"],
+                labels={"Pop": ""},
+                height = 410,
+                title = "")
+    ## Change text displayed when mouse hovering over bar
+    #fig.update_traces(hovertemplate = cd.text['OCC_NEIGHBORHOOD_HOVER'],
+    #                  texttemplate = cd.text['OCC_ANNOTATE'])
+    fig.update_layout(margin=go.layout.Margin(l=50, r=10, b=0, t=30, pad=15),
+                        plot_bgcolor="white",
+                        paper_bgcolor="white",
+                        font=dict(size=17, color="rgb(7,13,30)"),
+                        titlefont={'size': 19},
+                        title_x = 0.5,
+                        font_family="FranklinGothic",
+                        font_color="#070D1E",
+                        title_font_family="FranklinGothicPro",
+                        title_font_color="#1C1D1E")
+
+    fig.update_xaxes(tickvals = [pct*10 for pct in range(11)], range=[0,100])
+    fig.update_yaxes(showticklabels=False, title=None)
+    fig['layout']['updatemenus'][0]['x']=0.08
+    fig['layout']['sliders'][0]['x']=0.08
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = cd.opts['ANIMATION_TIME'] / 2
+    ## Loop through frames to edit hover and by-frame ticker annotations
+    #for idx, f in enumerate(fig.frames):
+    #    for dat in f.data:
+    #        dat.hovertemplate = cd.text['OCC_NEIGHBORHOOD_HOVER']
+
+    return fig
+
+## Function for creating plot of race and ethnicity by neighborhood
+## compared to the city overall
+## out: figure
+def plotRECompareNeighborhood(n):
+    raceNeighborhood['x'] = 0
+
+    fig = px.bar(raceNeighborhood, x=n, y='x',
+                color='Race and Ethnicity', 
+                animation_frame = "Year",
+                color_discrete_map={'White, not Hispanic': '#e96a26',
+                                    'Black, not Hispanic': '#5b1453',
+                                    'American Indian, not Hispanic': '#009192',
+                                    'Asian, not Hispanic': '#46494b',
+                                    'Pacific Islander, not Hispanic': '#000000',
+                                    'Some other race, not Hispanic': '#ffffff',
+                                    'Two or more races, not Hispanic': '#f5d915',
+                                    'Hispanic or Latino (may be of any race)': '#d42758'},
+                orientation = 'h',
+                custom_data=[n + "ct"],
+                labels={n: ""},
+                height = 410,
+                title = cd.text['RE_NEIGHBORHOOD_TITLE'].format(hood=n))
+    ## Change text displayed when mouse hovering over bar
+    #fig.update_traces(hovertemplate = cd.text['OCC_NEIGHBORHOOD_HOVER'],
+    #                  texttemplate = cd.text['OCC_ANNOTATE'])
+    fig.update_layout(margin=go.layout.Margin(l=50, r=10, b=0, t=30, pad=15),
+                        plot_bgcolor="white",
+                        paper_bgcolor="white",
+                        font=dict(size=17, color="rgb(7,13,30)"),
+                        titlefont={'size': 19},
+                        title_x = 0.5,
+                        font_family="FranklinGothic",
+                        font_color="#070D1E",
+                        title_font_family="FranklinGothicPro",
+                        title_font_color="#1C1D1E")
+
+    fig.update_xaxes(tickvals = [pct*10 for pct in range(11)], range=[0,100])
+    fig.update_yaxes(showticklabels=False, title=None)
+    fig['layout']['updatemenus'][0]['x']=0.08
+    fig['layout']['sliders'][0]['x']=0.08
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = cd.opts['ANIMATION_TIME'] / 2
+    ## Loop through frames to edit hover and by-frame ticker annotations
+    #for idx, f in enumerate(fig.frames):
+    #    for dat in f.data:
+    #        dat.hovertemplate = cd.text['OCC_NEIGHBORHOOD_HOVER']
+
+    return fig

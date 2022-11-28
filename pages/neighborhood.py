@@ -218,6 +218,18 @@ def layout(id=None):
                                                         'autoScale2d']})
             ], className="subcontainer"),
         html.Br(),
+        html.Div(
+            [
+                dcc.Graph(id='locust_plot', 
+                        figure=cf.plotRECompareNeighborhood('Locust Grove'),
+                        config={'displayModeBar': modebarVisible,
+                            "displaylogo": False,
+                            'modeBarButtonsToRemove': ['pan2d', 'select2d', 
+                                                        'lasso2d', 'zoom2d',
+                                                        'zoomIn2d', 'zoomOut2d',
+                                                        'autoScale2d']},
+                        style={'display': 'block'})
+            ], className="subcontainer"),
         # Disclaimers
         html.Div([dcc.Markdown(children=nd.text['FOOTNOTE'])], 
                  className="subcontainer left_text bodytext"),

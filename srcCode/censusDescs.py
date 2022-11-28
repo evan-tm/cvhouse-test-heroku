@@ -53,7 +53,12 @@ text = {
                             '<extra></extra>',
     "OCC_ANNOTATE": '%{value:.2f}%<br>%{customdata} Households',
     "TENURE_CITY_TITLE": 'Tenure of Charlottesville Households (% of Total Households)',
-    "TENURE_NEIGHBORHOOD_TITLE": 'Tenure of {hood} Households (% of Total Households)'
+    "TENURE_NEIGHBORHOOD_TITLE": 'Tenure of {hood} Households (% of Total Households)',
+    "RE_NEIGHBORHOOD_TITLE": 'Race and Ethnicity of {hood} and Charlottesville Residents in 2020 (% of Total)',
+    "RE_NEIGHBORHOOD_HOVER": '<i>Status</i>: <b>%{data.name}</b>' + \
+                            '<br>%{value:.2f}% of Neighborhood\'s Households<br>' + \
+                            '%{customdata} Households<br>' + \
+                            '<extra></extra>',
 }
 
 opts = {

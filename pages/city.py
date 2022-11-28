@@ -135,6 +135,18 @@ layout = html.Div(
                                                         'autoScale2d']}),
             ], className="subcontainer"),
         html.Br(),
+        html.Div(
+            [
+                dcc.Graph(id='re_city_plot', 
+                          figure=cf.plotRECompareCity(),
+                          config={'displayModeBar': modebarVisible,
+                            "displaylogo": False,
+                            'modeBarButtonsToRemove': ['pan2d', 'select2d', 
+                                                        'lasso2d', 'zoom2d',
+                                                        'zoomIn2d', 'zoomOut2d',
+                                                        'autoScale2d']},
+                          style={'display': 'block'})
+            ], className="subcontainer"),
         # Disclaimers
         html.Div([dcc.Markdown(children=cd.text['FOOTNOTE'])], 
                  className="subcontainer left_text bodytext"),
