@@ -159,7 +159,10 @@ layout = html.Div(
     Input("settings_checklist", "value")])
 def update_census_city_plot(censusSelection, settings):
     if censusSelection == cd.opts['DROPDOWN_CENSUS'][0]:
-        return cf.plotAgeCity(tickers=('Show tickers' in settings))
+        if "Smpl age" in settings:
+            return cf.plotAgeCitySimple(tickers=('Show tickers' in settings))
+        else:
+            return cf.plotAgeCity(tickers=('Show tickers' in settings))
     elif censusSelection == cd.opts['DROPDOWN_CENSUS'][1]:
         return cf.plotIndustrySector(tickers=('Show tickers' in settings))
     elif censusSelection == cd.opts['DROPDOWN_CENSUS'][2]:

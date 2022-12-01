@@ -122,9 +122,11 @@ def createTopBar():
                                              className="header_links_text"),
                         dcc.Checklist(
                             options=[{"value": "Show tickers", "label": "Show tickers"},
+                                     {"value": "Smpl age", 
+                                     "label": "Smpl age"},
                                      {"value": "Smpl income", 
                                      "label": "Smpl income"}],
-                            value=["Smpl income"], id="settings_checklist", className="header_links_text", 
+                            value=["Smpl age", "Smpl income"], id="settings_checklist", className="header_links_text", 
                             persistence=True, inputStyle={"margin-left": "15px", "margin-right": "5px"}
                         ),
                     ],

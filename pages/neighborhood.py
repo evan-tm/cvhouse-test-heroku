@@ -262,7 +262,10 @@ def update_census_neighborhood_plot(censusSelection, n, settings):
         return cf.plotIndustryByNeighborhood(nd.default['DROPDOWN_NEIGHBORHOOD'],
                                              tickers=('Show tickers' in settings))
     if censusSelection == nd.opts['DROPDOWN_CENSUS'][0]:
-        return cf.plotAgeNeighborhood(n, tickers=('Show tickers' in settings))
+        if "Smpl age" in settings:
+            return cf.plotAgeHoodSimple(n, tickers=('Show tickers' in settings))
+        else:
+            return cf.plotAgeNeighborhood(n, tickers=('Show tickers' in settings))
     elif censusSelection == nd.opts['DROPDOWN_CENSUS'][1]:
         return cf.plotIndustryByNeighborhood(n, tickers=('Show tickers' in settings))
     elif censusSelection == nd.opts['DROPDOWN_CENSUS'][2]:

@@ -15,6 +15,10 @@ industryNeighborhood = pd.read_csv('data/census/industryNeighborhood.csv')
 ageCity = pd.read_csv("data/census/ageCity.csv")
 # Neighborhood age data
 ageNeighborhood = pd.read_csv("data/census/ageNeighborhood.csv")
+# City simple age data
+ageCitySimple = pd.read_csv("data/census/ageCitySimple.csv")
+# Neighborhood simple age data
+ageNeighborhoodSimple = pd.read_csv("data/census/ageNeighborhoodSimple.csv")
 # City race data
 raceCity = pd.read_csv('data/census/raceEthnicityCity.csv')
 # Neighborhod race data
@@ -214,6 +218,64 @@ def plotAgeCity(tickers = True):
                                         width=1.5))
         if tickers:
             f = addFrameAnnotations(f, ageCity, [i for i in range(18)], 
+                                    idx, 'Age')
+  
+    return fig
+
+## Function for creating simple age plot for the city overall
+## out: figure
+def plotAgeCitySimple(tickers = True):
+    # begin building figure
+    fig = px.bar(ageCitySimple, 
+                 y="Age", 
+                 x="Total",
+                 animation_frame='Year', 
+                 barmode='group',
+                 orientation="h",
+                 title=cd.text['AGE_CITY_TITLE'], 
+                 height = 550,
+                 labels={'variable':cd.text['AGE_LEGEND_TITLE'], 
+                         'Total':cd.text['AGE_X_TITLE'],
+                         'Age':cd.text['AGE_Y_TITLE']},
+                 custom_data=["Totalct"])
+    ## Change text displayed when mouse hovering over bar
+    fig.update_traces(hovertemplate = cd.text['AGE_CITY_HOVER'],
+                      marker_color='#7c4375', marker_line_color='#5b1453',
+                      marker_line_width=1.5, opacity=0.8)
+    fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
+                      plot_bgcolor="white",
+                      paper_bgcolor="white",
+                      font=dict(size=17, color="rgb(7,13,30)"),
+                      legend=dict(yanchor="bottom", 
+                                  x=0.90, 
+                                  y=0.85, 
+                                  xanchor="right",
+                                  bgcolor="DimGray"),
+                      titlefont={'size': 19},
+                      title_x = 0.555,
+                      font_family="FranklinGothic",
+                      font_color="#070D1E",
+                      title_font_family="FranklinGothicPro",
+                      title_font_color="#1C1D1E")
+    if tickers:
+        ## Adds (count : pct) ticker at far right of chart
+        fig = addFigAnnotations(fig, ageCitySimple, [i for i in range(9)], 'Age')
+    ## Fixed x axis size for each frame
+    fig.update_xaxes(tickvals = [i*5 for i in range(8)], 
+                     range = [0, 35.5],
+                     gridcolor='Black')
+    fig['layout']['updatemenus'][0]['x']=-0.04
+    fig['layout']['sliders'][0]['x']=-0.04
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = cd.opts['ANIMATION_TIME']
+    ## Loop through frames to edit hover and by-frame ticker annotations
+    for idx, f in enumerate(fig.frames):
+        for dat in f.data:
+            dat.hovertemplate = cd.text['AGE_CITY_HOVER']
+            dat.marker = dict(color='#7c4375',
+                              line=dict(color='#5b1453',
+                                        width=1.5))
+        if tickers:
+            f = addFrameAnnotations(f, ageCitySimple, [i for i in range(9)], 
                                     idx, 'Age')
   
     return fig
@@ -676,6 +738,85 @@ def plotAgeNeighborhood(n, compare = False,
         ## Fixed x axis size for each frame
         fig.update_xaxes(tickvals = [i*2 for i in range(8)], 
                         range = [0, 16.5],
+                        gridcolor='Black')
+    # update legend and hovers for animated frames
+    for idx, f in enumerate(fig.frames):
+        for dat in f.data:
+            dat.hovertemplate = cd.text['AGE_NEIGHBORHOOD_HOVER']
+            dat.marker = dict(color='#7c4375',
+                              line=dict(color='#5b1453',
+                                        width=1.5))
+        if tickers:
+            f = addFrameAnnotations(f, ageNeighborhood, 
+                                    [i for i in range(18)], 
+                                    idx, 'Age', compare)
+    fig['layout']['updatemenus'][0]['x']=-0.04
+    fig['layout']['sliders'][0]['x']=-0.04
+    fig.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = cd.opts['ANIMATION_TIME']
+    ## Change text displayed when mouse hovering over bar
+    fig.update_traces(hovertemplate = cd.text['AGE_NEIGHBORHOOD_HOVER'],
+                      marker_color='#7c4375', marker_line_color='#5b1453',
+                      marker_line_width=1.5, opacity=0.8)
+
+    return fig
+
+## Function for creating plot of simple age by neighborhood
+## out: figure
+def plotAgeHoodSimple(n, compare = False, 
+                      article = False, tickers = True):
+    # begin building figure
+    fig = px.bar(ageNeighborhoodSimple, 
+                 y="Age", 
+                 x=n + "_T",
+                 animation_frame='Year', 
+                 barmode='group',
+                 orientation="h",
+                 height = 550,
+                 title=cd.text['AGE_NEIGHBORHOOD_TITLE'].format(hood=n), 
+                 labels={'variable':cd.text['AGE_LEGEND_TITLE'], 
+                         n+"_T":cd.text['AGE_X_TITLE'],
+                         'Age':cd.text['AGE_Y_TITLE']})
+    # update layout
+    fig.update_layout(margin=go.layout.Margin(l=200, r=10, b=0, t=30, pad=15),
+                      plot_bgcolor="white",
+                      paper_bgcolor="white",
+                      font=dict(size=17, color="rgb(7,13,30)"),
+                      legend=dict(yanchor="bottom", 
+                                  x=0.90, 
+                                  y=0.85, 
+                                  xanchor="right",
+                                  bgcolor="DimGray"),
+                      titlefont={'size': 19},
+                      title_x = 0.53,
+                      font_family="FranklinGothic",
+                      font_color="#070D1E",
+                      title_font_family="FranklinGothicPro",
+                      title_font_color="#1C1D1E")
+    if tickers:
+        ## get index of neighborhood selection
+        hood_index = ageNeighborhoodSimple.columns.get_loc(n + "_T")
+        ## update dataset with correct ticker for neighborhood selection
+        ageNeighborhoodSimple['ag'] = [f'({ageNeighborhoodSimple.iloc[i, hood_index+1]:,}' + 
+                                 f' : {ageNeighborhoodSimple.iloc[i, hood_index]:.2f}%)' 
+                                 for i in range(ageNeighborhoodSimple.shape[0])]
+        ## Adds (count : pct) ticker at far right of chart
+        fig = addFigAnnotations(fig, ageNeighborhoodSimple, 
+                                [i for i in range(9)], 'Age',
+                                compare)
+    if compare:
+        ## Fixed x axis size for each frame
+        fig.update_xaxes(tickvals = [i*5 for i in range(11)], 
+                        range = [0, 62],
+                        gridcolor='Black')
+    elif article:
+        ## Fixed x axis size for each frame
+        fig.update_xaxes(tickvals = [i*5 for i in range(11)], 
+                        range = [0, 61],
+                        gridcolor='Black')
+    else:
+        ## Fixed x axis size for each frame
+        fig.update_xaxes(tickvals = [i*2 for i in range(13)], 
+                        range = [0, 24.5],
                         gridcolor='Black')
     # update legend and hovers for animated frames
     for idx, f in enumerate(fig.frames):
