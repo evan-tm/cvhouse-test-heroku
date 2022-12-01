@@ -22,7 +22,7 @@ text = {
                  '<br>%{value:.2f}% of Total Population<br>' + \
                  '<b>%{customdata}</b> People' + \
                  '<extra></extra>',
-    "AGE_NEIGHBORHOOD_TITLE": 'Population Chart for {hood} (% of Total)',
+    "AGE_NEIGHBORHOOD_TITLE": 'Population by Age for {hood}',
     "AGE_NEIGHBORHOOD_HOVER":  'Age Group: <b>%{data.name}</b>' + \
                             '<br>%{value:.2f}% of Neighborhood\'s Population<br>' + \
                             '<b>%{customdata}</b> People<br>' + \
