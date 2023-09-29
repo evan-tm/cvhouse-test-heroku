@@ -1222,8 +1222,8 @@ def plotSizeNeighborhood(n):
                         color_discrete_sequence=["#7c4375"])
         fig.update_layout(title_x=0.517)
 
-    fig.update_xaxes(tickvals = [year for year in range(2013, 2021)], 
-                     range = [2012.5, 2020.5], gridcolor='Black')
+    fig.update_xaxes(tickvals = [year for year in range(2013, 2022)], 
+                     range = [2012.5, 2021.5], gridcolor='Black')
     fig.update_yaxes(gridcolor='Black')
     fig.update_layout(margin=go.layout.Margin(l=0, r=0, b=0, t=50, pad=15),
                     plot_bgcolor="white",
