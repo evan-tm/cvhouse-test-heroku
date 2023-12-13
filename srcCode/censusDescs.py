@@ -25,7 +25,7 @@ text = {
     "AGE_NEIGHBORHOOD_TITLE": 'Population by Age for {hood}',
     "AGE_NEIGHBORHOOD_HOVER":  'Age Group: <b>%{data.name}</b>' + \
                             '<br>%{value:.2f}% of Neighborhood\'s Population<br>' + \
-                            '<b>%{customdata}</b> People<br>' + \
+                            #'<b>%{customdata}</b> People<br>' + \
                             '<extra></extra>',
     "RACE_CITY_TITLE": 'Population by Race and Ethnicity for Charlottesville, Virginia (% of Total)',
     "RACE_X_TITLE": '<b>Population (%)</b>',
