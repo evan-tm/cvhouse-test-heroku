@@ -815,8 +815,8 @@ def plotAgeHoodSimple(n, compare = False,
                         gridcolor='Black')
     else:
         ## Fixed x axis size for each frame
-        fig.update_xaxes(tickvals = [i*2 for i in range(13)], 
-                        range = [0, 24.5],
+        fig.update_xaxes(tickvals = [i*2 for i in range(19)], 
+                        range = [0, 36.5],
                         gridcolor='Black')
     # update legend and hovers for animated frames
     for idx, f in enumerate(fig.frames):
