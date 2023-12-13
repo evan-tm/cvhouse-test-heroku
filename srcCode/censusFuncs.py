@@ -826,7 +826,7 @@ def plotAgeHoodSimple(n, compare = False,
                               line=dict(color='#5b1453',
                                         width=1.5))
         if tickers:
-            f = addFrameAnnotations(f, ageNeighborhood, 
+            f = addFrameAnnotations(f, ageNeighborhoodSimple, 
                                     [i for i in range(9)], 
                                     idx, 'Age', compare)
     fig['layout']['updatemenus'][0]['x']=-0.04
