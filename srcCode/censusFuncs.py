@@ -717,7 +717,7 @@ def plotAgeNeighborhood(n, compare = False,
         ## get index of neighborhood selection
         hood_index = ageNeighborhood.columns.get_loc(n + "_T")
         ## update dataset with correct ticker for neighborhood selection
-        ageNeighborhood['ag'] = [f'({ageNeighborhood.iloc[i, hood_index+1]:,}' + 
+        ageNeighborhood['ag'] = [f'({ageNeighborhood.iloc[i, hood_index+19]:,}' + 
                                  f' : {ageNeighborhood.iloc[i, hood_index]:.2f}%)' 
                                  for i in range(ageNeighborhood.shape[0])]
         ## Adds (count : pct) ticker at far right of chart
@@ -796,7 +796,7 @@ def plotAgeHoodSimple(n, compare = False,
         ## get index of neighborhood selection
         hood_index = ageNeighborhoodSimple.columns.get_loc(n + "_T")
         ## update dataset with correct ticker for neighborhood selection
-        ageNeighborhoodSimple['ag'] = [f'({ageNeighborhoodSimple.iloc[i, hood_index+1]:,}' + 
+        ageNeighborhoodSimple['ag'] = [f'({ageNeighborhoodSimple.iloc[i, hood_index+19]:,}' + 
                                  f' : {ageNeighborhoodSimple.iloc[i, hood_index]:.2f}%)' 
                                  for i in range(ageNeighborhoodSimple.shape[0])]
         ## Adds (count : pct) ticker at far right of chart
